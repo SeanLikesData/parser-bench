@@ -1,0 +1,668 @@
+[
+  {
+    "file": "hard_watermark_financial.pdf",
+    "label": "Watermarked Financial Projections",
+    "file_size": 8792,
+    "parsers": {
+      "PyMuPDF": {
+        "time_ms": 204.9,
+        "words": 288,
+        "chars": 2613,
+        "pages": 1,
+        "tests": {
+          "Watermark vs Content Separation": {
+            "content_found": 6,
+            "content_total": 6,
+            "watermark_found": 2,
+            "interleaved": 0,
+            "score_pct": 100.0,
+            "penalty": 0
+          },
+          "Financial Numbers Intact": {
+            "found": 13,
+            "total": 13,
+            "pct": 100.0,
+            "missing": []
+          },
+          "Sensitivity Table Rows": {
+            "found": 3,
+            "total": 3,
+            "pct": 100.0
+          },
+          "Reading Order (narrative flow)": {
+            "ordered": 7,
+            "total": 7,
+            "pct": 100.0,
+            "swaps": []
+          }
+        }
+      },
+      "pdfplumber": {
+        "time_ms": 267.8,
+        "words": 295,
+        "chars": 1904,
+        "pages": 1,
+        "tests": {
+          "Watermark vs Content Separation": {
+            "content_found": 4,
+            "content_total": 6,
+            "watermark_found": 3,
+            "interleaved": 2,
+            "score_pct": 66.7,
+            "penalty": 2
+          },
+          "Financial Numbers Intact": {
+            "found": 12,
+            "total": 13,
+            "pct": 92.3,
+            "missing": [
+              "$3,617"
+            ]
+          },
+          "Sensitivity Table Rows": {
+            "found": 3,
+            "total": 3,
+            "pct": 100.0
+          },
+          "Reading Order (narrative flow)": {
+            "ordered": 5,
+            "total": 5,
+            "pct": 100.0,
+            "swaps": []
+          }
+        }
+      },
+      "pypdf": {
+        "time_ms": 122.6,
+        "words": 288,
+        "chars": 2633,
+        "pages": 1,
+        "tests": {
+          "Watermark vs Content Separation": {
+            "content_found": 6,
+            "content_total": 6,
+            "watermark_found": 3,
+            "interleaved": 0,
+            "score_pct": 100.0,
+            "penalty": 0
+          },
+          "Financial Numbers Intact": {
+            "found": 13,
+            "total": 13,
+            "pct": 100.0,
+            "missing": []
+          },
+          "Sensitivity Table Rows": {
+            "found": 3,
+            "total": 3,
+            "pct": 100.0
+          },
+          "Reading Order (narrative flow)": {
+            "ordered": 7,
+            "total": 7,
+            "pct": 100.0,
+            "swaps": []
+          }
+        }
+      },
+      "LiteParse": {
+        "time_ms": 4730.0,
+        "words": 287,
+        "chars": 2806,
+        "pages": 1,
+        "tests": {
+          "Watermark vs Content Separation": {
+            "content_found": 6,
+            "content_total": 6,
+            "watermark_found": 2,
+            "interleaved": 4,
+            "score_pct": 100.0,
+            "penalty": 4
+          },
+          "Financial Numbers Intact": {
+            "found": 13,
+            "total": 13,
+            "pct": 100.0,
+            "missing": []
+          },
+          "Sensitivity Table Rows": {
+            "found": 2,
+            "total": 3,
+            "pct": 66.7
+          },
+          "Reading Order (narrative flow)": {
+            "ordered": 7,
+            "total": 7,
+            "pct": 100.0,
+            "swaps": []
+          }
+        }
+      }
+    }
+  },
+  {
+    "file": "hard_clinical_table.pdf",
+    "label": "Clinical Trial Table",
+    "file_size": 46431,
+    "parsers": {
+      "PyMuPDF": {
+        "time_ms": 17.0,
+        "words": 236,
+        "chars": 1594,
+        "pages": 1,
+        "tests": {
+          "Table Row Integrity (values on same line)": {
+            "found": 0,
+            "total": 5,
+            "pct": 0.0
+          },
+          "All Statistical Values Present": {
+            "found": 18,
+            "total": 18,
+            "pct": 100.0,
+            "missing": []
+          },
+          "Section Order": {
+            "ordered": 7,
+            "total": 7,
+            "pct": 100.0,
+            "swaps": []
+          }
+        }
+      },
+      "pdfplumber": {
+        "time_ms": 247.3,
+        "words": 236,
+        "chars": 1553,
+        "pages": 1,
+        "tests": {
+          "Table Row Integrity (values on same line)": {
+            "found": 5,
+            "total": 5,
+            "pct": 100.0
+          },
+          "All Statistical Values Present": {
+            "found": 18,
+            "total": 18,
+            "pct": 100.0,
+            "missing": []
+          },
+          "Section Order": {
+            "ordered": 7,
+            "total": 7,
+            "pct": 100.0,
+            "swaps": []
+          }
+        }
+      },
+      "pypdf": {
+        "time_ms": 23.8,
+        "words": 236,
+        "chars": 1593,
+        "pages": 1,
+        "tests": {
+          "Table Row Integrity (values on same line)": {
+            "found": 5,
+            "total": 5,
+            "pct": 100.0
+          },
+          "All Statistical Values Present": {
+            "found": 18,
+            "total": 18,
+            "pct": 100.0,
+            "missing": []
+          },
+          "Section Order": {
+            "ordered": 7,
+            "total": 7,
+            "pct": 100.0,
+            "swaps": []
+          }
+        }
+      },
+      "LiteParse": {
+        "time_ms": 3583.7,
+        "words": 236,
+        "chars": 2291,
+        "pages": 1,
+        "tests": {
+          "Table Row Integrity (values on same line)": {
+            "found": 5,
+            "total": 5,
+            "pct": 100.0
+          },
+          "All Statistical Values Present": {
+            "found": 18,
+            "total": 18,
+            "pct": 100.0,
+            "missing": []
+          },
+          "Section Order": {
+            "ordered": 7,
+            "total": 7,
+            "pct": 100.0,
+            "swaps": []
+          }
+        }
+      }
+    }
+  },
+  {
+    "file": "hard_compliance.pdf",
+    "label": "Tax Compliance Report",
+    "file_size": 8842,
+    "parsers": {
+      "PyMuPDF": {
+        "time_ms": 9.2,
+        "words": 272,
+        "chars": 2153,
+        "pages": 1,
+        "tests": {
+          "Treaty Table Rows": {
+            "found": 3,
+            "total": 3,
+            "pct": 100.0
+          },
+          "Formula & Calculation Values": {
+            "found": 9,
+            "total": 9,
+            "pct": 100.0,
+            "missing": []
+          },
+          "Legal Citations Intact": {
+            "found": 6,
+            "total": 6,
+            "pct": 100.0,
+            "missing": []
+          }
+        }
+      },
+      "pdfplumber": {
+        "time_ms": 87.2,
+        "words": 272,
+        "chars": 1846,
+        "pages": 1,
+        "tests": {
+          "Treaty Table Rows": {
+            "found": 3,
+            "total": 3,
+            "pct": 100.0
+          },
+          "Formula & Calculation Values": {
+            "found": 9,
+            "total": 9,
+            "pct": 100.0,
+            "missing": []
+          },
+          "Legal Citations Intact": {
+            "found": 6,
+            "total": 6,
+            "pct": 100.0,
+            "missing": []
+          }
+        }
+      },
+      "pypdf": {
+        "time_ms": 9.5,
+        "words": 272,
+        "chars": 2152,
+        "pages": 1,
+        "tests": {
+          "Treaty Table Rows": {
+            "found": 3,
+            "total": 3,
+            "pct": 100.0
+          },
+          "Formula & Calculation Values": {
+            "found": 9,
+            "total": 9,
+            "pct": 100.0,
+            "missing": []
+          },
+          "Legal Citations Intact": {
+            "found": 6,
+            "total": 6,
+            "pct": 100.0,
+            "missing": []
+          }
+        }
+      },
+      "LiteParse": {
+        "time_ms": 5549.1,
+        "words": 272,
+        "chars": 2163,
+        "pages": 1,
+        "tests": {
+          "Treaty Table Rows": {
+            "found": 3,
+            "total": 3,
+            "pct": 100.0
+          },
+          "Formula & Calculation Values": {
+            "found": 9,
+            "total": 9,
+            "pct": 100.0,
+            "missing": []
+          },
+          "Legal Citations Intact": {
+            "found": 6,
+            "total": 6,
+            "pct": 100.0,
+            "missing": []
+          }
+        }
+      }
+    }
+  },
+  {
+    "file": "hard_insurance.pdf",
+    "label": "Two-Column Insurance Policy",
+    "file_size": 18634,
+    "parsers": {
+      "PyMuPDF": {
+        "time_ms": 10.3,
+        "words": 459,
+        "chars": 3055,
+        "pages": 1,
+        "tests": {
+          "Column Reading Order": {
+            "correct": 25,
+            "total": 25,
+            "pct": 100.0,
+            "status": "separate"
+          },
+          "Defined Terms Present": {
+            "found": 6,
+            "total": 7,
+            "pct": 85.7,
+            "missing": [
+              "\"insured contract\""
+            ]
+          },
+          "Footer Data Intact": {
+            "found": 6,
+            "total": 6,
+            "pct": 100.0,
+            "missing": []
+          }
+        }
+      },
+      "pdfplumber": {
+        "time_ms": 134.1,
+        "words": 459,
+        "chars": 2848,
+        "pages": 1,
+        "tests": {
+          "Column Reading Order": {
+            "correct": 10,
+            "total": 25,
+            "pct": 40.0,
+            "status": "interleaved"
+          },
+          "Defined Terms Present": {
+            "found": 6,
+            "total": 7,
+            "pct": 85.7,
+            "missing": [
+              "\"insured contract\""
+            ]
+          },
+          "Footer Data Intact": {
+            "found": 6,
+            "total": 6,
+            "pct": 100.0,
+            "missing": []
+          }
+        }
+      },
+      "pypdf": {
+        "time_ms": 20.5,
+        "words": 459,
+        "chars": 3054,
+        "pages": 1,
+        "tests": {
+          "Column Reading Order": {
+            "correct": 25,
+            "total": 25,
+            "pct": 100.0,
+            "status": "separate"
+          },
+          "Defined Terms Present": {
+            "found": 6,
+            "total": 7,
+            "pct": 85.7,
+            "missing": [
+              "\"insured contract\""
+            ]
+          },
+          "Footer Data Intact": {
+            "found": 6,
+            "total": 6,
+            "pct": 100.0,
+            "missing": []
+          }
+        }
+      },
+      "LiteParse": {
+        "time_ms": 3148.4,
+        "words": 459,
+        "chars": 3108,
+        "pages": 1,
+        "tests": {
+          "Column Reading Order": {
+            "correct": 10,
+            "total": 25,
+            "pct": 40.0,
+            "status": "interleaved"
+          },
+          "Defined Terms Present": {
+            "found": 6,
+            "total": 7,
+            "pct": 85.7,
+            "missing": [
+              "\"insured contract\""
+            ]
+          },
+          "Footer Data Intact": {
+            "found": 6,
+            "total": 6,
+            "pct": 100.0,
+            "missing": []
+          }
+        }
+      }
+    }
+  },
+  {
+    "file": "hard_fed_report.pdf",
+    "label": "Fed Financial Stability Report (real)",
+    "file_size": 4997421,
+    "parsers": {
+      "PyMuPDF": {
+        "time_ms": 144.6,
+        "words": 1654,
+        "chars": 9256,
+        "pages": 8,
+        "tests": {
+          "Key Content Present": {
+            "found": 6,
+            "total": 7,
+            "pct": 85.7,
+            "missing": [
+              "inflation"
+            ]
+          },
+          "Reading Order": {
+            "ordered": 2,
+            "total": 2,
+            "pct": 100.0,
+            "swaps": []
+          }
+        }
+      },
+      "pdfplumber": {
+        "time_ms": 1095.3,
+        "words": 1331,
+        "chars": 8661,
+        "pages": 8,
+        "tests": {
+          "Key Content Present": {
+            "found": 6,
+            "total": 7,
+            "pct": 85.7,
+            "missing": [
+              "inflation"
+            ]
+          },
+          "Reading Order": {
+            "ordered": 2,
+            "total": 2,
+            "pct": 100.0,
+            "swaps": []
+          }
+        }
+      },
+      "pypdf": {
+        "time_ms": 374.0,
+        "words": 1295,
+        "chars": 8708,
+        "pages": 8,
+        "tests": {
+          "Key Content Present": {
+            "found": 6,
+            "total": 7,
+            "pct": 85.7,
+            "missing": [
+              "inflation"
+            ]
+          },
+          "Reading Order": {
+            "ordered": 2,
+            "total": 2,
+            "pct": 100.0,
+            "swaps": []
+          }
+        }
+      },
+      "LiteParse": {
+        "time_ms": 9584.7,
+        "words": 1662,
+        "chars": 9767,
+        "pages": 7,
+        "tests": {
+          "Key Content Present": {
+            "found": 6,
+            "total": 7,
+            "pct": 85.7,
+            "missing": [
+              "inflation"
+            ]
+          },
+          "Reading Order": {
+            "ordered": 2,
+            "total": 2,
+            "pct": 100.0,
+            "swaps": []
+          }
+        }
+      }
+    }
+  },
+  {
+    "file": "hard_census.pdf",
+    "label": "Census Bureau Operational Plan (real)",
+    "file_size": 3626947,
+    "parsers": {
+      "PyMuPDF": {
+        "time_ms": 268.6,
+        "words": 9503,
+        "chars": 31626,
+        "pages": 8,
+        "tests": {
+          "Key Content Present": {
+            "found": 4,
+            "total": 4,
+            "pct": 100.0,
+            "missing": []
+          },
+          "Reading Order": {
+            "ordered": 0,
+            "total": 1,
+            "pct": 0.0,
+            "swaps": [
+              "'Census' after '2020'"
+            ]
+          }
+        }
+      },
+      "pdfplumber": {
+        "time_ms": 1895.3,
+        "words": 2062,
+        "chars": 19892,
+        "pages": 8,
+        "tests": {
+          "Key Content Present": {
+            "found": 4,
+            "total": 4,
+            "pct": 100.0,
+            "missing": []
+          },
+          "Reading Order": {
+            "ordered": 0,
+            "total": 1,
+            "pct": 0.0,
+            "swaps": [
+              "'Census' after '2020'"
+            ]
+          }
+        }
+      },
+      "pypdf": {
+        "time_ms": 415.5,
+        "words": 2127,
+        "chars": 20495,
+        "pages": 8,
+        "tests": {
+          "Key Content Present": {
+            "found": 4,
+            "total": 4,
+            "pct": 100.0,
+            "missing": []
+          },
+          "Reading Order": {
+            "ordered": 0,
+            "total": 1,
+            "pct": 0.0,
+            "swaps": [
+              "'Census' after '2020'"
+            ]
+          }
+        }
+      },
+      "LiteParse": {
+        "time_ms": 9552.5,
+        "words": 8776,
+        "chars": 24867,
+        "pages": 7,
+        "tests": {
+          "Key Content Present": {
+            "found": 3,
+            "total": 4,
+            "pct": 75.0,
+            "missing": [
+              "plan"
+            ]
+          },
+          "Reading Order": {
+            "ordered": 0,
+            "total": 1,
+            "pct": 0.0,
+            "swaps": [
+              "'Census' after '2020'"
+            ]
+          }
+        }
+      }
+    }
+  }
+]

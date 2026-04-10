@@ -1,0 +1,1064 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PDF Parser Benchmark Dashboard</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<style>
+  body { background: #0f172a; color: #e2e8f0; font-family: 'Inter', system-ui, sans-serif; }
+  .card { background: #1e293b; border: 1px solid #334155; border-radius: 0.75rem; padding: 1.5rem; }
+</style>
+</head>
+<body class="min-h-screen p-6">
+<div class="max-w-7xl mx-auto space-y-6">
+
+  <!-- Header -->
+  <div class="text-center mb-8">
+    <h1 class="text-3xl font-bold mb-2">PDF Parser Benchmark</h1>
+    <p class="text-gray-400">LiteParse vs PyMuPDF vs pdfplumber vs pypdf — 9 test documents, 3 runs each</p>
+  </div>
+
+  <!-- Charts row -->
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <div class="card">
+      <h2 class="text-xl font-semibold mb-4">Parse Speed (ms, lower is better)</h2>
+      <canvas id="speedChart" height="250"></canvas>
+    </div>
+    <div class="card">
+      <h2 class="text-xl font-semibold mb-4">Content Accuracy (%, higher is better)</h2>
+      <canvas id="contentChart" height="250"></canvas>
+    </div>
+  </div>
+
+  <!-- Feature comparison -->
+  <div class="card">
+    <h2 class="text-xl font-semibold mb-4">Feature Comparison</h2>
+    <table class="w-full text-sm">
+      <thead><tr class="text-gray-400 border-b border-gray-600">
+        <th class="py-3 px-4 text-left">Parser</th>
+        <th class="py-3 px-4 text-right">Avg Speed</th>
+        <th class="py-3 px-4 text-right">Avg Content Match</th>
+        <th class="py-3 px-4 text-center">Bounding Boxes</th>
+        <th class="py-3 px-4 text-center">Table Extraction</th>
+        <th class="py-3 px-4 text-center">Pure Python</th>
+        <th class="py-3 px-4 text-center">Multi-Format</th>
+      </tr></thead>
+      <tbody><tr class="border-b border-gray-700 hover:bg-gray-800/50">
+            <td class="py-3 px-4 font-semibold" style="color:#3b82f6">PyMuPDF</td>
+            <td class="py-3 px-4 text-right">45 ms</td>
+            <td class="py-3 px-4 text-right">94.8%</td>
+            <td class="py-3 px-4 text-center"><span class="text-green-400 font-bold">&#10003;</span></td>
+            <td class="py-3 px-4 text-center"><span class="text-red-400">&#10007;</span></td>
+            <td class="py-3 px-4 text-center"><span class="text-green-400 font-bold">&#10003;</span></td>
+            <td class="py-3 px-4 text-center"><span class="text-red-400">&#10007;</span></td>
+        </tr><tr class="border-b border-gray-700 hover:bg-gray-800/50">
+            <td class="py-3 px-4 font-semibold" style="color:#10b981">pdfplumber</td>
+            <td class="py-3 px-4 text-right">215 ms</td>
+            <td class="py-3 px-4 text-right">96.7%</td>
+            <td class="py-3 px-4 text-center"><span class="text-green-400 font-bold">&#10003;</span></td>
+            <td class="py-3 px-4 text-center"><span class="text-green-400 font-bold">&#10003;</span></td>
+            <td class="py-3 px-4 text-center"><span class="text-green-400 font-bold">&#10003;</span></td>
+            <td class="py-3 px-4 text-center"><span class="text-red-400">&#10007;</span></td>
+        </tr><tr class="border-b border-gray-700 hover:bg-gray-800/50">
+            <td class="py-3 px-4 font-semibold" style="color:#f59e0b">pypdf</td>
+            <td class="py-3 px-4 text-right">22 ms</td>
+            <td class="py-3 px-4 text-right">97.2%</td>
+            <td class="py-3 px-4 text-center"><span class="text-red-400">&#10007;</span></td>
+            <td class="py-3 px-4 text-center"><span class="text-red-400">&#10007;</span></td>
+            <td class="py-3 px-4 text-center"><span class="text-green-400 font-bold">&#10003;</span></td>
+            <td class="py-3 px-4 text-center"><span class="text-red-400">&#10007;</span></td>
+        </tr><tr class="border-b border-gray-700 hover:bg-gray-800/50">
+            <td class="py-3 px-4 font-semibold" style="color:#ef4444">LiteParse</td>
+            <td class="py-3 px-4 text-right">2378 ms</td>
+            <td class="py-3 px-4 text-right">94.8%</td>
+            <td class="py-3 px-4 text-center"><span class="text-red-400">&#10007;</span></td>
+            <td class="py-3 px-4 text-center"><span class="text-red-400">&#10007;</span></td>
+            <td class="py-3 px-4 text-center"><span class="text-red-400">&#10007;</span></td>
+            <td class="py-3 px-4 text-center"><span class="text-green-400 font-bold">&#10003;</span></td>
+        </tr></tbody>
+    </table>
+  </div>
+
+  <!-- Per-file details -->
+  <h2 class="text-xl font-semibold mt-8">Per-Document Results</h2>
+  <div class="space-y-4">
+    
+        <div class="bg-gray-900 rounded-lg p-5 border border-gray-700">
+            <h3 class="text-lg font-semibold mb-1">IRS W-9 Form</h3>
+            <p class="text-gray-400 text-sm mb-3">Complex form with fields, checkboxes, instructions — 138 KB</p>
+            <table class="w-full text-sm">
+                <thead><tr class="text-gray-400 border-b border-gray-600">
+                    <th class="py-2 px-3 text-left">Parser</th>
+                    <th class="py-2 px-3 text-right">Speed</th>
+                    <th class="py-2 px-3 text-right">Words</th>
+                    <th class="py-2 px-3 text-right">Chars</th>
+                    <th class="py-2 px-3 text-right">Content Match</th>
+                    <th class="py-2 px-3 text-center">Bounding Boxes</th>
+                    <th class="py-2 px-3 text-center">Tables</th>
+                </tr></thead>
+                <tbody><tr class="border-b border-gray-700 hover:bg-gray-800/50">
+                    <td class="py-2 px-3 font-medium" style="color:#3b82f6">PyMuPDF</td>
+                    <td class="py-2 px-3 text-right">238 ms</td>
+                    <td class="py-2 px-3 text-right">6,280</td>
+                    <td class="py-2 px-3 text-right">38,188</td>
+                    <td class="py-2 px-3 text-right">13/13 (100.0%)</td>
+                    <td class="py-2 px-3 text-center"><span class="text-green-400">Yes</span> (1035)</td>
+                    <td class="py-2 px-3 text-center"><span class="text-gray-500">—</span></td>
+                </tr><tr class="border-b border-gray-700 hover:bg-gray-800/50">
+                    <td class="py-2 px-3 font-medium" style="color:#10b981">pdfplumber</td>
+                    <td class="py-2 px-3 text-right">1074 ms</td>
+                    <td class="py-2 px-3 text-right">6,279</td>
+                    <td class="py-2 px-3 text-right">37,689</td>
+                    <td class="py-2 px-3 text-right">13/13 (100.0%)</td>
+                    <td class="py-2 px-3 text-center"><span class="text-green-400">Yes</span> (6279)</td>
+                    <td class="py-2 px-3 text-center"><span class="text-green-400">5</span></td>
+                </tr><tr class="border-b border-gray-700 hover:bg-gray-800/50">
+                    <td class="py-2 px-3 font-medium" style="color:#f59e0b">pypdf</td>
+                    <td class="py-2 px-3 text-right">105 ms</td>
+                    <td class="py-2 px-3 text-right">6,279</td>
+                    <td class="py-2 px-3 text-right">38,179</td>
+                    <td class="py-2 px-3 text-right">13/13 (100.0%)</td>
+                    <td class="py-2 px-3 text-center"><span class="text-gray-500">No</span></td>
+                    <td class="py-2 px-3 text-center"><span class="text-gray-500">—</span></td>
+                </tr><tr class="border-b border-gray-700 hover:bg-gray-800/50">
+                    <td class="py-2 px-3 font-medium" style="color:#ef4444">LiteParse</td>
+                    <td class="py-2 px-3 text-right">2830 ms</td>
+                    <td class="py-2 px-3 text-right">6,279</td>
+                    <td class="py-2 px-3 text-right">48,926</td>
+                    <td class="py-2 px-3 text-right">13/13 (100.0%)</td>
+                    <td class="py-2 px-3 text-center"><span class="text-gray-500">No</span></td>
+                    <td class="py-2 px-3 text-center"><span class="text-gray-500">—</span></td>
+                </tr></tbody>
+            </table>
+        </div>
+        <div class="bg-gray-900 rounded-lg p-5 border border-gray-700">
+            <h3 class="text-lg font-semibold mb-1">Financial Report</h3>
+            <p class="text-gray-400 text-sm mb-3">Narrative text + tabular quarterly data — 3 KB</p>
+            <table class="w-full text-sm">
+                <thead><tr class="text-gray-400 border-b border-gray-600">
+                    <th class="py-2 px-3 text-left">Parser</th>
+                    <th class="py-2 px-3 text-right">Speed</th>
+                    <th class="py-2 px-3 text-right">Words</th>
+                    <th class="py-2 px-3 text-right">Chars</th>
+                    <th class="py-2 px-3 text-right">Content Match</th>
+                    <th class="py-2 px-3 text-center">Bounding Boxes</th>
+                    <th class="py-2 px-3 text-center">Tables</th>
+                </tr></thead>
+                <tbody><tr class="border-b border-gray-700 hover:bg-gray-800/50">
+                    <td class="py-2 px-3 font-medium" style="color:#3b82f6">PyMuPDF</td>
+                    <td class="py-2 px-3 text-right">10 ms</td>
+                    <td class="py-2 px-3 text-right">214</td>
+                    <td class="py-2 px-3 text-right">1,943</td>
+                    <td class="py-2 px-3 text-right">10/12 (83.3%)</td>
+                    <td class="py-2 px-3 text-center"><span class="text-green-400">Yes</span> (34)</td>
+                    <td class="py-2 px-3 text-center"><span class="text-gray-500">—</span></td>
+                </tr><tr class="border-b border-gray-700 hover:bg-gray-800/50">
+                    <td class="py-2 px-3 font-medium" style="color:#10b981">pdfplumber</td>
+                    <td class="py-2 px-3 text-right">57 ms</td>
+                    <td class="py-2 px-3 text-right">279</td>
+                    <td class="py-2 px-3 text-right">2,074</td>
+                    <td class="py-2 px-3 text-right">12/12 (100.0%)</td>
+                    <td class="py-2 px-3 text-center"><span class="text-green-400">Yes</span> (279)</td>
+                    <td class="py-2 px-3 text-center"><span class="text-gray-500">—</span></td>
+                </tr><tr class="border-b border-gray-700 hover:bg-gray-800/50">
+                    <td class="py-2 px-3 font-medium" style="color:#f59e0b">pypdf</td>
+                    <td class="py-2 px-3 text-right">4 ms</td>
+                    <td class="py-2 px-3 text-right">279</td>
+                    <td class="py-2 px-3 text-right">2,408</td>
+                    <td class="py-2 px-3 text-right">12/12 (100.0%)</td>
+                    <td class="py-2 px-3 text-center"><span class="text-gray-500">No</span></td>
+                    <td class="py-2 px-3 text-center"><span class="text-gray-500">—</span></td>
+                </tr><tr class="border-b border-gray-700 hover:bg-gray-800/50">
+                    <td class="py-2 px-3 font-medium" style="color:#ef4444">LiteParse</td>
+                    <td class="py-2 px-3 text-right">2212 ms</td>
+                    <td class="py-2 px-3 text-right">214</td>
+                    <td class="py-2 px-3 text-right">1,840</td>
+                    <td class="py-2 px-3 text-right">10/12 (83.3%)</td>
+                    <td class="py-2 px-3 text-center"><span class="text-gray-500">No</span></td>
+                    <td class="py-2 px-3 text-center"><span class="text-gray-500">—</span></td>
+                </tr></tbody>
+            </table>
+        </div>
+        <div class="bg-gray-900 rounded-lg p-5 border border-gray-700">
+            <h3 class="text-lg font-semibold mb-1">Multi-Column Paper</h3>
+            <p class="text-gray-400 text-sm mb-3">Two-column academic paper layout — 9 KB</p>
+            <table class="w-full text-sm">
+                <thead><tr class="text-gray-400 border-b border-gray-600">
+                    <th class="py-2 px-3 text-left">Parser</th>
+                    <th class="py-2 px-3 text-right">Speed</th>
+                    <th class="py-2 px-3 text-right">Words</th>
+                    <th class="py-2 px-3 text-right">Chars</th>
+                    <th class="py-2 px-3 text-right">Content Match</th>
+                    <th class="py-2 px-3 text-center">Bounding Boxes</th>
+                    <th class="py-2 px-3 text-center">Tables</th>
+                </tr></thead>
+                <tbody><tr class="border-b border-gray-700 hover:bg-gray-800/50">
+                    <td class="py-2 px-3 font-medium" style="color:#3b82f6">PyMuPDF</td>
+                    <td class="py-2 px-3 text-right">11 ms</td>
+                    <td class="py-2 px-3 text-right">237</td>
+                    <td class="py-2 px-3 text-right">1,755</td>
+                    <td class="py-2 px-3 text-right">10/12 (83.3%)</td>
+                    <td class="py-2 px-3 text-center"><span class="text-green-400">Yes</span> (44)</td>
+                    <td class="py-2 px-3 text-center"><span class="text-gray-500">—</span></td>
+                </tr><tr class="border-b border-gray-700 hover:bg-gray-800/50">
+                    <td class="py-2 px-3 font-medium" style="color:#10b981">pdfplumber</td>
+                    <td class="py-2 px-3 text-right">53 ms</td>
+                    <td class="py-2 px-3 text-right">237</td>
+                    <td class="py-2 px-3 text-right">1,748</td>
+                    <td class="py-2 px-3 text-right">10/12 (83.3%)</td>
+                    <td class="py-2 px-3 text-center"><span class="text-green-400">Yes</span> (237)</td>
+                    <td class="py-2 px-3 text-center"><span class="text-gray-500">—</span></td>
+                </tr><tr class="border-b border-gray-700 hover:bg-gray-800/50">
+                    <td class="py-2 px-3 font-medium" style="color:#f59e0b">pypdf</td>
+                    <td class="py-2 px-3 text-right">6 ms</td>
+                    <td class="py-2 px-3 text-right">237</td>
+                    <td class="py-2 px-3 text-right">1,754</td>
+                    <td class="py-2 px-3 text-right">10/12 (83.3%)</td>
+                    <td class="py-2 px-3 text-center"><span class="text-gray-500">No</span></td>
+                    <td class="py-2 px-3 text-center"><span class="text-gray-500">—</span></td>
+                </tr><tr class="border-b border-gray-700 hover:bg-gray-800/50">
+                    <td class="py-2 px-3 font-medium" style="color:#ef4444">LiteParse</td>
+                    <td class="py-2 px-3 text-right">2030 ms</td>
+                    <td class="py-2 px-3 text-right">237</td>
+                    <td class="py-2 px-3 text-right">1,792</td>
+                    <td class="py-2 px-3 text-right">10/12 (83.3%)</td>
+                    <td class="py-2 px-3 text-center"><span class="text-gray-500">No</span></td>
+                    <td class="py-2 px-3 text-center"><span class="text-gray-500">—</span></td>
+                </tr></tbody>
+            </table>
+        </div>
+        <div class="bg-gray-900 rounded-lg p-5 border border-gray-700">
+            <h3 class="text-lg font-semibold mb-1">Employee Database</h3>
+            <p class="text-gray-400 text-sm mb-3">Dense tabular data with pivot table — 10 KB</p>
+            <table class="w-full text-sm">
+                <thead><tr class="text-gray-400 border-b border-gray-600">
+                    <th class="py-2 px-3 text-left">Parser</th>
+                    <th class="py-2 px-3 text-right">Speed</th>
+                    <th class="py-2 px-3 text-right">Words</th>
+                    <th class="py-2 px-3 text-right">Chars</th>
+                    <th class="py-2 px-3 text-right">Content Match</th>
+                    <th class="py-2 px-3 text-center">Bounding Boxes</th>
+                    <th class="py-2 px-3 text-center">Tables</th>
+                </tr></thead>
+                <tbody><tr class="border-b border-gray-700 hover:bg-gray-800/50">
+                    <td class="py-2 px-3 font-medium" style="color:#3b82f6">PyMuPDF</td>
+                    <td class="py-2 px-3 text-right">16 ms</td>
+                    <td class="py-2 px-3 text-right">318</td>
+                    <td class="py-2 px-3 text-right">3,749</td>
+                    <td class="py-2 px-3 text-right">12/12 (100.0%)</td>
+                    <td class="py-2 px-3 text-center"><span class="text-green-400">Yes</span> (41)</td>
+                    <td class="py-2 px-3 text-center"><span class="text-gray-500">—</span></td>
+                </tr><tr class="border-b border-gray-700 hover:bg-gray-800/50">
+                    <td class="py-2 px-3 font-medium" style="color:#10b981">pdfplumber</td>
+                    <td class="py-2 px-3 text-right">141 ms</td>
+                    <td class="py-2 px-3 text-right">318</td>
+                    <td class="py-2 px-3 text-right">2,661</td>
+                    <td class="py-2 px-3 text-right">12/12 (100.0%)</td>
+                    <td class="py-2 px-3 text-center"><span class="text-green-400">Yes</span> (318)</td>
+                    <td class="py-2 px-3 text-center"><span class="text-gray-500">—</span></td>
+                </tr><tr class="border-b border-gray-700 hover:bg-gray-800/50">
+                    <td class="py-2 px-3 font-medium" style="color:#f59e0b">pypdf</td>
+                    <td class="py-2 px-3 text-right">8 ms</td>
+                    <td class="py-2 px-3 text-right">318</td>
+                    <td class="py-2 px-3 text-right">3,747</td>
+                    <td class="py-2 px-3 text-right">12/12 (100.0%)</td>
+                    <td class="py-2 px-3 text-center"><span class="text-gray-500">No</span></td>
+                    <td class="py-2 px-3 text-center"><span class="text-gray-500">—</span></td>
+                </tr><tr class="border-b border-gray-700 hover:bg-gray-800/50">
+                    <td class="py-2 px-3 font-medium" style="color:#ef4444">LiteParse</td>
+                    <td class="py-2 px-3 text-right">2453 ms</td>
+                    <td class="py-2 px-3 text-right">314</td>
+                    <td class="py-2 px-3 text-right">3,334</td>
+                    <td class="py-2 px-3 text-right">12/12 (100.0%)</td>
+                    <td class="py-2 px-3 text-center"><span class="text-gray-500">No</span></td>
+                    <td class="py-2 px-3 text-center"><span class="text-gray-500">—</span></td>
+                </tr></tbody>
+            </table>
+        </div>
+        <div class="bg-gray-900 rounded-lg p-5 border border-gray-700">
+            <h3 class="text-lg font-semibold mb-1">Board Minutes (4pg)</h3>
+            <p class="text-gray-400 text-sm mb-3">Multi-page structured document with headers/footers — 25 KB</p>
+            <table class="w-full text-sm">
+                <thead><tr class="text-gray-400 border-b border-gray-600">
+                    <th class="py-2 px-3 text-left">Parser</th>
+                    <th class="py-2 px-3 text-right">Speed</th>
+                    <th class="py-2 px-3 text-right">Words</th>
+                    <th class="py-2 px-3 text-right">Chars</th>
+                    <th class="py-2 px-3 text-right">Content Match</th>
+                    <th class="py-2 px-3 text-center">Bounding Boxes</th>
+                    <th class="py-2 px-3 text-center">Tables</th>
+                </tr></thead>
+                <tbody><tr class="border-b border-gray-700 hover:bg-gray-800/50">
+                    <td class="py-2 px-3 font-medium" style="color:#3b82f6">PyMuPDF</td>
+                    <td class="py-2 px-3 text-right">38 ms</td>
+                    <td class="py-2 px-3 text-right">834</td>
+                    <td class="py-2 px-3 text-right">5,550</td>
+                    <td class="py-2 px-3 text-right">14/14 (100.0%)</td>
+                    <td class="py-2 px-3 text-center"><span class="text-green-400">Yes</span> (112)</td>
+                    <td class="py-2 px-3 text-center"><span class="text-gray-500">—</span></td>
+                </tr><tr class="border-b border-gray-700 hover:bg-gray-800/50">
+                    <td class="py-2 px-3 font-medium" style="color:#10b981">pdfplumber</td>
+                    <td class="py-2 px-3 text-right">164 ms</td>
+                    <td class="py-2 px-3 text-right">834</td>
+                    <td class="py-2 px-3 text-right">5,144</td>
+                    <td class="py-2 px-3 text-right">14/14 (100.0%)</td>
+                    <td class="py-2 px-3 text-center"><span class="text-green-400">Yes</span> (834)</td>
+                    <td class="py-2 px-3 text-center"><span class="text-gray-500">—</span></td>
+                </tr><tr class="border-b border-gray-700 hover:bg-gray-800/50">
+                    <td class="py-2 px-3 font-medium" style="color:#f59e0b">pypdf</td>
+                    <td class="py-2 px-3 text-right">18 ms</td>
+                    <td class="py-2 px-3 text-right">834</td>
+                    <td class="py-2 px-3 text-right">5,546</td>
+                    <td class="py-2 px-3 text-right">14/14 (100.0%)</td>
+                    <td class="py-2 px-3 text-center"><span class="text-gray-500">No</span></td>
+                    <td class="py-2 px-3 text-center"><span class="text-gray-500">—</span></td>
+                </tr><tr class="border-b border-gray-700 hover:bg-gray-800/50">
+                    <td class="py-2 px-3 font-medium" style="color:#ef4444">LiteParse</td>
+                    <td class="py-2 px-3 text-right">2329 ms</td>
+                    <td class="py-2 px-3 text-right">834</td>
+                    <td class="py-2 px-3 text-right">5,357</td>
+                    <td class="py-2 px-3 text-right">14/14 (100.0%)</td>
+                    <td class="py-2 px-3 text-center"><span class="text-gray-500">No</span></td>
+                    <td class="py-2 px-3 text-center"><span class="text-gray-500">—</span></td>
+                </tr></tbody>
+            </table>
+        </div>
+        <div class="bg-gray-900 rounded-lg p-5 border border-gray-700">
+            <h3 class="text-lg font-semibold mb-1">Watermarked Financial (HARD)</h3>
+            <p class="text-gray-400 text-sm mb-3">Watermark text overlapping dense financial projections + sensitivity table — 9 KB</p>
+            <table class="w-full text-sm">
+                <thead><tr class="text-gray-400 border-b border-gray-600">
+                    <th class="py-2 px-3 text-left">Parser</th>
+                    <th class="py-2 px-3 text-right">Speed</th>
+                    <th class="py-2 px-3 text-right">Words</th>
+                    <th class="py-2 px-3 text-right">Chars</th>
+                    <th class="py-2 px-3 text-right">Content Match</th>
+                    <th class="py-2 px-3 text-center">Bounding Boxes</th>
+                    <th class="py-2 px-3 text-center">Tables</th>
+                </tr></thead>
+                <tbody><tr class="border-b border-gray-700 hover:bg-gray-800/50">
+                    <td class="py-2 px-3 font-medium" style="color:#3b82f6">PyMuPDF</td>
+                    <td class="py-2 px-3 text-right">16 ms</td>
+                    <td class="py-2 px-3 text-right">288</td>
+                    <td class="py-2 px-3 text-right">2,613</td>
+                    <td class="py-2 px-3 text-right">20/21 (95.2%)</td>
+                    <td class="py-2 px-3 text-center"><span class="text-green-400">Yes</span> (37)</td>
+                    <td class="py-2 px-3 text-center"><span class="text-gray-500">—</span></td>
+                </tr><tr class="border-b border-gray-700 hover:bg-gray-800/50">
+                    <td class="py-2 px-3 font-medium" style="color:#10b981">pdfplumber</td>
+                    <td class="py-2 px-3 text-right">72 ms</td>
+                    <td class="py-2 px-3 text-right">295</td>
+                    <td class="py-2 px-3 text-right">1,904</td>
+                    <td class="py-2 px-3 text-right">20/21 (95.2%)</td>
+                    <td class="py-2 px-3 text-center"><span class="text-green-400">Yes</span> (295)</td>
+                    <td class="py-2 px-3 text-center"><span class="text-gray-500">—</span></td>
+                </tr><tr class="border-b border-gray-700 hover:bg-gray-800/50">
+                    <td class="py-2 px-3 font-medium" style="color:#f59e0b">pypdf</td>
+                    <td class="py-2 px-3 text-right">7 ms</td>
+                    <td class="py-2 px-3 text-right">288</td>
+                    <td class="py-2 px-3 text-right">2,633</td>
+                    <td class="py-2 px-3 text-right">21/21 (100.0%)</td>
+                    <td class="py-2 px-3 text-center"><span class="text-gray-500">No</span></td>
+                    <td class="py-2 px-3 text-center"><span class="text-gray-500">—</span></td>
+                </tr><tr class="border-b border-gray-700 hover:bg-gray-800/50">
+                    <td class="py-2 px-3 font-medium" style="color:#ef4444">LiteParse</td>
+                    <td class="py-2 px-3 text-right">2451 ms</td>
+                    <td class="py-2 px-3 text-right">287</td>
+                    <td class="py-2 px-3 text-right">2,806</td>
+                    <td class="py-2 px-3 text-right">20/21 (95.2%)</td>
+                    <td class="py-2 px-3 text-center"><span class="text-gray-500">No</span></td>
+                    <td class="py-2 px-3 text-center"><span class="text-gray-500">—</span></td>
+                </tr></tbody>
+            </table>
+        </div>
+        <div class="bg-gray-900 rounded-lg p-5 border border-gray-700">
+            <h3 class="text-lg font-semibold mb-1">Clinical Trial Table (HARD)</h3>
+            <p class="text-gray-400 text-sm mb-3">Dense bordered table with section headers, subgroups, statistical data — 45 KB</p>
+            <table class="w-full text-sm">
+                <thead><tr class="text-gray-400 border-b border-gray-600">
+                    <th class="py-2 px-3 text-left">Parser</th>
+                    <th class="py-2 px-3 text-right">Speed</th>
+                    <th class="py-2 px-3 text-right">Words</th>
+                    <th class="py-2 px-3 text-right">Chars</th>
+                    <th class="py-2 px-3 text-right">Content Match</th>
+                    <th class="py-2 px-3 text-center">Bounding Boxes</th>
+                    <th class="py-2 px-3 text-center">Tables</th>
+                </tr></thead>
+                <tbody><tr class="border-b border-gray-700 hover:bg-gray-800/50">
+                    <td class="py-2 px-3 font-medium" style="color:#3b82f6">PyMuPDF</td>
+                    <td class="py-2 px-3 text-right">53 ms</td>
+                    <td class="py-2 px-3 text-right">236</td>
+                    <td class="py-2 px-3 text-right">1,594</td>
+                    <td class="py-2 px-3 text-right">29/29 (100.0%)</td>
+                    <td class="py-2 px-3 text-center"><span class="text-green-400">Yes</span> (142)</td>
+                    <td class="py-2 px-3 text-center"><span class="text-gray-500">—</span></td>
+                </tr><tr class="border-b border-gray-700 hover:bg-gray-800/50">
+                    <td class="py-2 px-3 font-medium" style="color:#10b981">pdfplumber</td>
+                    <td class="py-2 px-3 text-right">212 ms</td>
+                    <td class="py-2 px-3 text-right">236</td>
+                    <td class="py-2 px-3 text-right">1,553</td>
+                    <td class="py-2 px-3 text-right">29/29 (100.0%)</td>
+                    <td class="py-2 px-3 text-center"><span class="text-green-400">Yes</span> (236)</td>
+                    <td class="py-2 px-3 text-center"><span class="text-green-400">1</span></td>
+                </tr><tr class="border-b border-gray-700 hover:bg-gray-800/50">
+                    <td class="py-2 px-3 font-medium" style="color:#f59e0b">pypdf</td>
+                    <td class="py-2 px-3 text-right">23 ms</td>
+                    <td class="py-2 px-3 text-right">236</td>
+                    <td class="py-2 px-3 text-right">1,593</td>
+                    <td class="py-2 px-3 text-right">29/29 (100.0%)</td>
+                    <td class="py-2 px-3 text-center"><span class="text-gray-500">No</span></td>
+                    <td class="py-2 px-3 text-center"><span class="text-gray-500">—</span></td>
+                </tr><tr class="border-b border-gray-700 hover:bg-gray-800/50">
+                    <td class="py-2 px-3 font-medium" style="color:#ef4444">LiteParse</td>
+                    <td class="py-2 px-3 text-right">2518 ms</td>
+                    <td class="py-2 px-3 text-right">236</td>
+                    <td class="py-2 px-3 text-right">2,291</td>
+                    <td class="py-2 px-3 text-right">29/29 (100.0%)</td>
+                    <td class="py-2 px-3 text-center"><span class="text-gray-500">No</span></td>
+                    <td class="py-2 px-3 text-center"><span class="text-gray-500">—</span></td>
+                </tr></tbody>
+            </table>
+        </div>
+        <div class="bg-gray-900 rounded-lg p-5 border border-gray-700">
+            <h3 class="text-lg font-semibold mb-1">Tax Compliance (HARD)</h3>
+            <p class="text-gray-400 text-sm mb-3">Dense structured data with formulas, special references, currency formats — 9 KB</p>
+            <table class="w-full text-sm">
+                <thead><tr class="text-gray-400 border-b border-gray-600">
+                    <th class="py-2 px-3 text-left">Parser</th>
+                    <th class="py-2 px-3 text-right">Speed</th>
+                    <th class="py-2 px-3 text-right">Words</th>
+                    <th class="py-2 px-3 text-right">Chars</th>
+                    <th class="py-2 px-3 text-right">Content Match</th>
+                    <th class="py-2 px-3 text-center">Bounding Boxes</th>
+                    <th class="py-2 px-3 text-center">Tables</th>
+                </tr></thead>
+                <tbody><tr class="border-b border-gray-700 hover:bg-gray-800/50">
+                    <td class="py-2 px-3 font-medium" style="color:#3b82f6">PyMuPDF</td>
+                    <td class="py-2 px-3 text-right">11 ms</td>
+                    <td class="py-2 px-3 text-right">272</td>
+                    <td class="py-2 px-3 text-right">2,153</td>
+                    <td class="py-2 px-3 text-right">27/27 (100.0%)</td>
+                    <td class="py-2 px-3 text-center"><span class="text-green-400">Yes</span> (37)</td>
+                    <td class="py-2 px-3 text-center"><span class="text-gray-500">—</span></td>
+                </tr><tr class="border-b border-gray-700 hover:bg-gray-800/50">
+                    <td class="py-2 px-3 font-medium" style="color:#10b981">pdfplumber</td>
+                    <td class="py-2 px-3 text-right">58 ms</td>
+                    <td class="py-2 px-3 text-right">272</td>
+                    <td class="py-2 px-3 text-right">1,846</td>
+                    <td class="py-2 px-3 text-right">27/27 (100.0%)</td>
+                    <td class="py-2 px-3 text-center"><span class="text-green-400">Yes</span> (272)</td>
+                    <td class="py-2 px-3 text-center"><span class="text-gray-500">—</span></td>
+                </tr><tr class="border-b border-gray-700 hover:bg-gray-800/50">
+                    <td class="py-2 px-3 font-medium" style="color:#f59e0b">pypdf</td>
+                    <td class="py-2 px-3 text-right">6 ms</td>
+                    <td class="py-2 px-3 text-right">272</td>
+                    <td class="py-2 px-3 text-right">2,152</td>
+                    <td class="py-2 px-3 text-right">27/27 (100.0%)</td>
+                    <td class="py-2 px-3 text-center"><span class="text-gray-500">No</span></td>
+                    <td class="py-2 px-3 text-center"><span class="text-gray-500">—</span></td>
+                </tr><tr class="border-b border-gray-700 hover:bg-gray-800/50">
+                    <td class="py-2 px-3 font-medium" style="color:#ef4444">LiteParse</td>
+                    <td class="py-2 px-3 text-right">2053 ms</td>
+                    <td class="py-2 px-3 text-right">272</td>
+                    <td class="py-2 px-3 text-right">2,163</td>
+                    <td class="py-2 px-3 text-right">27/27 (100.0%)</td>
+                    <td class="py-2 px-3 text-center"><span class="text-gray-500">No</span></td>
+                    <td class="py-2 px-3 text-center"><span class="text-gray-500">—</span></td>
+                </tr></tbody>
+            </table>
+        </div>
+        <div class="bg-gray-900 rounded-lg p-5 border border-gray-700">
+            <h3 class="text-lg font-semibold mb-1">Insurance Policy 2-Col (HARD)</h3>
+            <p class="text-gray-400 text-sm mb-3">Two-column dense legal text with defined terms, tiny footer — 18 KB</p>
+            <table class="w-full text-sm">
+                <thead><tr class="text-gray-400 border-b border-gray-600">
+                    <th class="py-2 px-3 text-left">Parser</th>
+                    <th class="py-2 px-3 text-right">Speed</th>
+                    <th class="py-2 px-3 text-right">Words</th>
+                    <th class="py-2 px-3 text-right">Chars</th>
+                    <th class="py-2 px-3 text-right">Content Match</th>
+                    <th class="py-2 px-3 text-center">Bounding Boxes</th>
+                    <th class="py-2 px-3 text-center">Tables</th>
+                </tr></thead>
+                <tbody><tr class="border-b border-gray-700 hover:bg-gray-800/50">
+                    <td class="py-2 px-3 font-medium" style="color:#3b82f6">PyMuPDF</td>
+                    <td class="py-2 px-3 text-right">16 ms</td>
+                    <td class="py-2 px-3 text-right">459</td>
+                    <td class="py-2 px-3 text-right">3,055</td>
+                    <td class="py-2 px-3 text-right">22/24 (91.7%)</td>
+                    <td class="py-2 px-3 text-center"><span class="text-green-400">Yes</span> (88)</td>
+                    <td class="py-2 px-3 text-center"><span class="text-gray-500">—</span></td>
+                </tr><tr class="border-b border-gray-700 hover:bg-gray-800/50">
+                    <td class="py-2 px-3 font-medium" style="color:#10b981">pdfplumber</td>
+                    <td class="py-2 px-3 text-right">105 ms</td>
+                    <td class="py-2 px-3 text-right">459</td>
+                    <td class="py-2 px-3 text-right">2,848</td>
+                    <td class="py-2 px-3 text-right">22/24 (91.7%)</td>
+                    <td class="py-2 px-3 text-center"><span class="text-green-400">Yes</span> (459)</td>
+                    <td class="py-2 px-3 text-center"><span class="text-gray-500">—</span></td>
+                </tr><tr class="border-b border-gray-700 hover:bg-gray-800/50">
+                    <td class="py-2 px-3 font-medium" style="color:#f59e0b">pypdf</td>
+                    <td class="py-2 px-3 text-right">17 ms</td>
+                    <td class="py-2 px-3 text-right">459</td>
+                    <td class="py-2 px-3 text-right">3,054</td>
+                    <td class="py-2 px-3 text-right">22/24 (91.7%)</td>
+                    <td class="py-2 px-3 text-center"><span class="text-gray-500">No</span></td>
+                    <td class="py-2 px-3 text-center"><span class="text-gray-500">—</span></td>
+                </tr><tr class="border-b border-gray-700 hover:bg-gray-800/50">
+                    <td class="py-2 px-3 font-medium" style="color:#ef4444">LiteParse</td>
+                    <td class="py-2 px-3 text-right">2522 ms</td>
+                    <td class="py-2 px-3 text-right">459</td>
+                    <td class="py-2 px-3 text-right">3,108</td>
+                    <td class="py-2 px-3 text-right">22/24 (91.7%)</td>
+                    <td class="py-2 px-3 text-center"><span class="text-gray-500">No</span></td>
+                    <td class="py-2 px-3 text-center"><span class="text-gray-500">—</span></td>
+                </tr></tbody>
+            </table>
+        </div>
+  </div>
+
+  <!-- Text previews -->
+  <h2 class="text-xl font-semibold mt-8">Text Output Comparison</h2>
+  <div class="space-y-4">
+    
+        <div class="bg-gray-900 rounded-lg p-5 border border-gray-700">
+            <h3 class="text-lg font-semibold mb-3">IRS W-9 Form — Text Output Preview</h3>
+            <div class="flex flex-wrap gap-3">
+                <div class="flex-1 min-w-[280px]">
+                    <h4 class="text-sm font-semibold mb-1" style="color:#3b82f6">PyMuPDF</h4>
+                    <pre class="bg-gray-800 rounded p-2 text-xs overflow-auto max-h-48 whitespace-pre-wrap">Form  W-9
+(Rev. March 2024)
+Request for Taxpayer 
+Identification Number and Certification
+Department of the Treasury  
+Internal Revenue Service 
+Go to www.irs.gov/FormW9 for instructions and the latest information.
+Give form to the  
+requester. Do not 
+send to the IRS.
+Before you begin. For guidance related to the purpose of Form W-9, see Purpose of Form, below.
+Print or type. 
+See Specific Instru</pre>
+                </div>
+                <div class="flex-1 min-w-[280px]">
+                    <h4 class="text-sm font-semibold mb-1" style="color:#10b981">pdfplumber</h4>
+                    <pre class="bg-gray-800 rounded p-2 text-xs overflow-auto max-h-48 whitespace-pre-wrap">W-9
+Request for Taxpayer
+Form Give form to the
+(Rev. March 2024) Identification Number and Certification requester. Do not
+Department of the Treasury send to the IRS.
+Go to www.irs.gov/FormW9 for instructions and the latest information.
+Internal Revenue Service
+Before you begin. For guidance related to the purpose of Form W-9, see Purpose of Form, below.
+.epyt
+ro
+tnirP
+.3
+egap
+no
+snoitcurtsnI
+cifi</pre>
+                </div>
+                <div class="flex-1 min-w-[280px]">
+                    <h4 class="text-sm font-semibold mb-1" style="color:#f59e0b">pypdf</h4>
+                    <pre class="bg-gray-800 rounded p-2 text-xs overflow-auto max-h-48 whitespace-pre-wrap">Form  W-9
+(Rev. March 2024)
+Request for Taxpayer 
+Identification Number and Certification
+Department of the Treasury  
+Internal Revenue Service Go to www.irs.gov/FormW9 for instructions and the latest information.
+Give form to the  
+requester. Do not 
+send to the IRS.
+Before you begin. For guidance related to the purpose of Form W-9, see Purpose of Form, below.
+Print or type. 
+See Specific Instruc</pre>
+                </div>
+                <div class="flex-1 min-w-[280px]">
+                    <h4 class="text-sm font-semibold mb-1" style="color:#ef4444">LiteParse</h4>
+                    <pre class="bg-gray-800 rounded p-2 text-xs overflow-auto max-h-48 whitespace-pre-wrap">See    Print or type.
+       Specific Instructions  on page 3.
+
+
+
+
+
+
+
+
+
+
+Form  W-9 Request for Taxpayer Give form to the
+(Rev. March 2024) Identification Number and Certification requester. Do not
+Department of the Treasury  Go to www.irs.gov/FormW9 for instructions and the latest information. send to the IRS.
+Internal Revenue Service
+Before you begin. For guidance related to the purpose of Form W</pre>
+                </div></div>
+        </div>
+        <div class="bg-gray-900 rounded-lg p-5 border border-gray-700">
+            <h3 class="text-lg font-semibold mb-3">Financial Report — Text Output Preview</h3>
+            <div class="flex flex-wrap gap-3">
+                <div class="flex-1 min-w-[280px]">
+                    <h4 class="text-sm font-semibold mb-1" style="color:#3b82f6">PyMuPDF</h4>
+                    <pre class="bg-gray-800 rounded p-2 text-xs overflow-auto max-h-48 whitespace-pre-wrap">Annual Financial Report - Fiscal Year 2025
+Executive Summary
+The fiscal year 2025 marked a period of significant growth and transformation for the organization. Total revenue increased 
+Key highlights include:
+- Revenue: $4.2B (+23.4% YoY)
+- Operating Income: $785M (+48.1% YoY)  
+- Net Income: $612M (+39.7% YoY)
+- Free Cash Flow: $892M (+31.2% YoY)
+- Employee Count: 14,500 (+18.0% YoY)
+Strategic i</pre>
+                </div>
+                <div class="flex-1 min-w-[280px]">
+                    <h4 class="text-sm font-semibold mb-1" style="color:#10b981">pdfplumber</h4>
+                    <pre class="bg-gray-800 rounded p-2 text-xs overflow-auto max-h-48 whitespace-pre-wrap">Annual Financial Report - Fiscal Year 2025
+Executive Summary
+The fiscal year 2025 marked a period of significant growth and transformation for the organization. Total revenue increased by 23.4% year-over-year, reaching $4.2 billion. Operating margins improved to 18.7%, up from 15.2% in the prior year. The company successfully launched 12 new products across three market segments.
+Key highlights in</pre>
+                </div>
+                <div class="flex-1 min-w-[280px]">
+                    <h4 class="text-sm font-semibold mb-1" style="color:#f59e0b">pypdf</h4>
+                    <pre class="bg-gray-800 rounded p-2 text-xs overflow-auto max-h-48 whitespace-pre-wrap">Annual Financial Report - Fiscal Year 2025
+Executive Summary
+The fiscal year 2025 marked a period of significant growth and transformation for the organization. Total revenue increased by 23.4% year-over-year, reaching $4.2 billion. Operating margins improved to 18.7%, up from 15.2% in the prior year. The company successfully launched 12 new products across three market segments.
+Key highlights in</pre>
+                </div>
+                <div class="flex-1 min-w-[280px]">
+                    <h4 class="text-sm font-semibold mb-1" style="color:#ef4444">LiteParse</h4>
+                    <pre class="bg-gray-800 rounded p-2 text-xs overflow-auto max-h-48 whitespace-pre-wrap">Annual Financial Report - Fiscal Year 2025
+
+Executive Summary
+
+The fiscal year 2025 marked a period of significant growth and transformation for the organization. Total revenue increased
+
+Key highlights include:
+- Revenue: $4.2B (+23.4% YoY)
+- Operating Income: $785M (+48.1% YoY)
+- Net Income: $612M (+39.7% YoY)
+- Free Cash Flow: $892M (+31.2% YoY)
+- Employee Count: 14,500 (+18.0% YoY)
+
+Strategic </pre>
+                </div></div>
+        </div>
+        <div class="bg-gray-900 rounded-lg p-5 border border-gray-700">
+            <h3 class="text-lg font-semibold mb-3">Multi-Column Paper — Text Output Preview</h3>
+            <div class="flex flex-wrap gap-3">
+                <div class="flex-1 min-w-[280px]">
+                    <h4 class="text-sm font-semibold mb-1" style="color:#3b82f6">PyMuPDF</h4>
+                    <pre class="bg-gray-800 rounded p-2 text-xs overflow-auto max-h-48 whitespace-pre-wrap">MULTI-COLUMN RESEARCH PAPER
+Journal of Computational Science, Vol. 42, Issue 3, 2025
+Abstract
+We present a novel approach to distributed
+computing that leverages quantum-resistant
+cryptographic primitives for secure multi-party
+computation. Our method achieves O(n log n)
+complexity while maintaining provable security
+guarantees under the standard model.
+1. Introduction
+The rapid advancement of qua</pre>
+                </div>
+                <div class="flex-1 min-w-[280px]">
+                    <h4 class="text-sm font-semibold mb-1" style="color:#10b981">pdfplumber</h4>
+                    <pre class="bg-gray-800 rounded p-2 text-xs overflow-auto max-h-48 whitespace-pre-wrap">MULTI-COLUMN RESEARCH PAPER
+Journal of Computational Science, Vol. 42, Issue 3, 2025
+Abstract 2. Related Work
+We present a novel approach to distributed Lattice-based cryptography has emerged as the
+computing that leverages quantum-resistant leading candidate for post-quantum security.
+cryptographic primitives for secure multi-party The NIST Post-Quantum Cryptography project
+computation. Our metho</pre>
+                </div>
+                <div class="flex-1 min-w-[280px]">
+                    <h4 class="text-sm font-semibold mb-1" style="color:#f59e0b">pypdf</h4>
+                    <pre class="bg-gray-800 rounded p-2 text-xs overflow-auto max-h-48 whitespace-pre-wrap">MULTI-COLUMN RESEARCH PAPER
+Journal of Computational Science, Vol. 42, Issue 3, 2025
+Abstract
+We present a novel approach to distributed
+computing that leverages quantum-resistant
+cryptographic primitives for secure multi-party
+computation. Our method achieves O(n log n)
+complexity while maintaining provable security
+guarantees under the standard model.
+1. Introduction
+The rapid advancement of qua</pre>
+                </div>
+                <div class="flex-1 min-w-[280px]">
+                    <h4 class="text-sm font-semibold mb-1" style="color:#ef4444">LiteParse</h4>
+                    <pre class="bg-gray-800 rounded p-2 text-xs overflow-auto max-h-48 whitespace-pre-wrap">    MULTI-COLUMN RESEARCH PAPER
+
+    Journal of Computational Science, Vol. 42, Issue 3, 2025
+
+
+Abstract 2. Related Work
+
+We present a novel approach to distributed Lattice-based cryptography has emerged as the
+computing that leverages quantum-resistant leading candidate for post-quantum security.
+cryptographic primitives for secure multi-party The NIST Post-Quantum Cryptography project
+computatio</pre>
+                </div></div>
+        </div>
+        <div class="bg-gray-900 rounded-lg p-5 border border-gray-700">
+            <h3 class="text-lg font-semibold mb-3">Employee Database — Text Output Preview</h3>
+            <div class="flex flex-wrap gap-3">
+                <div class="flex-1 min-w-[280px]">
+                    <h4 class="text-sm font-semibold mb-1" style="color:#3b82f6">PyMuPDF</h4>
+                    <pre class="bg-gray-800 rounded p-2 text-xs overflow-auto max-h-48 whitespace-pre-wrap">EMPLOYEE DATABASE EXPORT
+Generated: 2025-12-15  |  Department: Engineering  |  Classification: Internal
+ID     Name                 Title                     Dept             Salary Start Date   Status  
+·······························································································
+E001   Sarah Chen           Senior Engineer           Platform       $185,000 2019-03-15   Active  
+</pre>
+                </div>
+                <div class="flex-1 min-w-[280px]">
+                    <h4 class="text-sm font-semibold mb-1" style="color:#10b981">pdfplumber</h4>
+                    <pre class="bg-gray-800 rounded p-2 text-xs overflow-auto max-h-48 whitespace-pre-wrap">EMPLOYEE DATABASE EXPORT
+Generated: 2025-12-15 | Department: Engineering | Classification: Internal
+ID Name Title Dept Salary Start Date Status
+·······························································································
+E001 Sarah Chen Senior Engineer Platform $185,000 2019-03-15 Active
+E002 James Wilson Staff Engineer Platform $210,000 2017-08-22 Active
+E003 Maria Garcia Engin</pre>
+                </div>
+                <div class="flex-1 min-w-[280px]">
+                    <h4 class="text-sm font-semibold mb-1" style="color:#f59e0b">pypdf</h4>
+                    <pre class="bg-gray-800 rounded p-2 text-xs overflow-auto max-h-48 whitespace-pre-wrap">EMPLOYEE DATABASE EXPORT
+Generated: 2025-12-15  |  Department: Engineering  |  Classification: Internal
+ID     Name                 Title                     Dept             Salary Start Date   Status  
+·······························································································
+E001   Sarah Chen           Senior Engineer           Platform       $185,000 2019-03-15   Active  
+</pre>
+                </div>
+                <div class="flex-1 min-w-[280px]">
+                    <h4 class="text-sm font-semibold mb-1" style="color:#ef4444">LiteParse</h4>
+                    <pre class="bg-gray-800 rounded p-2 text-xs overflow-auto max-h-48 whitespace-pre-wrap">    EMPLOYEE DATABASE EXPORT
+
+    Generated: 2025-12-15 | Department: Engineering | Classification: Internal
+
+
+ID     Name                 Title                     Dept             Salary Start Date   Status
+
+E001   Sarah Chen           Senior Engineer           Platform       $185,000 2019-03-15   Active
+E002   James Wilson         Staff Engineer            Platform       $210,000 2017-08-22   A</pre>
+                </div></div>
+        </div>
+        <div class="bg-gray-900 rounded-lg p-5 border border-gray-700">
+            <h3 class="text-lg font-semibold mb-3">Board Minutes (4pg) — Text Output Preview</h3>
+            <div class="flex flex-wrap gap-3">
+                <div class="flex-1 min-w-[280px]">
+                    <h4 class="text-sm font-semibold mb-1" style="color:#3b82f6">PyMuPDF</h4>
+                    <pre class="bg-gray-800 rounded p-2 text-xs overflow-auto max-h-48 whitespace-pre-wrap">ACME CORP · CONFIDENTIAL
+Page 1 of 4
+© 2025 Acme Corporation. All rights reserved.
+Q4 2025 Board Meeting Minutes
+Date: December 15, 2025  |  Location: Conference Room A  |  Duration: 2h 15m
+Attendees: J. Smith (Chair), M. Johnson (CEO), R. Williams (CFO), S. Lee (CTO),
+A. Brown (General Counsel), P. Davis (VP Engineering), K. Wilson (VP Sales)
+1. CALL TO ORDER
+   Meeting called to order at 9:00 AM</pre>
+                </div>
+                <div class="flex-1 min-w-[280px]">
+                    <h4 class="text-sm font-semibold mb-1" style="color:#10b981">pdfplumber</h4>
+                    <pre class="bg-gray-800 rounded p-2 text-xs overflow-auto max-h-48 whitespace-pre-wrap">ACME CORP · CONFIDENTIAL Page 1 of 4
+Q4 2025 Board Meeting Minutes
+Date: December 15, 2025 | Location: Conference Room A | Duration: 2h 15m
+Attendees: J. Smith (Chair), M. Johnson (CEO), R. Williams (CFO), S. Lee (CTO),
+A. Brown (General Counsel), P. Davis (VP Engineering), K. Wilson (VP Sales)
+1. CALL TO ORDER
+Meeting called to order at 9:00 AM PST by J. Smith.
+Quorum confirmed with 7 of 9 board </pre>
+                </div>
+                <div class="flex-1 min-w-[280px]">
+                    <h4 class="text-sm font-semibold mb-1" style="color:#f59e0b">pypdf</h4>
+                    <pre class="bg-gray-800 rounded p-2 text-xs overflow-auto max-h-48 whitespace-pre-wrap">ACME CORP · CONFIDENTIAL Page 1 of 4
+© 2025 Acme Corporation. All rights reserved.
+Q4 2025 Board Meeting Minutes
+Date: December 15, 2025  |  Location: Conference Room A  |  Duration: 2h 15m
+Attendees: J. Smith (Chair), M. Johnson (CEO), R. Williams (CFO), S. Lee (CTO),
+A. Brown (General Counsel), P. Davis (VP Engineering), K. Wilson (VP Sales)
+1. CALL TO ORDER
+   Meeting called to order at 9:00 AM</pre>
+                </div>
+                <div class="flex-1 min-w-[280px]">
+                    <h4 class="text-sm font-semibold mb-1" style="color:#ef4444">LiteParse</h4>
+                    <pre class="bg-gray-800 rounded p-2 text-xs overflow-auto max-h-48 whitespace-pre-wrap">ACME CORP · CONFIDENTIAL        Page 1 of 4
+
+Q4 2025 Board Meeting Minutes
+
+Date: December 15, 2025 | Location: Conference Room A | Duration: 2h 15m
+
+Attendees: J. Smith (Chair), M. Johnson (CEO), R. Williams (CFO), S. Lee (CTO),
+A. Brown (General Counsel), P. Davis (VP Engineering), K. Wilson (VP Sales)
+
+1. CALL TO ORDER
+ Meeting called to order at 9:00 AM PST by J. Smith.
+ Quorum confirmed with </pre>
+                </div></div>
+        </div>
+        <div class="bg-gray-900 rounded-lg p-5 border border-gray-700">
+            <h3 class="text-lg font-semibold mb-3">Watermarked Financial (HARD) — Text Output Preview</h3>
+            <div class="flex flex-wrap gap-3">
+                <div class="flex-1 min-w-[280px]">
+                    <h4 class="text-sm font-semibold mb-1" style="color:#3b82f6">PyMuPDF</h4>
+                    <pre class="bg-gray-800 rounded p-2 text-xs overflow-auto max-h-48 whitespace-pre-wrap">DRAFT · CONFIDENTIAL · DO NOT DIS
+DRAFT · CONFIDENTIAL · DO NOT DIS
+DRAFT · CONFIDENTIAL · DO NOT DIS
+PRIVILEGED &amp; CONFIDENTIAL · ATTORNEY WORK PRODUCT
+Merger Agreement · Exhibit A: Financial Projections
+Prepared by: Morrison &amp; Foerster LLP  |  Date: November 15, 2025
+PROJECTED CASH FLOWS (USD &#x27;000s)
+                        FY2025A      FY2026E      FY2027E      FY2028E      FY2029E
+Revenue       </pre>
+                </div>
+                <div class="flex-1 min-w-[280px]">
+                    <h4 class="text-sm font-semibold mb-1" style="color:#10b981">pdfplumber</h4>
+                    <pre class="bg-gray-800 rounded p-2 text-xs overflow-auto max-h-48 whitespace-pre-wrap">PRIVILEGED &amp; CONFIDENTIAL · ATTORNEY WORK PRODUCT
+Merger Agreement · Exhibit A: Financial Projections
+PreDparedR by: MAorrisoFn &amp; FToerst er· LL PC | DatOe: NovNembeFr 15, 2I0D25 ENTIAL · DO NOT DISTRIBUTE
+PROJECTED CASH FLOWS (USD &#x27;000s)
+FY2025A FY2026E FY2027E FY2028E FY2029E
+Revenue $42,150 $51,823 $63,742 $78,403 $96,436
+YoY Growth · 22.9% 23.0% 23.0% 23.0%
+COGS ($16,860) ($19,693) ($22,897) (</pre>
+                </div>
+                <div class="flex-1 min-w-[280px]">
+                    <h4 class="text-sm font-semibold mb-1" style="color:#f59e0b">pypdf</h4>
+                    <pre class="bg-gray-800 rounded p-2 text-xs overflow-auto max-h-48 whitespace-pre-wrap">DRAFT · CONFIDENTIAL · DO NOT DISTRIBUTE
+DRAFT · CONFIDENTIAL · DO NOT DISTRIBUTE
+DRAFT · CONFIDENTIAL · DO NOT DISTRIBUTE
+PRIVILEGED &amp; CONFIDENTIAL · ATTORNEY WORK PRODUCT
+Merger Agreement · Exhibit A: Financial Projections
+Prepared by: Morrison &amp; Foerster LLP  |  Date: November 15, 2025
+PROJECTED CASH FLOWS (USD &#x27;000s)
+                        FY2025A      FY2026E      FY2027E      FY2028E      F</pre>
+                </div>
+                <div class="flex-1 min-w-[280px]">
+                    <h4 class="text-sm font-semibold mb-1" style="color:#ef4444">LiteParse</h4>
+                    <pre class="bg-gray-800 rounded p-2 text-xs overflow-auto max-h-48 whitespace-pre-wrap">PRIVILEGED &amp; CONFIDENTIAL · ATTORNEY WORK PRODUCT
+Merger Agreement · Exhibit A: Financial Projections
+   DRAFT ·
+Prepared by: Morrison &amp; Foerster CONFIDENTIAL
+     LLP
+ PROJECTED CASH FLOWS (USD &#x27;000s) | Date: November 15, 2025        · DO NOT DIS
+
+                         FY2025A      FY2026E      FY2027E      FY2028E      FY2029E
+ Revenue                 $42,150      $51,823      $63,742      $7</pre>
+                </div></div>
+        </div>
+        <div class="bg-gray-900 rounded-lg p-5 border border-gray-700">
+            <h3 class="text-lg font-semibold mb-3">Clinical Trial Table (HARD) — Text Output Preview</h3>
+            <div class="flex flex-wrap gap-3">
+                <div class="flex-1 min-w-[280px]">
+                    <h4 class="text-sm font-semibold mb-1" style="color:#3b82f6">PyMuPDF</h4>
+                    <pre class="bg-gray-800 rounded p-2 text-xs overflow-auto max-h-48 whitespace-pre-wrap">CLINICAL TRIAL RESULTS · PHASE III RANDOMIZED CONTROLLED STUDY
+Protocol ID: NCT-2025-0847  |  Sponsor: AcmePharma Inc.  |  IRB Approval: #2025-0392
+Endpoint
+Drug (n=485)
+Placebo (n=482)
+Delta
+95% CI
+p-value
+NNT
+PRIMARY ENDPOINTS
+  Overall Response Rate
+68.2%
+31.4%
++36.8%
+30.1-43.5
+&lt;0.001*
+3
+  Complete Response
+22.1%
+5.0%
++17.1%
+12.4-21.8
+&lt;0.001*
+6
+  Median PFS (months)
+14.2
+6.8
++7.4
+5.9-8.9
+&lt;0.001</pre>
+                </div>
+                <div class="flex-1 min-w-[280px]">
+                    <h4 class="text-sm font-semibold mb-1" style="color:#10b981">pdfplumber</h4>
+                    <pre class="bg-gray-800 rounded p-2 text-xs overflow-auto max-h-48 whitespace-pre-wrap">CLINICAL TRIAL RESULTS · PHASE III RANDOMIZED CONTROLLED STUDY
+Protocol ID: NCT-2025-0847 | Sponsor: AcmePharma Inc. | IRB Approval: #2025-0392
+Endpoint Drug (n=485) Placebo (n=482) Delta 95% CI p-value NNT
+PRIMARY ENDPOINTS
+Overall Response Rate 68.2% 31.4% +36.8% 30.1-43.5 &lt;0.001* 3
+Complete Response 22.1% 5.0% +17.1% 12.4-21.8 &lt;0.001* 6
+Median PFS (months) 14.2 6.8 +7.4 5.9-8.9 &lt;0.001* -
+Median</pre>
+                </div>
+                <div class="flex-1 min-w-[280px]">
+                    <h4 class="text-sm font-semibold mb-1" style="color:#f59e0b">pypdf</h4>
+                    <pre class="bg-gray-800 rounded p-2 text-xs overflow-auto max-h-48 whitespace-pre-wrap">CLINICAL TRIAL RESULTS · PHASE III RANDOMIZED CONTROLLED STUDY
+Protocol ID: NCT-2025-0847  |  Sponsor: AcmePharma Inc.  |  IRB Approval: #2025-0392
+Endpoint Drug (n=485) Placebo (n=482) Delta 95% CI p-value NNT
+PRIMARY ENDPOINTS
+  Overall Response Rate 68.2% 31.4% +36.8% 30.1-43.5 &lt;0.001* 3
+  Complete Response 22.1% 5.0% +17.1% 12.4-21.8 &lt;0.001* 6
+  Median PFS (months) 14.2 6.8 +7.4 5.9-8.9 &lt;0.001</pre>
+                </div>
+                <div class="flex-1 min-w-[280px]">
+                    <h4 class="text-sm font-semibold mb-1" style="color:#ef4444">LiteParse</h4>
+                    <pre class="bg-gray-800 rounded p-2 text-xs overflow-auto max-h-48 whitespace-pre-wrap">CLINICAL TRIAL RESULTS · PHASE III RANDOMIZED CONTROLLED STUDY
+Protocol ID: NCT-2025-0847 | Sponsor: AcmePharma Inc. | IRB Approval: #2025-0392
+
+
+      Endpoint             Drug (n=485)  Placebo (n=482)  Delta     95% CI   p-value   NNT
+
+ PRIMARY ENDPOINTS
+  Overall Response Rate       68.2%           31.4%       +36.8%  30.1-43.5  &lt;0.001*    3
+
+  Complete Response           22.1%            5.0% </pre>
+                </div></div>
+        </div>
+        <div class="bg-gray-900 rounded-lg p-5 border border-gray-700">
+            <h3 class="text-lg font-semibold mb-3">Tax Compliance (HARD) — Text Output Preview</h3>
+            <div class="flex flex-wrap gap-3">
+                <div class="flex-1 min-w-[280px]">
+                    <h4 class="text-sm font-semibold mb-1" style="color:#3b82f6">PyMuPDF</h4>
+                    <pre class="bg-gray-800 rounded p-2 text-xs overflow-auto max-h-48 whitespace-pre-wrap">INTERNATIONAL COMPLIANCE REPORT
+Multi-Jurisdictional Tax Treaty Analysis · Cross-Border Transactions
+1. TREATY OVERVIEW
+The following tax treaties are analyzed under the OECD Model Tax Convention (2024 Update):
+  Treaty              Withholding Rates              Effective Date    PE Threshold
+  US-Germany (DTAA)   Div: 5%/15%  Int: 0%  Roy: 0%   01-Jan-2007      183 days
+  US-Japan (DTAA)     Div</pre>
+                </div>
+                <div class="flex-1 min-w-[280px]">
+                    <h4 class="text-sm font-semibold mb-1" style="color:#10b981">pdfplumber</h4>
+                    <pre class="bg-gray-800 rounded p-2 text-xs overflow-auto max-h-48 whitespace-pre-wrap">INTERNATIONAL COMPLIANCE REPORT
+Multi-Jurisdictional Tax Treaty Analysis · Cross-Border Transactions
+1. TREATY OVERVIEW
+The following tax treaties are analyzed under the OECD Model Tax Convention (2024 Update):
+Treaty Withholding Rates Effective Date PE Threshold
+US-Germany (DTAA) Div: 5%/15% Int: 0% Roy: 0% 01-Jan-2007 183 days
+US-Japan (DTAA) Div: 5%/10% Int: 10% Roy: 0% 01-Jan-2004 183 days
+US-</pre>
+                </div>
+                <div class="flex-1 min-w-[280px]">
+                    <h4 class="text-sm font-semibold mb-1" style="color:#f59e0b">pypdf</h4>
+                    <pre class="bg-gray-800 rounded p-2 text-xs overflow-auto max-h-48 whitespace-pre-wrap">INTERNATIONAL COMPLIANCE REPORT
+Multi-Jurisdictional Tax Treaty Analysis · Cross-Border Transactions
+1. TREATY OVERVIEW
+The following tax treaties are analyzed under the OECD Model Tax Convention (2024 Update):
+  Treaty              Withholding Rates              Effective Date    PE Threshold
+  US-Germany (DTAA)   Div: 5%/15%  Int: 0%  Roy: 0%   01-Jan-2007      183 days
+  US-Japan (DTAA)     Div</pre>
+                </div>
+                <div class="flex-1 min-w-[280px]">
+                    <h4 class="text-sm font-semibold mb-1" style="color:#ef4444">LiteParse</h4>
+                    <pre class="bg-gray-800 rounded p-2 text-xs overflow-auto max-h-48 whitespace-pre-wrap"> INTERNATIONAL COMPLIANCE REPORT
+ Multi-Jurisdictional Tax Treaty Analysis · Cross-Border Transactions
+
+1. TREATY OVERVIEW
+
+The following tax treaties are analyzed under the OECD Model Tax Convention (2024 Update):
+
+  Treaty              Withholding Rates              Effective Date    PE Threshold
+  US-Germany (DTAA)   Div: 5%/15%  Int: 0%  Roy: 0%   01-Jan-2007      183 days
+  US-Japan (DTAA)   </pre>
+                </div></div>
+        </div>
+        <div class="bg-gray-900 rounded-lg p-5 border border-gray-700">
+            <h3 class="text-lg font-semibold mb-3">Insurance Policy 2-Col (HARD) — Text Output Preview</h3>
+            <div class="flex flex-wrap gap-3">
+                <div class="flex-1 min-w-[280px]">
+                    <h4 class="text-sm font-semibold mb-1" style="color:#3b82f6">PyMuPDF</h4>
+                    <pre class="bg-gray-800 rounded p-2 text-xs overflow-auto max-h-48 whitespace-pre-wrap">COMMERCIAL GENERAL LIABILITY COVERAGE FORM
+Policy No. CGL-2025-048721  |  Effective: 01/01/2026 to 01/01/2027
+SECTION I -- COVERAGES
+COVERAGE A -- BODILY INJURY AND
+PROPERTY DAMAGE LIABILITY
+1. Insuring Agreement
+  a. We will pay those sums that the
+  insured becomes legally obligated
+  to pay as damages because of
+  &quot;bodily injury&quot; or &quot;property damage&quot;
+  to which this insurance applies. We
+  will</pre>
+                </div>
+                <div class="flex-1 min-w-[280px]">
+                    <h4 class="text-sm font-semibold mb-1" style="color:#10b981">pdfplumber</h4>
+                    <pre class="bg-gray-800 rounded p-2 text-xs overflow-auto max-h-48 whitespace-pre-wrap">COMMERCIAL GENERAL LIABILITY COVERAGE FORM
+Policy No. CGL-2025-048721 | Effective: 01/01/2026 to 01/01/2027
+SECTION I -- COVERAGES b. Contractual Liability
+&quot;Bodily injury&quot; or &quot;property damage&quot;
+COVERAGE A -- BODILY INJURY AND for which the insured is obligated
+PROPERTY DAMAGE LIABILITY to pay damages by reason of the
+assumption of liability in a
+1. Insuring Agreement contract or agreement. This
+a. </pre>
+                </div>
+                <div class="flex-1 min-w-[280px]">
+                    <h4 class="text-sm font-semibold mb-1" style="color:#f59e0b">pypdf</h4>
+                    <pre class="bg-gray-800 rounded p-2 text-xs overflow-auto max-h-48 whitespace-pre-wrap">COMMERCIAL GENERAL LIABILITY COVERAGE FORM
+Policy No. CGL-2025-048721  |  Effective: 01/01/2026 to 01/01/2027
+SECTION I -- COVERAGES
+COVERAGE A -- BODILY INJURY AND
+PROPERTY DAMAGE LIABILITY
+1. Insuring Agreement
+  a. We will pay those sums that the
+  insured becomes legally obligated
+  to pay as damages because of
+  &quot;bodily injury&quot; or &quot;property damage&quot;
+  to which this insurance applies. We
+  will</pre>
+                </div>
+                <div class="flex-1 min-w-[280px]">
+                    <h4 class="text-sm font-semibold mb-1" style="color:#ef4444">LiteParse</h4>
+                    <pre class="bg-gray-800 rounded p-2 text-xs overflow-auto max-h-48 whitespace-pre-wrap">    COMMERCIAL GENERAL LIABILITY COVERAGE FORM
+    Policy No. CGL-2025-048721 | Effective: 01/01/2026 to 01/01/2027
+
+SECTION I -- COVERAGES   b. Contractual Liability
+          &quot;Bodily injury&quot; or &quot;property damage&quot;
+COVERAGE A -- BODILY INJURY AND   for which the insured is obligated
+PROPERTY DAMAGE LIABILITY   to pay damages by reason of the
+          assumption of liability in a
+1. Insuring Agreem</pre>
+                </div></div>
+        </div>
+  </div>
+
+  <p class="text-center text-gray-500 text-sm mt-8">
+    Benchmark run on 2026-04-08 11:17 — Python Python 3.13.5
+  </p>
+</div>
+
+<script>
+const speedLabels = ["IRS W-9 Form", "Financial Report", "Multi-Column Paper", "Employee Database", "Board Minutes (4pg)", "Watermarked Financial (HARD)", "Clinical Trial Table (HARD)", "Tax Compliance (HARD)", "Insurance Policy 2-Col (HARD)"];
+const speedDatasets = [
+  {label:"PyMuPDF",data:[237.6, 10.1, 11.3, 16.2, 38.3, 15.6, 53.5, 10.5, 15.9],backgroundColor:"#3b82f6",borderColor:"#3b82f6",borderWidth:1},{label:"pdfplumber",data:[1074.3, 56.6, 53.3, 141.1, 164.0, 71.8, 212.1, 57.9, 105.2],backgroundColor:"#10b981",borderColor:"#10b981",borderWidth:1},{label:"pypdf",data:[104.9, 4.5, 6.4, 8.4, 17.9, 6.8, 23.3, 6.2, 17.0],backgroundColor:"#f59e0b",borderColor:"#f59e0b",borderWidth:1},{label:"LiteParse",data:[2829.7, 2211.9, 2030.3, 2452.8, 2328.8, 2451.3, 2517.5, 2053.1, 2522.3],backgroundColor:"#ef4444",borderColor:"#ef4444",borderWidth:1}
+];
+const contentDatasets = [
+  {label:"PyMuPDF",data:[100.0, 83.3, 83.3, 100.0, 100.0, 95.2, 100.0, 100.0, 91.7],backgroundColor:"#3b82f6",borderColor:"#3b82f6",borderWidth:1},{label:"pdfplumber",data:[100.0, 100.0, 83.3, 100.0, 100.0, 95.2, 100.0, 100.0, 91.7],backgroundColor:"#10b981",borderColor:"#10b981",borderWidth:1},{label:"pypdf",data:[100.0, 100.0, 83.3, 100.0, 100.0, 100.0, 100.0, 100.0, 91.7],backgroundColor:"#f59e0b",borderColor:"#f59e0b",borderWidth:1},{label:"LiteParse",data:[100.0, 83.3, 83.3, 100.0, 100.0, 95.2, 100.0, 100.0, 91.7],backgroundColor:"#ef4444",borderColor:"#ef4444",borderWidth:1}
+];
+
+const chartOpts = {
+  responsive: true,
+  plugins: { legend: { labels: { color: '#94a3b8' } } },
+  scales: {
+    x: { ticks: { color: '#94a3b8' }, grid: { color: '#1e293b' } },
+    y: { ticks: { color: '#94a3b8' }, grid: { color: '#334155' }, beginAtZero: true }
+  }
+};
+
+new Chart(document.getElementById('speedChart'), {
+  type: 'bar', data: { labels: speedLabels, datasets: speedDatasets },
+  options: { ...chartOpts, scales: { ...chartOpts.scales, y: { ...chartOpts.scales.y, type: 'logarithmic', title: { display: true, text: 'ms (log scale)', color: '#94a3b8' } } } }
+});
+
+new Chart(document.getElementById('contentChart'), {
+  type: 'bar', data: { labels: speedLabels, datasets: contentDatasets },
+  options: { ...chartOpts, scales: { ...chartOpts.scales, y: { ...chartOpts.scales.y, max: 100, title: { display: true, text: '% phrases found', color: '#94a3b8' } } } }
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,14 @@
+[project]
+name = "parser-bench"
+version = "0.1.0"
+description = "PDF parser benchmarking suite"
+requires-python = ">=3.10"
+dependencies = [
+    "pymupdf",
+    "pdfplumber",
+    "pypdf",
+    "liteparse",
+]
+
+[project.scripts]
+parser-bench = "parser_bench.__main__:main"

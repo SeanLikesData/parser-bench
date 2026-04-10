@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PDF Parser Benchmark — Hard Tests</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<style>
+  body { background: #0f172a; color: #e2e8f0; }
+  [title] { cursor: help; }
+</style>
+</head>
+<body class="min-h-screen p-6">
+<div class="max-w-7xl mx-auto space-y-6">
+
+  <div class="text-center mb-8">
+    <h1 class="text-3xl font-bold mb-2">PDF Parser Benchmark — Hard Mode</h1>
+    <p class="text-gray-400">Testing reading order, column handling, numeric extraction, table fidelity, and watermark filtering</p>
+    <p class="text-gray-500 text-sm mt-1">6 documents, 17 quality tests</p>
+  </div>
+
+  <!-- Scorecard -->
+  <div class="bg-gray-900 rounded-lg p-6 border border-gray-700">
+    <h2 class="text-xl font-semibold mb-4">Overall Scorecard</h2>
+    <table class="w-full">
+      <thead><tr class="text-gray-400 border-b border-gray-600">
+        <th class="py-2 px-4 text-left">Parser</th>
+        <th class="py-2 px-4 text-right">Avg Speed</th>
+        <th class="py-2 px-4 text-right">Avg Quality Score</th>
+        <th class="py-2 px-4 text-right">Tests Run</th>
+      </tr></thead>
+      <tbody><tr class="border-b border-gray-700">
+            <td class="py-3 px-4 font-semibold text-lg" style="color:#3b82f6">PyMuPDF</td>
+            <td class="py-3 px-4 text-right">109 ms <span class="bg-blue-900 text-blue-300 px-2 py-0.5 rounded text-xs">Good</span></td>
+            <td class="py-3 px-4 text-right">86.6% <span class="bg-blue-900 text-blue-300 px-2 py-0.5 rounded text-xs">Good</span></td>
+            <td class="py-3 px-4 text-right text-gray-400">17 tests</td>
+        </tr><tr class="border-b border-gray-700">
+            <td class="py-3 px-4 font-semibold text-lg" style="color:#10b981">pdfplumber</td>
+            <td class="py-3 px-4 text-right">621 ms <span class="bg-yellow-900 text-yellow-300 px-2 py-0.5 rounded text-xs">Slow</span></td>
+            <td class="py-3 px-4 text-right">85.9% <span class="bg-blue-900 text-blue-300 px-2 py-0.5 rounded text-xs">Good</span></td>
+            <td class="py-3 px-4 text-right text-gray-400">17 tests</td>
+        </tr><tr class="border-b border-gray-700">
+            <td class="py-3 px-4 font-semibold text-lg" style="color:#f59e0b">pypdf</td>
+            <td class="py-3 px-4 text-right">161 ms <span class="bg-blue-900 text-blue-300 px-2 py-0.5 rounded text-xs">Good</span></td>
+            <td class="py-3 px-4 text-right">92.4% <span class="bg-blue-900 text-blue-300 px-2 py-0.5 rounded text-xs">Good</span></td>
+            <td class="py-3 px-4 text-right text-gray-400">17 tests</td>
+        </tr><tr class="border-b border-gray-700">
+            <td class="py-3 px-4 font-semibold text-lg" style="color:#ef4444">LiteParse</td>
+            <td class="py-3 px-4 text-right">6025 ms <span class="bg-red-900 text-red-300 px-2 py-0.5 rounded text-xs">Very Slow</span></td>
+            <td class="py-3 px-4 text-right">84.3% <span class="bg-yellow-900 text-yellow-300 px-2 py-0.5 rounded text-xs">Fair</span></td>
+            <td class="py-3 px-4 text-right text-gray-400">17 tests</td>
+        </tr></tbody>
+    </table>
+  </div>
+
+  <!-- File Format Support -->
+  <div class="bg-gray-900 rounded-lg p-6 border border-gray-700">
+    <h2 class="text-xl font-semibold mb-4">Supported Input File Types</h2>
+    <div class="overflow-x-auto">
+    <table class="w-full text-sm">
+      <thead><tr class="text-gray-400 border-b border-gray-600">
+        <th class="py-2 px-3 text-left">Format</th>
+        <th class="py-2 px-3 text-center" style="color:#3b82f6">PyMuPDF</th>
+        <th class="py-2 px-3 text-center" style="color:#10b981">pdfplumber</th>
+        <th class="py-2 px-3 text-center" style="color:#f59e0b">pypdf</th>
+        <th class="py-2 px-3 text-center" style="color:#ef4444">LiteParse</th>
+      </tr></thead>
+      <tbody>
+        <tr class="border-b border-gray-700"><td class="py-2 px-3 font-medium">PDF</td>
+          <td class="py-2 px-3 text-center text-green-400">&#10003;</td>
+          <td class="py-2 px-3 text-center text-green-400">&#10003;</td>
+          <td class="py-2 px-3 text-center text-green-400">&#10003;</td>
+          <td class="py-2 px-3 text-center text-green-400">&#10003;</td></tr>
+        <tr class="border-b border-gray-700"><td class="py-2 px-3 font-medium">DOCX / DOC / ODT / RTF</td>
+          <td class="py-2 px-3 text-center text-red-400">&#10007;</td>
+          <td class="py-2 px-3 text-center text-red-400">&#10007;</td>
+          <td class="py-2 px-3 text-center text-red-400">&#10007;</td>
+          <td class="py-2 px-3 text-center text-green-400">&#10003; <span class="text-gray-500 text-xs">(via LibreOffice)</span></td></tr>
+        <tr class="border-b border-gray-700"><td class="py-2 px-3 font-medium">PPTX / PPT / ODP</td>
+          <td class="py-2 px-3 text-center text-red-400">&#10007;</td>
+          <td class="py-2 px-3 text-center text-red-400">&#10007;</td>
+          <td class="py-2 px-3 text-center text-red-400">&#10007;</td>
+          <td class="py-2 px-3 text-center text-green-400">&#10003; <span class="text-gray-500 text-xs">(via LibreOffice)</span></td></tr>
+        <tr class="border-b border-gray-700"><td class="py-2 px-3 font-medium">XLSX / XLS / ODS / CSV</td>
+          <td class="py-2 px-3 text-center text-red-400">&#10007;</td>
+          <td class="py-2 px-3 text-center text-red-400">&#10007;</td>
+          <td class="py-2 px-3 text-center text-red-400">&#10007;</td>
+          <td class="py-2 px-3 text-center text-green-400">&#10003; <span class="text-gray-500 text-xs">(via LibreOffice)</span></td></tr>
+        <tr class="border-b border-gray-700"><td class="py-2 px-3 font-medium">Images (PNG, JPG, TIFF, etc.)</td>
+          <td class="py-2 px-3 text-center text-green-400">&#10003;</td>
+          <td class="py-2 px-3 text-center text-red-400">&#10007;</td>
+          <td class="py-2 px-3 text-center text-red-400">&#10007;</td>
+          <td class="py-2 px-3 text-center text-green-400">&#10003; <span class="text-gray-500 text-xs">(via ImageMagick)</span></td></tr>
+        <tr class="border-b border-gray-700"><td class="py-2 px-3 font-medium">EPUB / MOBI / FB2</td>
+          <td class="py-2 px-3 text-center text-green-400">&#10003;</td>
+          <td class="py-2 px-3 text-center text-red-400">&#10007;</td>
+          <td class="py-2 px-3 text-center text-red-400">&#10007;</td>
+          <td class="py-2 px-3 text-center text-red-400">&#10007;</td></tr>
+        <tr class="border-b border-gray-700"><td class="py-2 px-3 font-medium">XPS / SVG / CBZ</td>
+          <td class="py-2 px-3 text-center text-green-400">&#10003;</td>
+          <td class="py-2 px-3 text-center text-red-400">&#10007;</td>
+          <td class="py-2 px-3 text-center text-red-400">&#10007;</td>
+          <td class="py-2 px-3 text-center text-red-400">&#10007;</td></tr>
+        <tr class="border-b border-gray-700"><td class="py-2 px-3 font-medium">Password-Protected PDFs</td>
+          <td class="py-2 px-3 text-center text-green-400">&#10003;</td>
+          <td class="py-2 px-3 text-center text-green-400">&#10003;</td>
+          <td class="py-2 px-3 text-center text-green-400">&#10003;</td>
+          <td class="py-2 px-3 text-center text-green-400">&#10003;</td></tr>
+        <tr><td class="py-2 px-3 font-medium text-gray-400">Total Formats</td>
+          <td class="py-2 px-3 text-center font-semibold" style="color:#3b82f6">~15</td>
+          <td class="py-2 px-3 text-center font-semibold" style="color:#10b981">1</td>
+          <td class="py-2 px-3 text-center font-semibold" style="color:#f59e0b">1</td>
+          <td class="py-2 px-3 text-center font-semibold" style="color:#ef4444">~30</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+
+  <!-- Extractable Object Types -->
+  <div class="bg-gray-900 rounded-lg p-6 border border-gray-700">
+    <h2 class="text-xl font-semibold mb-4">Extractable Object Types</h2>
+    <div class="overflow-x-auto">
+    <table class="w-full text-sm">
+      <thead><tr class="text-gray-400 border-b border-gray-600">
+        <th class="py-2 px-3 text-left">Capability</th>
+        <th class="py-2 px-3 text-center" style="color:#3b82f6">PyMuPDF</th>
+        <th class="py-2 px-3 text-center" style="color:#10b981">pdfplumber</th>
+        <th class="py-2 px-3 text-center" style="color:#f59e0b">pypdf</th>
+        <th class="py-2 px-3 text-center" style="color:#ef4444">LiteParse</th>
+      </tr></thead>
+      <tbody>
+        <tr class="border-b border-gray-700"><td class="py-2 px-3 font-medium">Plain Text</td>
+          <td class="py-2 px-3 text-center text-green-400">&#10003;</td>
+          <td class="py-2 px-3 text-center text-green-400">&#10003;</td>
+          <td class="py-2 px-3 text-center text-green-400">&#10003;</td>
+          <td class="py-2 px-3 text-center text-green-400">&#10003;</td></tr>
+        <tr class="border-b border-gray-700"><td class="py-2 px-3 font-medium">Tables</td>
+          <td class="py-2 px-3 text-center text-yellow-400">~ <span class="text-gray-500 text-xs">(via dict)</span></td>
+          <td class="py-2 px-3 text-center text-green-400 font-bold">&#10003;&#10003; <span class="text-gray-500 text-xs">(best)</span></td>
+          <td class="py-2 px-3 text-center text-red-400">&#10007;</td>
+          <td class="py-2 px-3 text-center text-green-400">&#10003;</td></tr>
+        <tr class="border-b border-gray-700"><td class="py-2 px-3 font-medium">Embedded Images</td>
+          <td class="py-2 px-3 text-center text-green-400">&#10003;</td>
+          <td class="py-2 px-3 text-center text-green-400">&#10003;</td>
+          <td class="py-2 px-3 text-center text-green-400">&#10003;</td>
+          <td class="py-2 px-3 text-center text-red-400">&#10007;</td></tr>
+        <tr class="border-b border-gray-700"><td class="py-2 px-3 font-medium">Bounding Boxes / Coordinates</td>
+          <td class="py-2 px-3 text-center text-green-400">&#10003; <span class="text-gray-500 text-xs">(span-level)</span></td>
+          <td class="py-2 px-3 text-center text-green-400 font-bold">&#10003;&#10003; <span class="text-gray-500 text-xs">(char-level)</span></td>
+          <td class="py-2 px-3 text-center text-red-400">&#10007;</td>
+          <td class="py-2 px-3 text-center text-green-400">&#10003; <span class="text-gray-500 text-xs">(line-level)</span></td></tr>
+        <tr class="border-b border-gray-700"><td class="py-2 px-3 font-medium">OCR (Scanned Docs)</td>
+          <td class="py-2 px-3 text-center text-green-400">&#10003; <span class="text-gray-500 text-xs">(per-page)</span></td>
+          <td class="py-2 px-3 text-center text-red-400">&#10007;</td>
+          <td class="py-2 px-3 text-center text-red-400">&#10007;</td>
+          <td class="py-2 px-3 text-center text-green-400 font-bold">&#10003;&#10003; <span class="text-gray-500 text-xs">(auto, Tesseract.js)</span></td></tr>
+        <tr class="border-b border-gray-700"><td class="py-2 px-3 font-medium">Form Fields / AcroForms</td>
+          <td class="py-2 px-3 text-center text-yellow-400">~ <span class="text-gray-500 text-xs">(limited)</span></td>
+          <td class="py-2 px-3 text-center text-green-400">&#10003;</td>
+          <td class="py-2 px-3 text-center text-green-400 font-bold">&#10003;&#10003; <span class="text-gray-500 text-xs">(best)</span></td>
+          <td class="py-2 px-3 text-center text-red-400">&#10007;</td></tr>
+        <tr class="border-b border-gray-700"><td class="py-2 px-3 font-medium">Annotations</td>
+          <td class="py-2 px-3 text-center text-green-400">&#10003;</td>
+          <td class="py-2 px-3 text-center text-green-400">&#10003;</td>
+          <td class="py-2 px-3 text-center text-green-400">&#10003;</td>
+          <td class="py-2 px-3 text-center text-red-400">&#10007;</td></tr>
+        <tr class="border-b border-gray-700"><td class="py-2 px-3 font-medium">Metadata</td>
+          <td class="py-2 px-3 text-center text-green-400">&#10003;</td>
+          <td class="py-2 px-3 text-center text-green-400">&#10003;</td>
+          <td class="py-2 px-3 text-center text-green-400">&#10003;</td>
+          <td class="py-2 px-3 text-center text-red-400">&#10007;</td></tr>
+        <tr class="border-b border-gray-700"><td class="py-2 px-3 font-medium">Bookmarks / TOC</td>
+          <td class="py-2 px-3 text-center text-green-400">&#10003;</td>
+          <td class="py-2 px-3 text-center text-red-400">&#10007;</td>
+          <td class="py-2 px-3 text-center text-red-400">&#10007;</td>
+          <td class="py-2 px-3 text-center text-red-400">&#10007;</td></tr>
+        <tr class="border-b border-gray-700"><td class="py-2 px-3 font-medium">Font Information</td>
+          <td class="py-2 px-3 text-center text-green-400">&#10003; <span class="text-gray-500 text-xs">(name, size, color)</span></td>
+          <td class="py-2 px-3 text-center text-red-400">&#10007;</td>
+          <td class="py-2 px-3 text-center text-red-400">&#10007;</td>
+          <td class="py-2 px-3 text-center text-red-400">&#10007;</td></tr>
+        <tr class="border-b border-gray-700"><td class="py-2 px-3 font-medium">Embedded Files</td>
+          <td class="py-2 px-3 text-center text-green-400">&#10003;</td>
+          <td class="py-2 px-3 text-center text-red-400">&#10007;</td>
+          <td class="py-2 px-3 text-center text-red-400">&#10007;</td>
+          <td class="py-2 px-3 text-center text-red-400">&#10007;</td></tr>
+        <tr class="border-b border-gray-700"><td class="py-2 px-3 font-medium">Page Screenshots</td>
+          <td class="py-2 px-3 text-center text-green-400">&#10003;</td>
+          <td class="py-2 px-3 text-center text-red-400">&#10007;</td>
+          <td class="py-2 px-3 text-center text-red-400">&#10007;</td>
+          <td class="py-2 px-3 text-center text-green-400">&#10003;</td></tr>
+        <tr class="border-b border-gray-700"><td class="py-2 px-3 font-medium">PDF Manipulation <span class="text-gray-500 text-xs">(merge, split, rotate)</span></td>
+          <td class="py-2 px-3 text-center text-green-400">&#10003;</td>
+          <td class="py-2 px-3 text-center text-red-400">&#10007;</td>
+          <td class="py-2 px-3 text-center text-green-400 font-bold">&#10003;&#10003; <span class="text-gray-500 text-xs">(best)</span></td>
+          <td class="py-2 px-3 text-center text-red-400">&#10007;</td></tr>
+        <tr><td class="py-2 px-3 font-medium">Digital Signatures</td>
+          <td class="py-2 px-3 text-center text-red-400">&#10007;</td>
+          <td class="py-2 px-3 text-center text-red-400">&#10007;</td>
+          <td class="py-2 px-3 text-center text-red-400">&#10007;</td>
+          <td class="py-2 px-3 text-center text-red-400">&#10007;</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p class="text-gray-500 text-xs mt-3">&#10003;&#10003; = best-in-class &nbsp; &#10003; = supported &nbsp; ~ = partial &nbsp; &#10007; = not supported</p>
+  </div>
+
+  <!-- Charts -->
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <div class="bg-gray-900 rounded-lg p-5 border border-gray-700">
+      <h2 class="text-lg font-semibold mb-3">Parse Speed by Document (ms, log scale)</h2>
+      <canvas id="speedChart" height="280"></canvas>
+    </div>
+    <div class="bg-gray-900 rounded-lg p-5 border border-gray-700">
+      <h2 class="text-lg font-semibold mb-3">Quality Score by Document (%)</h2>
+      <canvas id="qualityChart" height="280"></canvas>
+    </div>
+  </div>
+
+  <!-- Detail tables -->
+  <h2 class="text-xl font-semibold mt-8 mb-2">Detailed Results by Document</h2>
+  <p class="text-gray-400 text-sm mb-4">Hover over scores to see missing items. Colors: <span class="text-green-400">green</span> >=90%, <span class="text-yellow-400">yellow</span> >=70%, <span class="text-red-400">red</span> &lt;70%</p>
+  <div class="space-y-4">
+    
+        <div class="bg-gray-900 rounded-lg p-5 border border-gray-700">
+            <h3 class="text-lg font-semibold mb-1">Watermarked Financial Projections</h3>
+            <p class="text-gray-400 text-sm mb-3">hard_watermark_financial.pdf — 9 KB</p>
+            <div class="overflow-x-auto">
+            <table class="w-full text-sm">
+                <thead><tr class="text-gray-400 border-b border-gray-600">
+                    <th class="py-2 px-3 text-left">Parser</th>
+                    <th class="py-2 px-3 text-right">Speed</th>
+                    <th class="py-2 px-3 text-right">Words</th>
+                    <th class="py-2 px-3 text-center text-xs">Watermark vs Content Separation</th><th class="py-2 px-3 text-center text-xs">Financial Numbers Intact</th><th class="py-2 px-3 text-center text-xs">Sensitivity Table Rows</th><th class="py-2 px-3 text-center text-xs">Reading Order (narrative flow)</th>
+                </tr></thead>
+                <tbody><tr class="border-b border-gray-700 hover:bg-gray-800/50">
+                <td class="py-2 px-3 font-medium" style="color:#3b82f6">PyMuPDF</td>
+                <td class="py-2 px-3 text-right">205 ms</td>
+                <td class="py-2 px-3 text-right">288</td>
+                <td class="py-2 px-3 text-center text-green-400 text-xs cursor-help">6/6 <span class="text-gray-500">(100.0%)</span></td><td class="py-2 px-3 text-center text-green-400 text-xs cursor-help">13/13 <span class="text-gray-500">(100.0%)</span></td><td class="py-2 px-3 text-center text-green-400 text-xs cursor-help">3/3 <span class="text-gray-500">(100.0%)</span></td><td class="py-2 px-3 text-center text-green-400 text-xs cursor-help">7/7 <span class="text-gray-500">(100.0%)</span></td>
+            </tr><tr class="border-b border-gray-700 hover:bg-gray-800/50">
+                <td class="py-2 px-3 font-medium" style="color:#10b981">pdfplumber</td>
+                <td class="py-2 px-3 text-right">268 ms</td>
+                <td class="py-2 px-3 text-right">295</td>
+                <td class="py-2 px-3 text-center text-yellow-400 text-xs cursor-help">4/6 ⚠2 <span class="text-gray-500">(66.7%)</span></td><td class="py-2 px-3 text-center text-green-400 text-xs cursor-help" title="Missing: $3,617">12/13 <span class="text-gray-500">(92.3%)</span></td><td class="py-2 px-3 text-center text-green-400 text-xs cursor-help">3/3 <span class="text-gray-500">(100.0%)</span></td><td class="py-2 px-3 text-center text-green-400 text-xs cursor-help">5/5 <span class="text-gray-500">(100.0%)</span></td>
+            </tr><tr class="border-b border-gray-700 hover:bg-gray-800/50">
+                <td class="py-2 px-3 font-medium" style="color:#f59e0b">pypdf</td>
+                <td class="py-2 px-3 text-right">123 ms</td>
+                <td class="py-2 px-3 text-right">288</td>
+                <td class="py-2 px-3 text-center text-green-400 text-xs cursor-help">6/6 <span class="text-gray-500">(100.0%)</span></td><td class="py-2 px-3 text-center text-green-400 text-xs cursor-help">13/13 <span class="text-gray-500">(100.0%)</span></td><td class="py-2 px-3 text-center text-green-400 text-xs cursor-help">3/3 <span class="text-gray-500">(100.0%)</span></td><td class="py-2 px-3 text-center text-green-400 text-xs cursor-help">7/7 <span class="text-gray-500">(100.0%)</span></td>
+            </tr><tr class="border-b border-gray-700 hover:bg-gray-800/50">
+                <td class="py-2 px-3 font-medium" style="color:#ef4444">LiteParse</td>
+                <td class="py-2 px-3 text-right">4730 ms</td>
+                <td class="py-2 px-3 text-right">287</td>
+                <td class="py-2 px-3 text-center text-yellow-400 text-xs cursor-help">6/6 ⚠4 <span class="text-gray-500">(100.0%)</span></td><td class="py-2 px-3 text-center text-green-400 text-xs cursor-help">13/13 <span class="text-gray-500">(100.0%)</span></td><td class="py-2 px-3 text-center text-red-400 text-xs cursor-help">2/3 <span class="text-gray-500">(66.7%)</span></td><td class="py-2 px-3 text-center text-green-400 text-xs cursor-help">7/7 <span class="text-gray-500">(100.0%)</span></td>
+            </tr></tbody>
+            </table>
+            </div>
+        </div>
+        <div class="bg-gray-900 rounded-lg p-5 border border-gray-700">
+            <h3 class="text-lg font-semibold mb-1">Clinical Trial Table</h3>
+            <p class="text-gray-400 text-sm mb-3">hard_clinical_table.pdf — 45 KB</p>
+            <div class="overflow-x-auto">
+            <table class="w-full text-sm">
+                <thead><tr class="text-gray-400 border-b border-gray-600">
+                    <th class="py-2 px-3 text-left">Parser</th>
+                    <th class="py-2 px-3 text-right">Speed</th>
+                    <th class="py-2 px-3 text-right">Words</th>
+                    <th class="py-2 px-3 text-center text-xs">Table Row Integrity (values on same line)</th><th class="py-2 px-3 text-center text-xs">All Statistical Values Present</th><th class="py-2 px-3 text-center text-xs">Section Order</th>
+                </tr></thead>
+                <tbody><tr class="border-b border-gray-700 hover:bg-gray-800/50">
+                <td class="py-2 px-3 font-medium" style="color:#3b82f6">PyMuPDF</td>
+                <td class="py-2 px-3 text-right">17 ms</td>
+                <td class="py-2 px-3 text-right">236</td>
+                <td class="py-2 px-3 text-center text-red-400 text-xs cursor-help">0/5 <span class="text-gray-500">(0.0%)</span></td><td class="py-2 px-3 text-center text-green-400 text-xs cursor-help">18/18 <span class="text-gray-500">(100.0%)</span></td><td class="py-2 px-3 text-center text-green-400 text-xs cursor-help">7/7 <span class="text-gray-500">(100.0%)</span></td>
+            </tr><tr class="border-b border-gray-700 hover:bg-gray-800/50">
+                <td class="py-2 px-3 font-medium" style="color:#10b981">pdfplumber</td>
+                <td class="py-2 px-3 text-right">247 ms</td>
+                <td class="py-2 px-3 text-right">236</td>
+                <td class="py-2 px-3 text-center text-green-400 text-xs cursor-help">5/5 <span class="text-gray-500">(100.0%)</span></td><td class="py-2 px-3 text-center text-green-400 text-xs cursor-help">18/18 <span class="text-gray-500">(100.0%)</span></td><td class="py-2 px-3 text-center text-green-400 text-xs cursor-help">7/7 <span class="text-gray-500">(100.0%)</span></td>
+            </tr><tr class="border-b border-gray-700 hover:bg-gray-800/50">
+                <td class="py-2 px-3 font-medium" style="color:#f59e0b">pypdf</td>
+                <td class="py-2 px-3 text-right">24 ms</td>
+                <td class="py-2 px-3 text-right">236</td>
+                <td class="py-2 px-3 text-center text-green-400 text-xs cursor-help">5/5 <span class="text-gray-500">(100.0%)</span></td><td class="py-2 px-3 text-center text-green-400 text-xs cursor-help">18/18 <span class="text-gray-500">(100.0%)</span></td><td class="py-2 px-3 text-center text-green-400 text-xs cursor-help">7/7 <span class="text-gray-500">(100.0%)</span></td>
+            </tr><tr class="border-b border-gray-700 hover:bg-gray-800/50">
+                <td class="py-2 px-3 font-medium" style="color:#ef4444">LiteParse</td>
+                <td class="py-2 px-3 text-right">3584 ms</td>
+                <td class="py-2 px-3 text-right">236</td>
+                <td class="py-2 px-3 text-center text-green-400 text-xs cursor-help">5/5 <span class="text-gray-500">(100.0%)</span></td><td class="py-2 px-3 text-center text-green-400 text-xs cursor-help">18/18 <span class="text-gray-500">(100.0%)</span></td><td class="py-2 px-3 text-center text-green-400 text-xs cursor-help">7/7 <span class="text-gray-500">(100.0%)</span></td>
+            </tr></tbody>
+            </table>
+            </div>
+        </div>
+        <div class="bg-gray-900 rounded-lg p-5 border border-gray-700">
+            <h3 class="text-lg font-semibold mb-1">Tax Compliance Report</h3>
+            <p class="text-gray-400 text-sm mb-3">hard_compliance.pdf — 9 KB</p>
+            <div class="overflow-x-auto">
+            <table class="w-full text-sm">
+                <thead><tr class="text-gray-400 border-b border-gray-600">
+                    <th class="py-2 px-3 text-left">Parser</th>
+                    <th class="py-2 px-3 text-right">Speed</th>
+                    <th class="py-2 px-3 text-right">Words</th>
+                    <th class="py-2 px-3 text-center text-xs">Treaty Table Rows</th><th class="py-2 px-3 text-center text-xs">Formula & Calculation Values</th><th class="py-2 px-3 text-center text-xs">Legal Citations Intact</th>
+                </tr></thead>
+                <tbody><tr class="border-b border-gray-700 hover:bg-gray-800/50">
+                <td class="py-2 px-3 font-medium" style="color:#3b82f6">PyMuPDF</td>
+                <td class="py-2 px-3 text-right">9 ms</td>
+                <td class="py-2 px-3 text-right">272</td>
+                <td class="py-2 px-3 text-center text-green-400 text-xs cursor-help">3/3 <span class="text-gray-500">(100.0%)</span></td><td class="py-2 px-3 text-center text-green-400 text-xs cursor-help">9/9 <span class="text-gray-500">(100.0%)</span></td><td class="py-2 px-3 text-center text-green-400 text-xs cursor-help">6/6 <span class="text-gray-500">(100.0%)</span></td>
+            </tr><tr class="border-b border-gray-700 hover:bg-gray-800/50">
+                <td class="py-2 px-3 font-medium" style="color:#10b981">pdfplumber</td>
+                <td class="py-2 px-3 text-right">87 ms</td>
+                <td class="py-2 px-3 text-right">272</td>
+                <td class="py-2 px-3 text-center text-green-400 text-xs cursor-help">3/3 <span class="text-gray-500">(100.0%)</span></td><td class="py-2 px-3 text-center text-green-400 text-xs cursor-help">9/9 <span class="text-gray-500">(100.0%)</span></td><td class="py-2 px-3 text-center text-green-400 text-xs cursor-help">6/6 <span class="text-gray-500">(100.0%)</span></td>
+            </tr><tr class="border-b border-gray-700 hover:bg-gray-800/50">
+                <td class="py-2 px-3 font-medium" style="color:#f59e0b">pypdf</td>
+                <td class="py-2 px-3 text-right">10 ms</td>
+                <td class="py-2 px-3 text-right">272</td>
+                <td class="py-2 px-3 text-center text-green-400 text-xs cursor-help">3/3 <span class="text-gray-500">(100.0%)</span></td><td class="py-2 px-3 text-center text-green-400 text-xs cursor-help">9/9 <span class="text-gray-500">(100.0%)</span></td><td class="py-2 px-3 text-center text-green-400 text-xs cursor-help">6/6 <span class="text-gray-500">(100.0%)</span></td>
+            </tr><tr class="border-b border-gray-700 hover:bg-gray-800/50">
+                <td class="py-2 px-3 font-medium" style="color:#ef4444">LiteParse</td>
+                <td class="py-2 px-3 text-right">5549 ms</td>
+                <td class="py-2 px-3 text-right">272</td>
+                <td class="py-2 px-3 text-center text-green-400 text-xs cursor-help">3/3 <span class="text-gray-500">(100.0%)</span></td><td class="py-2 px-3 text-center text-green-400 text-xs cursor-help">9/9 <span class="text-gray-500">(100.0%)</span></td><td class="py-2 px-3 text-center text-green-400 text-xs cursor-help">6/6 <span class="text-gray-500">(100.0%)</span></td>
+            </tr></tbody>
+            </table>
+            </div>
+        </div>
+        <div class="bg-gray-900 rounded-lg p-5 border border-gray-700">
+            <h3 class="text-lg font-semibold mb-1">Two-Column Insurance Policy</h3>
+            <p class="text-gray-400 text-sm mb-3">hard_insurance.pdf — 18 KB</p>
+            <div class="overflow-x-auto">
+            <table class="w-full text-sm">
+                <thead><tr class="text-gray-400 border-b border-gray-600">
+                    <th class="py-2 px-3 text-left">Parser</th>
+                    <th class="py-2 px-3 text-right">Speed</th>
+                    <th class="py-2 px-3 text-right">Words</th>
+                    <th class="py-2 px-3 text-center text-xs">Column Reading Order</th><th class="py-2 px-3 text-center text-xs">Defined Terms Present</th><th class="py-2 px-3 text-center text-xs">Footer Data Intact</th>
+                </tr></thead>
+                <tbody><tr class="border-b border-gray-700 hover:bg-gray-800/50">
+                <td class="py-2 px-3 font-medium" style="color:#3b82f6">PyMuPDF</td>
+                <td class="py-2 px-3 text-right">10 ms</td>
+                <td class="py-2 px-3 text-right">459</td>
+                <td class="py-2 px-3 text-center text-green-400 text-xs cursor-help">25/25 <span class="text-gray-500">(100.0%)</span></td><td class="py-2 px-3 text-center text-yellow-400 text-xs cursor-help" title="Missing: &quot;insured contract&quot;">6/7 <span class="text-gray-500">(85.7%)</span></td><td class="py-2 px-3 text-center text-green-400 text-xs cursor-help">6/6 <span class="text-gray-500">(100.0%)</span></td>
+            </tr><tr class="border-b border-gray-700 hover:bg-gray-800/50">
+                <td class="py-2 px-3 font-medium" style="color:#10b981">pdfplumber</td>
+                <td class="py-2 px-3 text-right">134 ms</td>
+                <td class="py-2 px-3 text-right">459</td>
+                <td class="py-2 px-3 text-center text-red-400 text-xs cursor-help">10/25 <span class="text-gray-500">(40.0%)</span></td><td class="py-2 px-3 text-center text-yellow-400 text-xs cursor-help" title="Missing: &quot;insured contract&quot;">6/7 <span class="text-gray-500">(85.7%)</span></td><td class="py-2 px-3 text-center text-green-400 text-xs cursor-help">6/6 <span class="text-gray-500">(100.0%)</span></td>
+            </tr><tr class="border-b border-gray-700 hover:bg-gray-800/50">
+                <td class="py-2 px-3 font-medium" style="color:#f59e0b">pypdf</td>
+                <td class="py-2 px-3 text-right">20 ms</td>
+                <td class="py-2 px-3 text-right">459</td>
+                <td class="py-2 px-3 text-center text-green-400 text-xs cursor-help">25/25 <span class="text-gray-500">(100.0%)</span></td><td class="py-2 px-3 text-center text-yellow-400 text-xs cursor-help" title="Missing: &quot;insured contract&quot;">6/7 <span class="text-gray-500">(85.7%)</span></td><td class="py-2 px-3 text-center text-green-400 text-xs cursor-help">6/6 <span class="text-gray-500">(100.0%)</span></td>
+            </tr><tr class="border-b border-gray-700 hover:bg-gray-800/50">
+                <td class="py-2 px-3 font-medium" style="color:#ef4444">LiteParse</td>
+                <td class="py-2 px-3 text-right">3148 ms</td>
+                <td class="py-2 px-3 text-right">459</td>
+                <td class="py-2 px-3 text-center text-red-400 text-xs cursor-help">10/25 <span class="text-gray-500">(40.0%)</span></td><td class="py-2 px-3 text-center text-yellow-400 text-xs cursor-help" title="Missing: &quot;insured contract&quot;">6/7 <span class="text-gray-500">(85.7%)</span></td><td class="py-2 px-3 text-center text-green-400 text-xs cursor-help">6/6 <span class="text-gray-500">(100.0%)</span></td>
+            </tr></tbody>
+            </table>
+            </div>
+        </div>
+        <div class="bg-gray-900 rounded-lg p-5 border border-gray-700">
+            <h3 class="text-lg font-semibold mb-1">Fed Financial Stability Report (real)</h3>
+            <p class="text-gray-400 text-sm mb-3">hard_fed_report.pdf — 4880 KB</p>
+            <div class="overflow-x-auto">
+            <table class="w-full text-sm">
+                <thead><tr class="text-gray-400 border-b border-gray-600">
+                    <th class="py-2 px-3 text-left">Parser</th>
+                    <th class="py-2 px-3 text-right">Speed</th>
+                    <th class="py-2 px-3 text-right">Words</th>
+                    <th class="py-2 px-3 text-center text-xs">Key Content Present</th><th class="py-2 px-3 text-center text-xs">Reading Order</th>
+                </tr></thead>
+                <tbody><tr class="border-b border-gray-700 hover:bg-gray-800/50">
+                <td class="py-2 px-3 font-medium" style="color:#3b82f6">PyMuPDF</td>
+                <td class="py-2 px-3 text-right">145 ms</td>
+                <td class="py-2 px-3 text-right">1,654</td>
+                <td class="py-2 px-3 text-center text-yellow-400 text-xs cursor-help" title="Missing: inflation">6/7 <span class="text-gray-500">(85.7%)</span></td><td class="py-2 px-3 text-center text-green-400 text-xs cursor-help">2/2 <span class="text-gray-500">(100.0%)</span></td>
+            </tr><tr class="border-b border-gray-700 hover:bg-gray-800/50">
+                <td class="py-2 px-3 font-medium" style="color:#10b981">pdfplumber</td>
+                <td class="py-2 px-3 text-right">1095 ms</td>
+                <td class="py-2 px-3 text-right">1,331</td>
+                <td class="py-2 px-3 text-center text-yellow-400 text-xs cursor-help" title="Missing: inflation">6/7 <span class="text-gray-500">(85.7%)</span></td><td class="py-2 px-3 text-center text-green-400 text-xs cursor-help">2/2 <span class="text-gray-500">(100.0%)</span></td>
+            </tr><tr class="border-b border-gray-700 hover:bg-gray-800/50">
+                <td class="py-2 px-3 font-medium" style="color:#f59e0b">pypdf</td>
+                <td class="py-2 px-3 text-right">374 ms</td>
+                <td class="py-2 px-3 text-right">1,295</td>
+                <td class="py-2 px-3 text-center text-yellow-400 text-xs cursor-help" title="Missing: inflation">6/7 <span class="text-gray-500">(85.7%)</span></td><td class="py-2 px-3 text-center text-green-400 text-xs cursor-help">2/2 <span class="text-gray-500">(100.0%)</span></td>
+            </tr><tr class="border-b border-gray-700 hover:bg-gray-800/50">
+                <td class="py-2 px-3 font-medium" style="color:#ef4444">LiteParse</td>
+                <td class="py-2 px-3 text-right">9585 ms</td>
+                <td class="py-2 px-3 text-right">1,662</td>
+                <td class="py-2 px-3 text-center text-yellow-400 text-xs cursor-help" title="Missing: inflation">6/7 <span class="text-gray-500">(85.7%)</span></td><td class="py-2 px-3 text-center text-green-400 text-xs cursor-help">2/2 <span class="text-gray-500">(100.0%)</span></td>
+            </tr></tbody>
+            </table>
+            </div>
+        </div>
+        <div class="bg-gray-900 rounded-lg p-5 border border-gray-700">
+            <h3 class="text-lg font-semibold mb-1">Census Bureau Operational Plan (real)</h3>
+            <p class="text-gray-400 text-sm mb-3">hard_census.pdf — 3542 KB</p>
+            <div class="overflow-x-auto">
+            <table class="w-full text-sm">
+                <thead><tr class="text-gray-400 border-b border-gray-600">
+                    <th class="py-2 px-3 text-left">Parser</th>
+                    <th class="py-2 px-3 text-right">Speed</th>
+                    <th class="py-2 px-3 text-right">Words</th>
+                    <th class="py-2 px-3 text-center text-xs">Key Content Present</th><th class="py-2 px-3 text-center text-xs">Reading Order</th>
+                </tr></thead>
+                <tbody><tr class="border-b border-gray-700 hover:bg-gray-800/50">
+                <td class="py-2 px-3 font-medium" style="color:#3b82f6">PyMuPDF</td>
+                <td class="py-2 px-3 text-right">269 ms</td>
+                <td class="py-2 px-3 text-right">9,503</td>
+                <td class="py-2 px-3 text-center text-green-400 text-xs cursor-help">4/4 <span class="text-gray-500">(100.0%)</span></td><td class="py-2 px-3 text-center text-red-400 text-xs cursor-help" title="Swapped: &#x27;Census&#x27; after &#x27;2020&#x27;">0/1 <span class="text-gray-500">(0.0%)</span></td>
+            </tr><tr class="border-b border-gray-700 hover:bg-gray-800/50">
+                <td class="py-2 px-3 font-medium" style="color:#10b981">pdfplumber</td>
+                <td class="py-2 px-3 text-right">1895 ms</td>
+                <td class="py-2 px-3 text-right">2,062</td>
+                <td class="py-2 px-3 text-center text-green-400 text-xs cursor-help">4/4 <span class="text-gray-500">(100.0%)</span></td><td class="py-2 px-3 text-center text-red-400 text-xs cursor-help" title="Swapped: &#x27;Census&#x27; after &#x27;2020&#x27;">0/1 <span class="text-gray-500">(0.0%)</span></td>
+            </tr><tr class="border-b border-gray-700 hover:bg-gray-800/50">
+                <td class="py-2 px-3 font-medium" style="color:#f59e0b">pypdf</td>
+                <td class="py-2 px-3 text-right">416 ms</td>
+                <td class="py-2 px-3 text-right">2,127</td>
+                <td class="py-2 px-3 text-center text-green-400 text-xs cursor-help">4/4 <span class="text-gray-500">(100.0%)</span></td><td class="py-2 px-3 text-center text-red-400 text-xs cursor-help" title="Swapped: &#x27;Census&#x27; after &#x27;2020&#x27;">0/1 <span class="text-gray-500">(0.0%)</span></td>
+            </tr><tr class="border-b border-gray-700 hover:bg-gray-800/50">
+                <td class="py-2 px-3 font-medium" style="color:#ef4444">LiteParse</td>
+                <td class="py-2 px-3 text-right">9552 ms</td>
+                <td class="py-2 px-3 text-right">8,776</td>
+                <td class="py-2 px-3 text-center text-yellow-400 text-xs cursor-help" title="Missing: plan">3/4 <span class="text-gray-500">(75.0%)</span></td><td class="py-2 px-3 text-center text-red-400 text-xs cursor-help" title="Swapped: &#x27;Census&#x27; after &#x27;2020&#x27;">0/1 <span class="text-gray-500">(0.0%)</span></td>
+            </tr></tbody>
+            </table>
+            </div>
+        </div>
+  </div>
+
+  <div class="mt-10 p-5 bg-gray-900 rounded-lg border border-gray-700">
+    <h2 class="text-lg font-semibold mb-3">Test Methodology</h2>
+    <div class="text-sm text-gray-400 space-y-2">
+      <p><strong class="text-gray-300">Numeric Extraction:</strong> Checks if specific values (dollar amounts, percentages, citations) appear verbatim in extracted text.</p>
+      <p><strong class="text-gray-300">Table Row Integrity:</strong> Verifies that values belonging to the same table row appear on the same line in the output.</p>
+      <p><strong class="text-gray-300">Reading Order:</strong> Tests that phrases appear in the correct sequential order (important for multi-column and complex layouts).</p>
+      <p><strong class="text-gray-300">Column Separation:</strong> For two-column documents, checks if left column is fully read before right column (vs interleaved line-by-line reading).</p>
+      <p><strong class="text-gray-300">Watermark Separation:</strong> Checks if watermark text is cleanly separated from content text, with penalties for interleaving.</p>
+    </div>
+  </div>
+
+  <p class="text-center text-gray-500 text-sm mt-8">
+    Generated 2026-04-08 11:45
+  </p>
+</div>
+
+<script>
+const labels = ["Watermarked Financial Pro", "Clinical Trial Table", "Tax Compliance Report", "Two-Column Insurance Poli", "Fed Financial Stability R", "Census Bureau Operational"];
+const colors = {"PyMuPDF": "#3b82f6", "pdfplumber": "#10b981", "pypdf": "#f59e0b", "LiteParse": "#ef4444"};
+const parsers = ["PyMuPDF", "pdfplumber", "pypdf", "LiteParse"];
+
+function makeDatasets(dataMap) {
+  return parsers.map(p => ({
+    label: p,
+    data: dataMap[p],
+    backgroundColor: colors[p],
+    borderColor: colors[p],
+    borderWidth: 1
+  }));
+}
+
+const chartOpts = {
+  responsive: true,
+  plugins: { legend: { labels: { color: '#94a3b8' } } },
+  scales: {
+    x: { ticks: { color: '#94a3b8', maxRotation: 45 }, grid: { color: '#1e293b' } },
+    y: { ticks: { color: '#94a3b8' }, grid: { color: '#334155' }, beginAtZero: true }
+  }
+};
+
+new Chart(document.getElementById('speedChart'), {
+  type: 'bar',
+  data: { labels, datasets: makeDatasets({"PyMuPDF": [204.9, 17.0, 9.2, 10.3, 144.6, 268.6], "pdfplumber": [267.8, 247.3, 87.2, 134.1, 1095.3, 1895.3], "pypdf": [122.6, 23.8, 9.5, 20.5, 374.0, 415.5], "LiteParse": [4730.0, 3583.7, 5549.1, 3148.4, 9584.7, 9552.5]}) },
+  options: { ...chartOpts, scales: { ...chartOpts.scales, y: { ...chartOpts.scales.y, type: 'logarithmic' } } }
+});
+
+new Chart(document.getElementById('qualityChart'), {
+  type: 'bar',
+  data: { labels, datasets: makeDatasets({"PyMuPDF": [100.0, 66.7, 100.0, 95.2, 92.8, 50.0], "pdfplumber": [89.8, 100.0, 100.0, 75.2, 92.8, 50.0], "pypdf": [100.0, 100.0, 100.0, 95.2, 92.8, 50.0], "LiteParse": [91.7, 100.0, 100.0, 75.2, 92.8, 37.5]}) },
+  options: { ...chartOpts, scales: { ...chartOpts.scales, y: { ...chartOpts.scales.y, max: 100 } } }
+});
+</script>
+</body>
+</html>
