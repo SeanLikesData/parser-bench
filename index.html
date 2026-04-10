@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Parser Bench - PDF Parser Benchmarks</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  body { background: #0f172a; color: #e2e8f0; font-family: 'Inter', system-ui, sans-serif; }
+</style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-6">
+<div class="max-w-2xl w-full space-y-8 text-center">
+  <div>
+    <h1 class="text-4xl font-bold mb-3">Parser Bench</h1>
+    <p class="text-gray-400 text-lg">PDF parser benchmarking suite comparing extraction quality across PyMuPDF, pdfplumber, pypdf, and LiteParse</p>
+  </div>
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+    <a href="results/dashboard.html" class="block bg-gray-800 border border-gray-700 rounded-xl p-6 hover:border-blue-500 hover:bg-gray-800/80 transition-colors">
+      <h2 class="text-xl font-semibold text-blue-400 mb-2">Standard Suite</h2>
+      <p class="text-gray-400 text-sm">Content accuracy, speed, bounding boxes, and table extraction across 5 documents</p>
+    </a>
+    <a href="results/dashboard_hard.html" class="block bg-gray-800 border border-gray-700 rounded-xl p-6 hover:border-amber-500 hover:bg-gray-800/80 transition-colors">
+      <h2 class="text-xl font-semibold text-amber-400 mb-2">Hard Suite</h2>
+      <p class="text-gray-400 text-sm">Reading order, column handling, watermark filtering, table row integrity, and numeric precision across 6 documents</p>
+    </a>
+  </div>
+
+  <p class="text-gray-500 text-sm">
+    <a href="https://github.com/SeanLikesData/parser-bench" class="text-gray-400 hover:text-white transition-colors">View source on GitHub</a>
+  </p>
+</div>
+</body>
+</html>
