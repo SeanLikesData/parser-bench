@@ -8,21 +8,19 @@ Usage:
     python -m parser_bench --parsers pymupdf,pypdf # Select parsers
     python -m parser_bench --runs 10               # Custom run count
     python -m parser_bench --warmup 2              # Custom warmup count
-    python -m parser_bench --docs-dir ./pdfs       # Custom PDF directory
+    python -m parser_bench --docs-dir ./pdfs       # Custom docs root (expects standard/ and hard/ subdirs)
 """
 
 import argparse
 import json
 import os
-import statistics
 import sys
 import time
 
-from .parsers import PARSER_REGISTRY, get_parser, get_parser_meta, list_parsers
+from .parsers import get_parser, list_parsers
 from .runner import (
     capture_environment,
     check_known_content,
-    find_pdfs,
     run_timed,
     text_quality_metrics,
 )
@@ -251,14 +249,14 @@ def main():
     parser.add_argument(
         "--docs-dir",
         type=str,
-        default=".",
-        help="Directory containing test PDF files (default: current directory)",
+        default="docs",
+        help="Root directory containing standard/ and hard/ PDF subdirs (default: docs)",
     )
     parser.add_argument(
         "--output-dir",
         type=str,
-        default=".",
-        help="Directory for output files (default: current directory)",
+        default="results",
+        help="Directory for output files (default: results)",
     )
     parser.add_argument(
         "--no-dashboard",
@@ -289,6 +287,8 @@ def main():
     print(f"Python {env['python'].split()[0]} on {env['platform']}")
     print(f"Parsers: {', '.join(parsers)}")
     print(f"Runs: {args.runs}, Warmup: {args.warmup}")
+    standard_docs = os.path.join(args.docs_dir, "standard")
+    hard_docs = os.path.join(args.docs_dir, "hard")
     print(f"Docs: {os.path.abspath(args.docs_dir)}")
 
     os.makedirs(args.output_dir, exist_ok=True)
@@ -299,7 +299,7 @@ def main():
         print("  STANDARD BENCHMARK SUITE")
         print(f"{'#' * 60}")
         standard_results = run_standard_suite(
-            parsers, args.docs_dir, runs=args.runs, warmup=args.warmup
+            parsers, standard_docs, runs=args.runs, warmup=args.warmup
         )
 
         # Save results JSON
@@ -330,7 +330,7 @@ def main():
         print(f"\n{'#' * 60}")
         print("  HARD BENCHMARK SUITE")
         print(f"{'#' * 60}")
-        hard_results = run_hard_suite(parsers, args.docs_dir)
+        hard_results = run_hard_suite(parsers, hard_docs)
 
         out = os.path.join(args.output_dir, "results_hard.json")
         with open(out, "w") as f:
