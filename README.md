@@ -1,21 +1,107 @@
 # parser-bench
 
-Benchmarking suite for Python PDF parsers. Compares speed, accuracy, and feature support across real-world documents.
+Benchmarking suite for Python PDF parsers, focused on **extraction quality** -- not just speed. Tests content accuracy, reading order, table fidelity, column handling, watermark separation, and numeric precision across 11 real-world documents.
 
 ## Parsers tested
 
-| Parser | Speed | Pure Python | Bounding Boxes | Tables | Multi-Format |
-|--------|-------|-------------|----------------|--------|--------------|
-| **pypdf** | ~22ms | Yes | No | No | No |
-| **PyMuPDF** | ~45ms | No (C/MuPDF) | Yes | No | No |
-| **pdfplumber** | ~215ms | Yes | Yes | Yes | No |
-| **LiteParse** | ~2.4s | No (API) | No | No | Yes |
+- **PyMuPDF** (fitz) -- C-backed via MuPDF, span-level bounding boxes, broad format support
+- **pdfplumber** -- pure Python, best-in-class table extraction, char-level coordinates
+- **pypdf** -- pure Python, lightweight, no native dependencies
+- **LiteParse** -- API-based, multi-format (PDF, DOCX, PPTX, XLSX, images), auto-OCR
 
-## Test documents
+## Format support
 
-**Standard suite** (5 docs): IRS W-9 form, financial report, two-column academic paper, employee database with pivot tables, board meeting minutes.
+| Format | PyMuPDF | pdfplumber | pypdf | LiteParse |
+|--------|---------|------------|-------|-----------|
+| PDF | Y | Y | Y | Y |
+| DOCX / DOC / ODT / RTF | - | - | - | Y |
+| PPTX / PPT / ODP | - | - | - | Y |
+| XLSX / XLS / ODS / CSV | - | - | - | Y |
+| Images (PNG, JPG, TIFF) | Y | - | - | Y |
+| EPUB / MOBI / FB2 | Y | - | - | - |
+| XPS / SVG / CBZ | Y | - | - | - |
+| Password-protected PDFs | Y | Y | Y | Y |
 
-**Hard suite** (6 docs): watermarked financial projections, clinical trial tables, tax compliance with formulas, two-column insurance policy, Fed financial stability report, Census Bureau operational plan.
+## Extraction capabilities
+
+| Capability | PyMuPDF | pdfplumber | pypdf | LiteParse |
+|------------|---------|------------|-------|-----------|
+| Plain text | Y | Y | Y | Y |
+| Bounding boxes | Y (span) | Y (char) | - | Y (line) |
+| Table extraction | ~ | **Y (best)** | - | Y |
+| Embedded images | Y | Y | Y | - |
+| OCR (scanned docs) | Y | - | - | **Y (auto)** |
+| Form fields / AcroForms | ~ | Y | **Y (best)** | - |
+| Annotations | Y | Y | Y | - |
+| Metadata | Y | Y | Y | - |
+| Bookmarks / TOC | Y | - | - | - |
+| Font info (name, size, color) | Y | - | - | - |
+| PDF manipulation (merge, split) | Y | - | **Y (best)** | - |
+
+## Quality results
+
+### Content accuracy (standard suite)
+
+Percentage of expected phrases found in extracted text across 5 standard documents:
+
+| Document | PyMuPDF | pdfplumber | pypdf | LiteParse |
+|----------|---------|------------|-------|-----------|
+| IRS W-9 Form | 100% | 100% | 100% | 100% |
+| Financial Report | 83% | 100% | 100% | 83% |
+| Multi-Column Paper | 83% | 83% | 83% | 83% |
+| Employee Database | 100% | 100% | 100% | 100% |
+| Board Minutes (4pg) | 100% | 100% | 100% | 100% |
+| **Average** | **93%** | **97%** | **97%** | **93%** |
+
+### Hard quality tests
+
+Targeted tests on 6 challenging documents. Each cell shows pass rate for that specific quality dimension.
+
+**Watermarked Financial Projections**
+
+| Test | PyMuPDF | pdfplumber | pypdf | LiteParse |
+|------|---------|------------|-------|-----------|
+| Watermark vs content separation | 100% | 67% (interleaved) | 100% | 100% (interleaved) |
+| Financial numbers intact | 100% | 92% | 100% | 100% |
+| Sensitivity table rows | 100% | 100% | 100% | 67% |
+| Reading order | 100% | 100% | 100% | 100% |
+
+**Clinical Trial Table**
+
+| Test | PyMuPDF | pdfplumber | pypdf | LiteParse |
+|------|---------|------------|-------|-----------|
+| Table row integrity | **0%** | 100% | 100% | 100% |
+| Statistical values present | 100% | 100% | 100% | 100% |
+| Section order | 100% | 100% | 100% | 100% |
+
+PyMuPDF splits table rows across lines, breaking row integrity. pdfplumber, pypdf, and LiteParse keep row values together.
+
+**Tax Compliance Report**
+
+| Test | PyMuPDF | pdfplumber | pypdf | LiteParse |
+|------|---------|------------|-------|-----------|
+| Treaty table rows | 100% | 100% | 100% | 100% |
+| Formulas & calculations | 100% | 100% | 100% | 100% |
+| Legal citations | 100% | 100% | 100% | 100% |
+
+**Two-Column Insurance Policy**
+
+| Test | PyMuPDF | pdfplumber | pypdf | LiteParse |
+|------|---------|------------|-------|-----------|
+| Column reading order | 100% (separate) | **40% (interleaved)** | 100% (separate) | **40% (interleaved)** |
+| Defined terms present | 86% | 86% | 86% | 86% |
+| Footer data | 100% | 100% | 100% | 100% |
+
+pdfplumber and LiteParse read across columns instead of down them, mixing left and right column text.
+
+**Real government documents** (Fed report + Census plan): all parsers extract key content, but all struggle with reading order on the Census document.
+
+### Key takeaways
+
+- **pypdf** has the best overall quality -- highest content accuracy and correct column/reading order handling, with no major weaknesses
+- **PyMuPDF** handles columns and watermarks well, but breaks table row structure
+- **pdfplumber** excels at table extraction but fails on two-column layouts and watermark separation
+- **LiteParse** matches pypdf on most tests but fails on column layouts and some table structures
 
 ## Usage
 
