@@ -1,668 +1,707 @@
-[
-  {
-    "file": "hard_watermark_financial.pdf",
-    "label": "Watermarked Financial Projections",
-    "file_size": 8792,
-    "parsers": {
-      "PyMuPDF": {
-        "time_ms": 204.9,
-        "words": 288,
-        "chars": 2613,
-        "pages": 1,
-        "tests": {
-          "Watermark vs Content Separation": {
-            "content_found": 6,
-            "content_total": 6,
-            "watermark_found": 2,
-            "interleaved": 0,
-            "score_pct": 100.0,
-            "penalty": 0
-          },
-          "Financial Numbers Intact": {
-            "found": 13,
-            "total": 13,
-            "pct": 100.0,
-            "missing": []
-          },
-          "Sensitivity Table Rows": {
-            "found": 3,
-            "total": 3,
-            "pct": 100.0
-          },
-          "Reading Order (narrative flow)": {
-            "ordered": 7,
-            "total": 7,
-            "pct": 100.0,
-            "swaps": []
-          }
-        }
-      },
-      "pdfplumber": {
-        "time_ms": 267.8,
-        "words": 295,
-        "chars": 1904,
-        "pages": 1,
-        "tests": {
-          "Watermark vs Content Separation": {
-            "content_found": 4,
-            "content_total": 6,
-            "watermark_found": 3,
-            "interleaved": 2,
-            "score_pct": 66.7,
-            "penalty": 2
-          },
-          "Financial Numbers Intact": {
-            "found": 12,
-            "total": 13,
-            "pct": 92.3,
-            "missing": [
-              "$3,617"
-            ]
-          },
-          "Sensitivity Table Rows": {
-            "found": 3,
-            "total": 3,
-            "pct": 100.0
-          },
-          "Reading Order (narrative flow)": {
-            "ordered": 5,
-            "total": 5,
-            "pct": 100.0,
-            "swaps": []
-          }
-        }
-      },
-      "pypdf": {
-        "time_ms": 122.6,
-        "words": 288,
-        "chars": 2633,
-        "pages": 1,
-        "tests": {
-          "Watermark vs Content Separation": {
-            "content_found": 6,
-            "content_total": 6,
-            "watermark_found": 3,
-            "interleaved": 0,
-            "score_pct": 100.0,
-            "penalty": 0
-          },
-          "Financial Numbers Intact": {
-            "found": 13,
-            "total": 13,
-            "pct": 100.0,
-            "missing": []
-          },
-          "Sensitivity Table Rows": {
-            "found": 3,
-            "total": 3,
-            "pct": 100.0
-          },
-          "Reading Order (narrative flow)": {
-            "ordered": 7,
-            "total": 7,
-            "pct": 100.0,
-            "swaps": []
-          }
-        }
-      },
-      "LiteParse": {
-        "time_ms": 4730.0,
-        "words": 287,
-        "chars": 2806,
-        "pages": 1,
-        "tests": {
-          "Watermark vs Content Separation": {
-            "content_found": 6,
-            "content_total": 6,
-            "watermark_found": 2,
-            "interleaved": 4,
-            "score_pct": 100.0,
-            "penalty": 4
-          },
-          "Financial Numbers Intact": {
-            "found": 13,
-            "total": 13,
-            "pct": 100.0,
-            "missing": []
-          },
-          "Sensitivity Table Rows": {
-            "found": 2,
-            "total": 3,
-            "pct": 66.7
-          },
-          "Reading Order (narrative flow)": {
-            "ordered": 7,
-            "total": 7,
-            "pct": 100.0,
-            "swaps": []
-          }
-        }
-      }
+{
+  "environment": {
+    "python": "3.13.5 (main, Jun 11 2025, 15:36:57) [Clang 17.0.0 (clang-1700.0.13.3)]",
+    "platform": "macOS-26.3-arm64-arm-64bit-Mach-O",
+    "machine": "arm64",
+    "processor": "arm",
+    "timestamp": "2026-04-10T16:05:27-0700",
+    "libraries": {
+      "pymupdf": "1.27.2.2",
+      "pdfplumber": "0.11.9",
+      "pypdf": "6.9.2",
+      "liteparse": "1.2.1"
     }
   },
-  {
-    "file": "hard_clinical_table.pdf",
-    "label": "Clinical Trial Table",
-    "file_size": 46431,
-    "parsers": {
-      "PyMuPDF": {
-        "time_ms": 17.0,
-        "words": 236,
-        "chars": 1594,
-        "pages": 1,
-        "tests": {
-          "Table Row Integrity (values on same line)": {
-            "found": 0,
-            "total": 5,
-            "pct": 0.0
+  "results": [
+    {
+      "file": "hard_watermark_financial.pdf",
+      "label": "Watermarked Financial Projections",
+      "file_size": 8792,
+      "parsers": {
+        "PyMuPDF": {
+          "time_ms": 55.7,
+          "words": 288,
+          "chars": 2613,
+          "pages": 1,
+          "tests": {
+            "Watermark vs Content Separation": {
+              "content_found": 6,
+              "content_total": 6,
+              "watermark_found": 2,
+              "interleaved": 0,
+              "score_pct": 100.0,
+              "penalty": 0
+            },
+            "Financial Numbers Intact": {
+              "found": 13,
+              "total": 13,
+              "pct": 100.0,
+              "missing": []
+            },
+            "Sensitivity Table Rows": {
+              "found": 3,
+              "total": 3,
+              "pct": 100.0
+            },
+            "Reading Order (narrative flow)": {
+              "ordered": 7,
+              "total": 7,
+              "pct": 100.0,
+              "swaps": []
+            }
           },
-          "All Statistical Values Present": {
-            "found": 18,
-            "total": 18,
-            "pct": 100.0,
-            "missing": []
+          "text_preview": "DRAFT \u00b7 CONFIDENTIAL \u00b7 DO NOT DIS\nDRAFT \u00b7 CONFIDENTIAL \u00b7 DO NOT DIS\nDRAFT \u00b7 CONFIDENTIAL \u00b7 DO NOT DIS\nPRIVILEGED & CONFIDENTIAL \u00b7 ATTORNEY WORK PRODUCT\nMerger Agreement \u00b7 Exhibit A: Financial Projections\nPrepared by: Morrison & Foerster LLP  |  Date: November 15, 2025\nPROJECTED CASH FLOWS (USD '000s)\n                        FY2025A      FY2026E      FY2027E      FY2028E      FY2029E\nRevenue                 $42,150      $51,823      $63,742      $78,403      $96,436\n  YoY Growth               \u00b7          22.9%        23.0%        23.0%        23.0%\nCOGS                   ($16,860)    ($19,693)  "
+        },
+        "pdfplumber": {
+          "time_ms": 95.2,
+          "words": 295,
+          "chars": 1904,
+          "pages": 1,
+          "tests": {
+            "Watermark vs Content Separation": {
+              "content_found": 4,
+              "content_total": 6,
+              "watermark_found": 3,
+              "interleaved": 2,
+              "score_pct": 66.7,
+              "penalty": 2
+            },
+            "Financial Numbers Intact": {
+              "found": 12,
+              "total": 13,
+              "pct": 92.3,
+              "missing": [
+                "$3,617"
+              ]
+            },
+            "Sensitivity Table Rows": {
+              "found": 3,
+              "total": 3,
+              "pct": 100.0
+            },
+            "Reading Order (narrative flow)": {
+              "ordered": 5,
+              "total": 5,
+              "pct": 100.0,
+              "swaps": []
+            }
           },
-          "Section Order": {
-            "ordered": 7,
-            "total": 7,
-            "pct": 100.0,
-            "swaps": []
-          }
+          "text_preview": "PRIVILEGED & CONFIDENTIAL \u00b7 ATTORNEY WORK PRODUCT\nMerger Agreement \u00b7 Exhibit A: Financial Projections\nPreDparedR by: MAorrisoFn & FToerst er\u00b7 LL PC | DatOe: NovNembeFr 15, 2I0D25 ENTIAL \u00b7 DO NOT DISTRIBUTE\nPROJECTED CASH FLOWS (USD '000s)\nFY2025A FY2026E FY2027E FY2028E FY2029E\nRevenue $42,150 $51,823 $63,742 $78,403 $96,436\nYoY Growth \u00b7 22.9% 23.0% 23.0% 23.0%\nCOGS ($16,860) ($19,693) ($22,897) ($26,617) ($30,919)\nGross Margin 60.0% 62.0% 64.1% 66.1% 67.9%\nEBITDA $8,430 $11,404 $15,298 $20,514 $27,509\nEBITDA Margin 20.0% 22.0% 24.0% 26.2% 28.5%\nD&A ($2,108) ($2,591) ($3,187) ($3,920) ($4,822)"
+        },
+        "pypdf": {
+          "time_ms": 9.0,
+          "words": 288,
+          "chars": 2633,
+          "pages": 1,
+          "tests": {
+            "Watermark vs Content Separation": {
+              "content_found": 6,
+              "content_total": 6,
+              "watermark_found": 3,
+              "interleaved": 0,
+              "score_pct": 100.0,
+              "penalty": 0
+            },
+            "Financial Numbers Intact": {
+              "found": 13,
+              "total": 13,
+              "pct": 100.0,
+              "missing": []
+            },
+            "Sensitivity Table Rows": {
+              "found": 3,
+              "total": 3,
+              "pct": 100.0
+            },
+            "Reading Order (narrative flow)": {
+              "ordered": 7,
+              "total": 7,
+              "pct": 100.0,
+              "swaps": []
+            }
+          },
+          "text_preview": "DRAFT \u00b7 CONFIDENTIAL \u00b7 DO NOT DISTRIBUTE\nDRAFT \u00b7 CONFIDENTIAL \u00b7 DO NOT DISTRIBUTE\nDRAFT \u00b7 CONFIDENTIAL \u00b7 DO NOT DISTRIBUTE\nPRIVILEGED & CONFIDENTIAL \u00b7 ATTORNEY WORK PRODUCT\nMerger Agreement \u00b7 Exhibit A: Financial Projections\nPrepared by: Morrison & Foerster LLP  |  Date: November 15, 2025\nPROJECTED CASH FLOWS (USD '000s)\n                        FY2025A      FY2026E      FY2027E      FY2028E      FY2029E\nRevenue                 $42,150      $51,823      $63,742      $78,403      $96,436\n  YoY Growth               \u00b7          22.9%        23.0%        23.0%        23.0%\nCOGS                   ($1"
+        },
+        "LiteParse": {
+          "time_ms": 1988.0,
+          "words": 287,
+          "chars": 2806,
+          "pages": 1,
+          "tests": {
+            "Watermark vs Content Separation": {
+              "content_found": 6,
+              "content_total": 6,
+              "watermark_found": 2,
+              "interleaved": 4,
+              "score_pct": 100.0,
+              "penalty": 4
+            },
+            "Financial Numbers Intact": {
+              "found": 13,
+              "total": 13,
+              "pct": 100.0,
+              "missing": []
+            },
+            "Sensitivity Table Rows": {
+              "found": 2,
+              "total": 3,
+              "pct": 66.7
+            },
+            "Reading Order (narrative flow)": {
+              "ordered": 7,
+              "total": 7,
+              "pct": 100.0,
+              "swaps": []
+            }
+          },
+          "text_preview": "PRIVILEGED & CONFIDENTIAL \u00b7 ATTORNEY WORK PRODUCT\nMerger Agreement \u00b7 Exhibit A: Financial Projections\n   DRAFT \u00b7\nPrepared by: Morrison & Foerster CONFIDENTIAL\n     LLP\n PROJECTED CASH FLOWS (USD '000s) | Date: November 15, 2025        \u00b7 DO NOT DIS\n\n                         FY2025A      FY2026E      FY2027E      FY2028E      FY2029E\n Revenue                 $42,150      $51,823      $63,742      $78,403      $96,436\n   YoY Growth                         22.9%        23.0%        23.0%        23.0%\n COGS                   ($16,860)    ($19,693)    ($22,897)    ($26,617)    ($30,919)\n   Gross Mar"
         }
-      },
-      "pdfplumber": {
-        "time_ms": 247.3,
-        "words": 236,
-        "chars": 1553,
-        "pages": 1,
-        "tests": {
-          "Table Row Integrity (values on same line)": {
-            "found": 5,
-            "total": 5,
-            "pct": 100.0
+      }
+    },
+    {
+      "file": "hard_clinical_table.pdf",
+      "label": "Clinical Trial Table",
+      "file_size": 46431,
+      "parsers": {
+        "PyMuPDF": {
+          "time_ms": 12.4,
+          "words": 236,
+          "chars": 1594,
+          "pages": 1,
+          "tests": {
+            "Table Row Integrity (values on same line)": {
+              "found": 0,
+              "total": 5,
+              "pct": 0.0
+            },
+            "All Statistical Values Present": {
+              "found": 18,
+              "total": 18,
+              "pct": 100.0,
+              "missing": []
+            },
+            "Section Order": {
+              "ordered": 7,
+              "total": 7,
+              "pct": 100.0,
+              "swaps": []
+            }
           },
-          "All Statistical Values Present": {
-            "found": 18,
-            "total": 18,
-            "pct": 100.0,
-            "missing": []
+          "text_preview": "CLINICAL TRIAL RESULTS \u00b7 PHASE III RANDOMIZED CONTROLLED STUDY\nProtocol ID: NCT-2025-0847  |  Sponsor: AcmePharma Inc.  |  IRB Approval: #2025-0392\nEndpoint\nDrug (n=485)\nPlacebo (n=482)\nDelta\n95% CI\np-value\nNNT\nPRIMARY ENDPOINTS\n  Overall Response Rate\n68.2%\n31.4%\n+36.8%\n30.1-43.5\n<0.001*\n3\n  Complete Response\n22.1%\n5.0%\n+17.1%\n12.4-21.8\n<0.001*\n6\n  Median PFS (months)\n14.2\n6.8\n+7.4\n5.9-8.9\n<0.001*\n-\n  Median OS (months)\n24.6\n18.1\n+6.5\n3.2-9.8\n0.002*\n-\nSECONDARY ENDPOINTS\n  Duration of Response\n11.3 mo\n4.7 mo\n+6.6\n4.8-8.4\n<0.001*\n-\n  Time to Response\n2.1 mo\n3.4 mo\n-1.3\n0.8-1.8\n0.01*\n-\n  Diseas"
+        },
+        "pdfplumber": {
+          "time_ms": 125.5,
+          "words": 236,
+          "chars": 1553,
+          "pages": 1,
+          "tests": {
+            "Table Row Integrity (values on same line)": {
+              "found": 5,
+              "total": 5,
+              "pct": 100.0
+            },
+            "All Statistical Values Present": {
+              "found": 18,
+              "total": 18,
+              "pct": 100.0,
+              "missing": []
+            },
+            "Section Order": {
+              "ordered": 7,
+              "total": 7,
+              "pct": 100.0,
+              "swaps": []
+            }
           },
-          "Section Order": {
-            "ordered": 7,
-            "total": 7,
-            "pct": 100.0,
-            "swaps": []
-          }
+          "text_preview": "CLINICAL TRIAL RESULTS \u00b7 PHASE III RANDOMIZED CONTROLLED STUDY\nProtocol ID: NCT-2025-0847 | Sponsor: AcmePharma Inc. | IRB Approval: #2025-0392\nEndpoint Drug (n=485) Placebo (n=482) Delta 95% CI p-value NNT\nPRIMARY ENDPOINTS\nOverall Response Rate 68.2% 31.4% +36.8% 30.1-43.5 <0.001* 3\nComplete Response 22.1% 5.0% +17.1% 12.4-21.8 <0.001* 6\nMedian PFS (months) 14.2 6.8 +7.4 5.9-8.9 <0.001* -\nMedian OS (months) 24.6 18.1 +6.5 3.2-9.8 0.002* -\nSECONDARY ENDPOINTS\nDuration of Response 11.3 mo 4.7 mo +6.6 4.8-8.4 <0.001* -\nTime to Response 2.1 mo 3.4 mo -1.3 0.8-1.8 0.01* -\nDisease Control Rate 82."
+        },
+        "pypdf": {
+          "time_ms": 19.3,
+          "words": 236,
+          "chars": 1593,
+          "pages": 1,
+          "tests": {
+            "Table Row Integrity (values on same line)": {
+              "found": 5,
+              "total": 5,
+              "pct": 100.0
+            },
+            "All Statistical Values Present": {
+              "found": 18,
+              "total": 18,
+              "pct": 100.0,
+              "missing": []
+            },
+            "Section Order": {
+              "ordered": 7,
+              "total": 7,
+              "pct": 100.0,
+              "swaps": []
+            }
+          },
+          "text_preview": "CLINICAL TRIAL RESULTS \u00b7 PHASE III RANDOMIZED CONTROLLED STUDY\nProtocol ID: NCT-2025-0847  |  Sponsor: AcmePharma Inc.  |  IRB Approval: #2025-0392\nEndpoint Drug (n=485) Placebo (n=482) Delta 95% CI p-value NNT\nPRIMARY ENDPOINTS\n  Overall Response Rate 68.2% 31.4% +36.8% 30.1-43.5 <0.001* 3\n  Complete Response 22.1% 5.0% +17.1% 12.4-21.8 <0.001* 6\n  Median PFS (months) 14.2 6.8 +7.4 5.9-8.9 <0.001* -\n  Median OS (months) 24.6 18.1 +6.5 3.2-9.8 0.002* -\nSECONDARY ENDPOINTS\n  Duration of Response 11.3 mo 4.7 mo +6.6 4.8-8.4 <0.001* -\n  Time to Response 2.1 mo 3.4 mo -1.3 0.8-1.8 0.01* -\n  Diseas"
+        },
+        "LiteParse": {
+          "time_ms": 1550.4,
+          "words": 236,
+          "chars": 2291,
+          "pages": 1,
+          "tests": {
+            "Table Row Integrity (values on same line)": {
+              "found": 5,
+              "total": 5,
+              "pct": 100.0
+            },
+            "All Statistical Values Present": {
+              "found": 18,
+              "total": 18,
+              "pct": 100.0,
+              "missing": []
+            },
+            "Section Order": {
+              "ordered": 7,
+              "total": 7,
+              "pct": 100.0,
+              "swaps": []
+            }
+          },
+          "text_preview": "CLINICAL TRIAL RESULTS \u00b7 PHASE III RANDOMIZED CONTROLLED STUDY\nProtocol ID: NCT-2025-0847 | Sponsor: AcmePharma Inc. | IRB Approval: #2025-0392\n\n\n      Endpoint             Drug (n=485)  Placebo (n=482)  Delta     95% CI   p-value   NNT\n\n PRIMARY ENDPOINTS\n  Overall Response Rate       68.2%           31.4%       +36.8%  30.1-43.5  <0.001*    3\n\n  Complete Response           22.1%            5.0%       +17.1%  12.4-21.8  <0.001*    6\n\n  Median PFS (months)          14.2            6.8         +7.4    5.9-8.9   <0.001*    -\n\n  Median OS (months)           24.6            18.1        +6.5    3.2"
         }
-      },
-      "pypdf": {
-        "time_ms": 23.8,
-        "words": 236,
-        "chars": 1593,
-        "pages": 1,
-        "tests": {
-          "Table Row Integrity (values on same line)": {
-            "found": 5,
-            "total": 5,
-            "pct": 100.0
+      }
+    },
+    {
+      "file": "hard_compliance.pdf",
+      "label": "Tax Compliance Report",
+      "file_size": 8842,
+      "parsers": {
+        "PyMuPDF": {
+          "time_ms": 11.5,
+          "words": 272,
+          "chars": 2153,
+          "pages": 1,
+          "tests": {
+            "Treaty Table Rows": {
+              "found": 3,
+              "total": 3,
+              "pct": 100.0
+            },
+            "Formula & Calculation Values": {
+              "found": 9,
+              "total": 9,
+              "pct": 100.0,
+              "missing": []
+            },
+            "Legal Citations Intact": {
+              "found": 6,
+              "total": 6,
+              "pct": 100.0,
+              "missing": []
+            }
           },
-          "All Statistical Values Present": {
-            "found": 18,
-            "total": 18,
-            "pct": 100.0,
-            "missing": []
+          "text_preview": "INTERNATIONAL COMPLIANCE REPORT\nMulti-Jurisdictional Tax Treaty Analysis \u00b7 Cross-Border Transactions\n1. TREATY OVERVIEW\nThe following tax treaties are analyzed under the OECD Model Tax Convention (2024 Update):\n  Treaty              Withholding Rates              Effective Date    PE Threshold\n  US-Germany (DTAA)   Div: 5%/15%  Int: 0%  Roy: 0%   01-Jan-2007      183 days\n  US-Japan (DTAA)     Div: 5%/10%  Int: 10% Roy: 0%   01-Jan-2004      183 days  \n  US-UK (DTAA)        Div: 5%/15%  Int: 0%  Roy: 0%   01-May-2003      183 days\n  US-Singapore        Div: 5%/15%  Int: 12% Roy: 10%  01-Jan-19"
+        },
+        "pdfplumber": {
+          "time_ms": 49.4,
+          "words": 272,
+          "chars": 1846,
+          "pages": 1,
+          "tests": {
+            "Treaty Table Rows": {
+              "found": 3,
+              "total": 3,
+              "pct": 100.0
+            },
+            "Formula & Calculation Values": {
+              "found": 9,
+              "total": 9,
+              "pct": 100.0,
+              "missing": []
+            },
+            "Legal Citations Intact": {
+              "found": 6,
+              "total": 6,
+              "pct": 100.0,
+              "missing": []
+            }
           },
-          "Section Order": {
-            "ordered": 7,
-            "total": 7,
-            "pct": 100.0,
-            "swaps": []
-          }
+          "text_preview": "INTERNATIONAL COMPLIANCE REPORT\nMulti-Jurisdictional Tax Treaty Analysis \u00b7 Cross-Border Transactions\n1. TREATY OVERVIEW\nThe following tax treaties are analyzed under the OECD Model Tax Convention (2024 Update):\nTreaty Withholding Rates Effective Date PE Threshold\nUS-Germany (DTAA) Div: 5%/15% Int: 0% Roy: 0% 01-Jan-2007 183 days\nUS-Japan (DTAA) Div: 5%/10% Int: 10% Roy: 0% 01-Jan-2004 183 days\nUS-UK (DTAA) Div: 5%/15% Int: 0% Roy: 0% 01-May-2003 183 days\nUS-Singapore Div: 5%/15% Int: 12% Roy: 10% 01-Jan-1997 183 days\nUS-Ireland Div: 5%/15% Int: 0% Roy: 0% 01-Jan-1998 183 days\n2. TRANSFER PRICI"
+        },
+        "pypdf": {
+          "time_ms": 6.8,
+          "words": 272,
+          "chars": 2152,
+          "pages": 1,
+          "tests": {
+            "Treaty Table Rows": {
+              "found": 3,
+              "total": 3,
+              "pct": 100.0
+            },
+            "Formula & Calculation Values": {
+              "found": 9,
+              "total": 9,
+              "pct": 100.0,
+              "missing": []
+            },
+            "Legal Citations Intact": {
+              "found": 6,
+              "total": 6,
+              "pct": 100.0,
+              "missing": []
+            }
+          },
+          "text_preview": "INTERNATIONAL COMPLIANCE REPORT\nMulti-Jurisdictional Tax Treaty Analysis \u00b7 Cross-Border Transactions\n1. TREATY OVERVIEW\nThe following tax treaties are analyzed under the OECD Model Tax Convention (2024 Update):\n  Treaty              Withholding Rates              Effective Date    PE Threshold\n  US-Germany (DTAA)   Div: 5%/15%  Int: 0%  Roy: 0%   01-Jan-2007      183 days\n  US-Japan (DTAA)     Div: 5%/10%  Int: 10% Roy: 0%   01-Jan-2004      183 days  \n  US-UK (DTAA)        Div: 5%/15%  Int: 0%  Roy: 0%   01-May-2003      183 days\n  US-Singapore        Div: 5%/15%  Int: 12% Roy: 10%  01-Jan-19"
+        },
+        "LiteParse": {
+          "time_ms": 1761.8,
+          "words": 272,
+          "chars": 2163,
+          "pages": 1,
+          "tests": {
+            "Treaty Table Rows": {
+              "found": 3,
+              "total": 3,
+              "pct": 100.0
+            },
+            "Formula & Calculation Values": {
+              "found": 9,
+              "total": 9,
+              "pct": 100.0,
+              "missing": []
+            },
+            "Legal Citations Intact": {
+              "found": 6,
+              "total": 6,
+              "pct": 100.0,
+              "missing": []
+            }
+          },
+          "text_preview": " INTERNATIONAL COMPLIANCE REPORT\n Multi-Jurisdictional Tax Treaty Analysis \u00b7 Cross-Border Transactions\n\n1. TREATY OVERVIEW\n\nThe following tax treaties are analyzed under the OECD Model Tax Convention (2024 Update):\n\n  Treaty              Withholding Rates              Effective Date    PE Threshold\n  US-Germany (DTAA)   Div: 5%/15%  Int: 0%  Roy: 0%   01-Jan-2007      183 days\n  US-Japan (DTAA)     Div: 5%/10%  Int: 10% Roy: 0%   01-Jan-2004      183 days\n  US-UK (DTAA)        Div: 5%/15%  Int: 0%  Roy: 0%   01-May-2003      183 days\n  US-Singapore        Div: 5%/15%  Int: 12% Roy: 10%  01-Jan"
         }
-      },
-      "LiteParse": {
-        "time_ms": 3583.7,
-        "words": 236,
-        "chars": 2291,
-        "pages": 1,
-        "tests": {
-          "Table Row Integrity (values on same line)": {
-            "found": 5,
-            "total": 5,
-            "pct": 100.0
+      }
+    },
+    {
+      "file": "hard_insurance.pdf",
+      "label": "Two-Column Insurance Policy",
+      "file_size": 18634,
+      "parsers": {
+        "PyMuPDF": {
+          "time_ms": 14.6,
+          "words": 459,
+          "chars": 3055,
+          "pages": 1,
+          "tests": {
+            "Column Reading Order": {
+              "correct": 25,
+              "total": 25,
+              "pct": 100.0,
+              "status": "separate"
+            },
+            "Defined Terms Present": {
+              "found": 6,
+              "total": 7,
+              "pct": 85.7,
+              "missing": [
+                "\"insured contract\""
+              ]
+            },
+            "Footer Data Intact": {
+              "found": 6,
+              "total": 6,
+              "pct": 100.0,
+              "missing": []
+            }
           },
-          "All Statistical Values Present": {
-            "found": 18,
-            "total": 18,
-            "pct": 100.0,
-            "missing": []
+          "text_preview": "COMMERCIAL GENERAL LIABILITY COVERAGE FORM\nPolicy No. CGL-2025-048721  |  Effective: 01/01/2026 to 01/01/2027\nSECTION I -- COVERAGES\nCOVERAGE A -- BODILY INJURY AND\nPROPERTY DAMAGE LIABILITY\n1. Insuring Agreement\n  a. We will pay those sums that the\n  insured becomes legally obligated\n  to pay as damages because of\n  \"bodily injury\" or \"property damage\"\n  to which this insurance applies. We\n  will have the right and duty to\n  defend the insured against any\n  \"suit\" seeking those damages.\n  However, we will have no duty to\n  defend the insured against any\n  \"suit\" seeking damages for \"bodily\n  "
+        },
+        "pdfplumber": {
+          "time_ms": 88.2,
+          "words": 459,
+          "chars": 2848,
+          "pages": 1,
+          "tests": {
+            "Column Reading Order": {
+              "correct": 10,
+              "total": 25,
+              "pct": 40.0,
+              "status": "interleaved"
+            },
+            "Defined Terms Present": {
+              "found": 6,
+              "total": 7,
+              "pct": 85.7,
+              "missing": [
+                "\"insured contract\""
+              ]
+            },
+            "Footer Data Intact": {
+              "found": 6,
+              "total": 6,
+              "pct": 100.0,
+              "missing": []
+            }
           },
-          "Section Order": {
-            "ordered": 7,
-            "total": 7,
-            "pct": 100.0,
-            "swaps": []
-          }
+          "text_preview": "COMMERCIAL GENERAL LIABILITY COVERAGE FORM\nPolicy No. CGL-2025-048721 | Effective: 01/01/2026 to 01/01/2027\nSECTION I -- COVERAGES b. Contractual Liability\n\"Bodily injury\" or \"property damage\"\nCOVERAGE A -- BODILY INJURY AND for which the insured is obligated\nPROPERTY DAMAGE LIABILITY to pay damages by reason of the\nassumption of liability in a\n1. Insuring Agreement contract or agreement. This\na. We will pay those sums that the exclusion does not apply to\ninsured becomes legally obligated liability for damages:\nto pay as damages because of (1) That the insured would have\n\"bodily injury\" or \"pr"
+        },
+        "pypdf": {
+          "time_ms": 14.0,
+          "words": 459,
+          "chars": 3054,
+          "pages": 1,
+          "tests": {
+            "Column Reading Order": {
+              "correct": 25,
+              "total": 25,
+              "pct": 100.0,
+              "status": "separate"
+            },
+            "Defined Terms Present": {
+              "found": 6,
+              "total": 7,
+              "pct": 85.7,
+              "missing": [
+                "\"insured contract\""
+              ]
+            },
+            "Footer Data Intact": {
+              "found": 6,
+              "total": 6,
+              "pct": 100.0,
+              "missing": []
+            }
+          },
+          "text_preview": "COMMERCIAL GENERAL LIABILITY COVERAGE FORM\nPolicy No. CGL-2025-048721  |  Effective: 01/01/2026 to 01/01/2027\nSECTION I -- COVERAGES\nCOVERAGE A -- BODILY INJURY AND\nPROPERTY DAMAGE LIABILITY\n1. Insuring Agreement\n  a. We will pay those sums that the\n  insured becomes legally obligated\n  to pay as damages because of\n  \"bodily injury\" or \"property damage\"\n  to which this insurance applies. We\n  will have the right and duty to\n  defend the insured against any\n  \"suit\" seeking those damages.\n  However, we will have no duty to\n  defend the insured against any\n  \"suit\" seeking damages for \"bodily\n  "
+        },
+        "LiteParse": {
+          "time_ms": 1763.3,
+          "words": 459,
+          "chars": 3108,
+          "pages": 1,
+          "tests": {
+            "Column Reading Order": {
+              "correct": 10,
+              "total": 25,
+              "pct": 40.0,
+              "status": "interleaved"
+            },
+            "Defined Terms Present": {
+              "found": 6,
+              "total": 7,
+              "pct": 85.7,
+              "missing": [
+                "\"insured contract\""
+              ]
+            },
+            "Footer Data Intact": {
+              "found": 6,
+              "total": 6,
+              "pct": 100.0,
+              "missing": []
+            }
+          },
+          "text_preview": "    COMMERCIAL GENERAL LIABILITY COVERAGE FORM\n    Policy No. CGL-2025-048721 | Effective: 01/01/2026 to 01/01/2027\n\nSECTION I -- COVERAGES   b. Contractual Liability\n          \"Bodily injury\" or \"property damage\"\nCOVERAGE A -- BODILY INJURY AND   for which the insured is obligated\nPROPERTY DAMAGE LIABILITY   to pay damages by reason of the\n          assumption of liability in a\n1. Insuring Agreement   contract or agreement. This\n  a. We will pay those sums that the   exclusion does not apply to\n  insured becomes legally obligated   liability for damages:\n  to pay as damages because of     (1)"
+        }
+      }
+    },
+    {
+      "file": "hard_fed_report.pdf",
+      "label": "Fed Financial Stability Report (real)",
+      "file_size": 4997421,
+      "parsers": {
+        "PyMuPDF": {
+          "time_ms": 810.4,
+          "words": 1654,
+          "chars": 9256,
+          "pages": 8,
+          "tests": {
+            "Key Content Present": {
+              "found": 6,
+              "total": 7,
+              "pct": 85.7,
+              "missing": [
+                "inflation"
+              ]
+            },
+            "Reading Order": {
+              "ordered": 2,
+              "total": 2,
+              "pct": 100.0,
+              "swaps": []
+            }
+          },
+          "text_preview": "Financial Stability Report\nNovember 2024\nBOARD OF GOVERNORS OF THE FEDERAL RESERVE SYSTEM\n\nThe Federal Reserve System is the central\nbank of the United States. It performs five key\nfunctions to promote the effective operation\nof the U.S. economy and, more generally, the\npublic interest.\nThe Federal Reserve\n\u25a0conducts the nation\u2019s monetary policy to promote maximum employment\nand stable prices in the U.S. economy;\n\u25a0promotes the stability of the financial system and seeks to minimize\nand contain systemic risks through active monitoring and engagement in\nthe U.S. and abroad;\n\u25a0promotes the safety a"
+        },
+        "pdfplumber": {
+          "time_ms": 832.9,
+          "words": 1331,
+          "chars": 8661,
+          "pages": 8,
+          "tests": {
+            "Key Content Present": {
+              "found": 6,
+              "total": 7,
+              "pct": 85.7,
+              "missing": [
+                "inflation"
+              ]
+            },
+            "Reading Order": {
+              "ordered": 2,
+              "total": 2,
+              "pct": 100.0,
+              "swaps": []
+            }
+          },
+          "text_preview": "Financial Stability Report\nNovember 2024\nBOARD OF GOVERNORS OF THE FEDERAL RESERVE SYSTEM\nThe Federal Reserve System is the central\nbank of the United States. It performs five key\nfunctions to promote the effective operation\nof the U.S. economy and, more generally, the\npublic interest.\nThe Federal Reserve\n\u25a0 conducts the nation\u2019s monetary policyto promote maximum employment\nand stable prices in the U.S. economy;\n\u25a0 promotes the stability of the financial systemand seeks to minimize\nand contain systemic risks through active monitoring and engagement in\nthe U.S. and abroad;\n\u25a0 promotes the safety a"
+        },
+        "pypdf": {
+          "time_ms": 208.9,
+          "words": 1295,
+          "chars": 8708,
+          "pages": 8,
+          "tests": {
+            "Key Content Present": {
+              "found": 6,
+              "total": 7,
+              "pct": 85.7,
+              "missing": [
+                "inflation"
+              ]
+            },
+            "Reading Order": {
+              "ordered": 2,
+              "total": 2,
+              "pct": 100.0,
+              "swaps": []
+            }
+          },
+          "text_preview": "Financial Stability Report\nNovember 2024\nBOARD OF GO VERNORS OF THE FEDERAL RESER VE SYST EM\nThe Federal Reserve System is the centralbank of the United States. It performs five keyfunctions to promote the effective operationof the U.S. economy and, more generally, thepublic interest.The Federal Reserve\u25a0conducts the nation\u2019s monetary policyto promote maximum employmentand stable prices in the U.S. economy;\u25a0promotes the stability of the financial systemand seeks to minimizeand contain systemic risks through active monitoring and engagement inthe U.S. and abroad;\u25a0promotes the safety and soundnes"
+        },
+        "LiteParse": {
+          "time_ms": 4684.2,
+          "words": 1662,
+          "chars": 9767,
+          "pages": 7,
+          "tests": {
+            "Key Content Present": {
+              "found": 6,
+              "total": 7,
+              "pct": 85.7,
+              "missing": [
+                "inflation"
+              ]
+            },
+            "Reading Order": {
+              "ordered": 2,
+              "total": 2,
+              "pct": 100.0,
+              "swaps": []
+            }
+          },
+          "text_preview": "Financial Stability Report\n\n\n\n\n\n\n\n\n\n\n|\n|\n\n\n59.102    A Il I\n    BT 9\n    C     3102\n\n    41M\n\n\nNovember 2024\n\n\n\n\n\n\nBOARD OF GO VERNORS OF THE FEDERAL RESERVE SYST EM\n                     The Federal Reserve System is the central\n                     bank of the United States. It performs five key\n                     functions to promote the effective operation\n                     of the U.S. economy and, more generally, the\n                     public interest.\n\nThe Federal Reserve\n\u25a0 conducts the nation\u2019s monetary policy to promote maximum employment\n and stable prices in the U.S. economy;\n\u25a0"
+        }
+      }
+    },
+    {
+      "file": "hard_census.pdf",
+      "label": "Census Bureau Operational Plan (real)",
+      "file_size": 3626947,
+      "parsers": {
+        "PyMuPDF": {
+          "time_ms": 336.0,
+          "words": 9503,
+          "chars": 31626,
+          "pages": 8,
+          "tests": {
+            "Key Content Present": {
+              "found": 4,
+              "total": 4,
+              "pct": 100.0,
+              "missing": []
+            },
+            "Reading Order": {
+              "ordered": 0,
+              "total": 1,
+              "pct": 0.0,
+              "swaps": [
+                "'Census' after '2020'"
+              ]
+            }
+          },
+          "text_preview": "Issued December 2018\nVersion 4.0 \nA New Design for the 21st Century\n2020 Census Operational Plan\n\nNote to Reader: \nPlease note that the 2020 Census Operational Plan v4.0 reflects the operational design for \nthe 2020 Census as of October 31, 2018, unless noted otherwise. \n\nU.S. Census Bureau \t\n 2020 Census Operational Plan\u2014Version 4.0  i\nTABLE OF CONTENTS\n1.\t Introduction  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . \t\n1\n1.1\t Purpose .  .  .  .  .  .  .  ."
+        },
+        "pdfplumber": {
+          "time_ms": 1107.4,
+          "words": 2062,
+          "chars": 19892,
+          "pages": 8,
+          "tests": {
+            "Key Content Present": {
+              "found": 4,
+              "total": 4,
+              "pct": 100.0,
+              "missing": []
+            },
+            "Reading Order": {
+              "ordered": 0,
+              "total": 1,
+              "pct": 0.0,
+              "swaps": [
+                "'Census' after '2020'"
+              ]
+            }
+          },
+          "text_preview": "2020 Census Operational Plan\nA New Design for the 21st Century\nIssued December 2018\nVersion 4.0\nNote to Reader:\nPlease note that the 2020 Census Operational Plan v4.0 reflects the operational design for\nthe 2020 Census as of October 31, 2018, unless noted otherwise.\nTABLE OF CONTENTS\n1. Introduction........................................................................... 1\n1.1 Purpose .......................................................................... 1\n1.2 Design Approach.................................................................. 1\n1.3 Document Scope .........................."
+        },
+        "pypdf": {
+          "time_ms": 312.4,
+          "words": 2127,
+          "chars": 20495,
+          "pages": 8,
+          "tests": {
+            "Key Content Present": {
+              "found": 4,
+              "total": 4,
+              "pct": 100.0,
+              "missing": []
+            },
+            "Reading Order": {
+              "ordered": 0,
+              "total": 1,
+              "pct": 0.0,
+              "swaps": [
+                "'Census' after '2020'"
+              ]
+            }
+          },
+          "text_preview": "Issued December 2018\nVersion 4.0 \nA New Design for the 21st Century\n2020 Census Operational Plan\nNote to Reader:  \nPlease note that the 2020 Census Operational Plan v4.0 reflects the operational design for \nthe 2020 Census as of October 31, 2018, unless noted otherwise. \nU.S. Census Bureau   2020 Census Operational Plan\u2014Version 4.0  i\nTABLE OF CONTENTS\n1. Introduction ...........................................................................  1  \n1.1 Purpose  ..........................................................................  1  \n1.2 Design Approach ..................................."
+        },
+        "LiteParse": {
+          "time_ms": 7373.6,
+          "words": 8776,
+          "chars": 24867,
+          "pages": 7,
+          "tests": {
+            "Key Content Present": {
+              "found": 3,
+              "total": 4,
+              "pct": 75.0,
+              "missing": [
+                "plan"
+              ]
+            },
+            "Reading Order": {
+              "ordered": 0,
+              "total": 1,
+              "pct": 0.0,
+              "swaps": [
+                "'Census' after '2020'"
+              ]
+            }
+          },
+          "text_preview": " 2020 Census Operational Plan\n A New Design for the 21st Century\n\n\n  Issued December 2018\n  Version 4.0\n      -     )         4  y\n\n      ( A,            y\n\n                      in\n                      y y\n      4\n|\n\n                          1\n                          |\n\n\n\n  q |\n                              i\n\n                      \\    |   8\n                      4       1\n\n\n\n\n\n\n\n\n\n                      wm\n\n\n\n\n\n\n\n\n\n\n                                  United\n  United States\u00ae   U.S. Department of Commerce        Census\n  Ce n S us        Economics and Statistics Administration    2020\n     "
         }
       }
     }
-  },
-  {
-    "file": "hard_compliance.pdf",
-    "label": "Tax Compliance Report",
-    "file_size": 8842,
-    "parsers": {
-      "PyMuPDF": {
-        "time_ms": 9.2,
-        "words": 272,
-        "chars": 2153,
-        "pages": 1,
-        "tests": {
-          "Treaty Table Rows": {
-            "found": 3,
-            "total": 3,
-            "pct": 100.0
-          },
-          "Formula & Calculation Values": {
-            "found": 9,
-            "total": 9,
-            "pct": 100.0,
-            "missing": []
-          },
-          "Legal Citations Intact": {
-            "found": 6,
-            "total": 6,
-            "pct": 100.0,
-            "missing": []
-          }
-        }
-      },
-      "pdfplumber": {
-        "time_ms": 87.2,
-        "words": 272,
-        "chars": 1846,
-        "pages": 1,
-        "tests": {
-          "Treaty Table Rows": {
-            "found": 3,
-            "total": 3,
-            "pct": 100.0
-          },
-          "Formula & Calculation Values": {
-            "found": 9,
-            "total": 9,
-            "pct": 100.0,
-            "missing": []
-          },
-          "Legal Citations Intact": {
-            "found": 6,
-            "total": 6,
-            "pct": 100.0,
-            "missing": []
-          }
-        }
-      },
-      "pypdf": {
-        "time_ms": 9.5,
-        "words": 272,
-        "chars": 2152,
-        "pages": 1,
-        "tests": {
-          "Treaty Table Rows": {
-            "found": 3,
-            "total": 3,
-            "pct": 100.0
-          },
-          "Formula & Calculation Values": {
-            "found": 9,
-            "total": 9,
-            "pct": 100.0,
-            "missing": []
-          },
-          "Legal Citations Intact": {
-            "found": 6,
-            "total": 6,
-            "pct": 100.0,
-            "missing": []
-          }
-        }
-      },
-      "LiteParse": {
-        "time_ms": 5549.1,
-        "words": 272,
-        "chars": 2163,
-        "pages": 1,
-        "tests": {
-          "Treaty Table Rows": {
-            "found": 3,
-            "total": 3,
-            "pct": 100.0
-          },
-          "Formula & Calculation Values": {
-            "found": 9,
-            "total": 9,
-            "pct": 100.0,
-            "missing": []
-          },
-          "Legal Citations Intact": {
-            "found": 6,
-            "total": 6,
-            "pct": 100.0,
-            "missing": []
-          }
-        }
-      }
-    }
-  },
-  {
-    "file": "hard_insurance.pdf",
-    "label": "Two-Column Insurance Policy",
-    "file_size": 18634,
-    "parsers": {
-      "PyMuPDF": {
-        "time_ms": 10.3,
-        "words": 459,
-        "chars": 3055,
-        "pages": 1,
-        "tests": {
-          "Column Reading Order": {
-            "correct": 25,
-            "total": 25,
-            "pct": 100.0,
-            "status": "separate"
-          },
-          "Defined Terms Present": {
-            "found": 6,
-            "total": 7,
-            "pct": 85.7,
-            "missing": [
-              "\"insured contract\""
-            ]
-          },
-          "Footer Data Intact": {
-            "found": 6,
-            "total": 6,
-            "pct": 100.0,
-            "missing": []
-          }
-        }
-      },
-      "pdfplumber": {
-        "time_ms": 134.1,
-        "words": 459,
-        "chars": 2848,
-        "pages": 1,
-        "tests": {
-          "Column Reading Order": {
-            "correct": 10,
-            "total": 25,
-            "pct": 40.0,
-            "status": "interleaved"
-          },
-          "Defined Terms Present": {
-            "found": 6,
-            "total": 7,
-            "pct": 85.7,
-            "missing": [
-              "\"insured contract\""
-            ]
-          },
-          "Footer Data Intact": {
-            "found": 6,
-            "total": 6,
-            "pct": 100.0,
-            "missing": []
-          }
-        }
-      },
-      "pypdf": {
-        "time_ms": 20.5,
-        "words": 459,
-        "chars": 3054,
-        "pages": 1,
-        "tests": {
-          "Column Reading Order": {
-            "correct": 25,
-            "total": 25,
-            "pct": 100.0,
-            "status": "separate"
-          },
-          "Defined Terms Present": {
-            "found": 6,
-            "total": 7,
-            "pct": 85.7,
-            "missing": [
-              "\"insured contract\""
-            ]
-          },
-          "Footer Data Intact": {
-            "found": 6,
-            "total": 6,
-            "pct": 100.0,
-            "missing": []
-          }
-        }
-      },
-      "LiteParse": {
-        "time_ms": 3148.4,
-        "words": 459,
-        "chars": 3108,
-        "pages": 1,
-        "tests": {
-          "Column Reading Order": {
-            "correct": 10,
-            "total": 25,
-            "pct": 40.0,
-            "status": "interleaved"
-          },
-          "Defined Terms Present": {
-            "found": 6,
-            "total": 7,
-            "pct": 85.7,
-            "missing": [
-              "\"insured contract\""
-            ]
-          },
-          "Footer Data Intact": {
-            "found": 6,
-            "total": 6,
-            "pct": 100.0,
-            "missing": []
-          }
-        }
-      }
-    }
-  },
-  {
-    "file": "hard_fed_report.pdf",
-    "label": "Fed Financial Stability Report (real)",
-    "file_size": 4997421,
-    "parsers": {
-      "PyMuPDF": {
-        "time_ms": 144.6,
-        "words": 1654,
-        "chars": 9256,
-        "pages": 8,
-        "tests": {
-          "Key Content Present": {
-            "found": 6,
-            "total": 7,
-            "pct": 85.7,
-            "missing": [
-              "inflation"
-            ]
-          },
-          "Reading Order": {
-            "ordered": 2,
-            "total": 2,
-            "pct": 100.0,
-            "swaps": []
-          }
-        }
-      },
-      "pdfplumber": {
-        "time_ms": 1095.3,
-        "words": 1331,
-        "chars": 8661,
-        "pages": 8,
-        "tests": {
-          "Key Content Present": {
-            "found": 6,
-            "total": 7,
-            "pct": 85.7,
-            "missing": [
-              "inflation"
-            ]
-          },
-          "Reading Order": {
-            "ordered": 2,
-            "total": 2,
-            "pct": 100.0,
-            "swaps": []
-          }
-        }
-      },
-      "pypdf": {
-        "time_ms": 374.0,
-        "words": 1295,
-        "chars": 8708,
-        "pages": 8,
-        "tests": {
-          "Key Content Present": {
-            "found": 6,
-            "total": 7,
-            "pct": 85.7,
-            "missing": [
-              "inflation"
-            ]
-          },
-          "Reading Order": {
-            "ordered": 2,
-            "total": 2,
-            "pct": 100.0,
-            "swaps": []
-          }
-        }
-      },
-      "LiteParse": {
-        "time_ms": 9584.7,
-        "words": 1662,
-        "chars": 9767,
-        "pages": 7,
-        "tests": {
-          "Key Content Present": {
-            "found": 6,
-            "total": 7,
-            "pct": 85.7,
-            "missing": [
-              "inflation"
-            ]
-          },
-          "Reading Order": {
-            "ordered": 2,
-            "total": 2,
-            "pct": 100.0,
-            "swaps": []
-          }
-        }
-      }
-    }
-  },
-  {
-    "file": "hard_census.pdf",
-    "label": "Census Bureau Operational Plan (real)",
-    "file_size": 3626947,
-    "parsers": {
-      "PyMuPDF": {
-        "time_ms": 268.6,
-        "words": 9503,
-        "chars": 31626,
-        "pages": 8,
-        "tests": {
-          "Key Content Present": {
-            "found": 4,
-            "total": 4,
-            "pct": 100.0,
-            "missing": []
-          },
-          "Reading Order": {
-            "ordered": 0,
-            "total": 1,
-            "pct": 0.0,
-            "swaps": [
-              "'Census' after '2020'"
-            ]
-          }
-        }
-      },
-      "pdfplumber": {
-        "time_ms": 1895.3,
-        "words": 2062,
-        "chars": 19892,
-        "pages": 8,
-        "tests": {
-          "Key Content Present": {
-            "found": 4,
-            "total": 4,
-            "pct": 100.0,
-            "missing": []
-          },
-          "Reading Order": {
-            "ordered": 0,
-            "total": 1,
-            "pct": 0.0,
-            "swaps": [
-              "'Census' after '2020'"
-            ]
-          }
-        }
-      },
-      "pypdf": {
-        "time_ms": 415.5,
-        "words": 2127,
-        "chars": 20495,
-        "pages": 8,
-        "tests": {
-          "Key Content Present": {
-            "found": 4,
-            "total": 4,
-            "pct": 100.0,
-            "missing": []
-          },
-          "Reading Order": {
-            "ordered": 0,
-            "total": 1,
-            "pct": 0.0,
-            "swaps": [
-              "'Census' after '2020'"
-            ]
-          }
-        }
-      },
-      "LiteParse": {
-        "time_ms": 9552.5,
-        "words": 8776,
-        "chars": 24867,
-        "pages": 7,
-        "tests": {
-          "Key Content Present": {
-            "found": 3,
-            "total": 4,
-            "pct": 75.0,
-            "missing": [
-              "plan"
-            ]
-          },
-          "Reading Order": {
-            "ordered": 0,
-            "total": 1,
-            "pct": 0.0,
-            "swaps": [
-              "'Census' after '2020'"
-            ]
-          }
-        }
-      }
-    }
-  }
-]
+  ]
+}

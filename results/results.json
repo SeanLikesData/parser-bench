@@ -1,748 +1,571 @@
 {
-  "sample_w9.pdf": {
-    "label": "IRS W-9 Form",
-    "description": "Complex form with fields, checkboxes, instructions",
-    "file_size": 140815,
-    "parsers": {
-      "PyMuPDF": {
-        "avg_time_ms": 237.57812497206032,
-        "min_time_ms": 137.08370795939118,
-        "pages": 6,
-        "metrics": {
-          "chars": 38188,
-          "words": 6280,
-          "lines": 736,
-          "empty_lines": 5,
-          "avg_line_len": 50.88586956521739
-        },
-        "content_found": 13,
-        "content_total": 13,
-        "content_pct": 100.0,
-        "has_bbox": true,
-        "bbox_count": 1035,
-        "has_tables": false,
-        "table_count": 0
-      },
-      "pdfplumber": {
-        "avg_time_ms": 1074.2503333215911,
-        "min_time_ms": 1019.183750031516,
-        "pages": 6,
-        "metrics": {
-          "chars": 37689,
-          "words": 6279,
-          "lines": 460,
-          "empty_lines": 0,
-          "avg_line_len": 80.93478260869566
-        },
-        "content_found": 13,
-        "content_total": 13,
-        "content_pct": 100.0,
-        "has_bbox": true,
-        "bbox_count": 6279,
-        "has_tables": true,
-        "table_count": 5
-      },
-      "pypdf": {
-        "avg_time_ms": 104.90505564181755,
-        "min_time_ms": 79.64045892003924,
-        "pages": 6,
-        "metrics": {
-          "chars": 38179,
-          "words": 6279,
-          "lines": 691,
-          "empty_lines": 0,
-          "avg_line_len": 54.25325615050651
-        },
-        "content_found": 13,
-        "content_total": 13,
-        "content_pct": 100.0,
-        "has_bbox": false,
-        "bbox_count": 0,
-        "has_tables": false,
-        "table_count": 0
-      },
-      "LiteParse": {
-        "avg_time_ms": 2829.7269589966163,
-        "min_time_ms": 2829.7269589966163,
-        "pages": 6,
-        "metrics": {
-          "chars": 48926,
-          "words": 6279,
-          "lines": 390,
-          "empty_lines": 24,
-          "avg_line_len": 124.45384615384616
-        },
-        "content_found": 13,
-        "content_total": 13,
-        "content_pct": 100.0,
-        "has_bbox": false,
-        "bbox_count": 0,
-        "has_tables": false,
-        "table_count": 0
-      }
+  "environment": {
+    "python": "3.13.5 (main, Jun 11 2025, 15:36:57) [Clang 17.0.0 (clang-1700.0.13.3)]",
+    "platform": "macOS-26.3-arm64-arm-64bit-Mach-O",
+    "machine": "arm64",
+    "processor": "arm",
+    "timestamp": "2026-04-10T16:17:54-0700",
+    "libraries": {
+      "pymupdf": "1.27.2.2",
+      "pdfplumber": "0.11.9",
+      "pypdf": "6.9.2",
+      "liteparse": "1.2.1"
     }
   },
-  "sample_report.pdf": {
-    "label": "Financial Report",
-    "description": "Narrative text + tabular quarterly data",
-    "file_size": 2707,
-    "parsers": {
-      "PyMuPDF": {
-        "avg_time_ms": 10.101805324666202,
-        "min_time_ms": 7.964374963194132,
-        "pages": 2,
-        "metrics": {
-          "chars": 1943,
-          "words": 214,
-          "lines": 35,
-          "empty_lines": 1,
-          "avg_line_len": 54.51428571428571
+  "results": {
+    "sample_w9.pdf": {
+      "label": "IRS W-9 Form",
+      "description": "Complex form with fields, checkboxes, instructions",
+      "file_size": 140815,
+      "parsers": {
+        "PyMuPDF": {
+          "stats": {
+            "avg_ms": 126.88,
+            "std_ms": 13.07,
+            "min_ms": 112.88,
+            "median_ms": 128.96,
+            "p95_ms": 128.96,
+            "runs": 3,
+            "warmup_runs": 1
+          },
+          "pages": 6,
+          "metrics": {
+            "chars": 38188,
+            "words": 6280,
+            "lines": 736,
+            "empty_lines": 5,
+            "avg_line_len": 50.9
+          },
+          "content_found": 13,
+          "content_total": 13,
+          "content_pct": 100.0,
+          "has_bbox": true,
+          "bbox_count": 1035,
+          "has_tables": false,
+          "table_count": 0
         },
-        "content_found": 10,
-        "content_total": 12,
-        "content_pct": 83.3,
-        "has_bbox": true,
-        "bbox_count": 34,
-        "has_tables": false,
-        "table_count": 0
-      },
-      "pdfplumber": {
-        "avg_time_ms": 56.643264018930495,
-        "min_time_ms": 55.70429202634841,
-        "pages": 2,
-        "metrics": {
-          "chars": 2074,
-          "words": 279,
-          "lines": 34,
-          "empty_lines": 0,
-          "avg_line_len": 60.029411764705884
+        "pdfplumber": {
+          "stats": {
+            "avg_ms": 849.24,
+            "std_ms": 32.87,
+            "min_ms": 811.44,
+            "median_ms": 865.16,
+            "p95_ms": 865.16,
+            "runs": 3,
+            "warmup_runs": 1
+          },
+          "pages": 6,
+          "metrics": {
+            "chars": 37689,
+            "words": 6279,
+            "lines": 460,
+            "empty_lines": 0,
+            "avg_line_len": 80.9
+          },
+          "content_found": 13,
+          "content_total": 13,
+          "content_pct": 100.0,
+          "has_bbox": true,
+          "bbox_count": 6279,
+          "has_tables": true,
+          "table_count": 5
         },
-        "content_found": 12,
-        "content_total": 12,
-        "content_pct": 100.0,
-        "has_bbox": true,
-        "bbox_count": 279,
-        "has_tables": false,
-        "table_count": 0
-      },
-      "pypdf": {
-        "avg_time_ms": 4.460263648070395,
-        "min_time_ms": 4.239165922626853,
-        "pages": 2,
-        "metrics": {
-          "chars": 2408,
-          "words": 279,
-          "lines": 34,
-          "empty_lines": 0,
-          "avg_line_len": 69.8529411764706
+        "pypdf": {
+          "stats": {
+            "avg_ms": 57.19,
+            "std_ms": 0.25,
+            "min_ms": 56.96,
+            "median_ms": 57.15,
+            "p95_ms": 57.15,
+            "runs": 3,
+            "warmup_runs": 1
+          },
+          "pages": 6,
+          "metrics": {
+            "chars": 38179,
+            "words": 6279,
+            "lines": 691,
+            "empty_lines": 0,
+            "avg_line_len": 54.3
+          },
+          "content_found": 13,
+          "content_total": 13,
+          "content_pct": 100.0,
+          "has_bbox": false,
+          "bbox_count": 0,
+          "has_tables": false,
+          "table_count": 0
         },
-        "content_found": 12,
-        "content_total": 12,
-        "content_pct": 100.0,
-        "has_bbox": false,
-        "bbox_count": 0,
-        "has_tables": false,
-        "table_count": 0
-      },
-      "LiteParse": {
-        "avg_time_ms": 2211.943667032756,
-        "min_time_ms": 2211.943667032756,
-        "pages": 2,
-        "metrics": {
-          "chars": 1840,
-          "words": 214,
-          "lines": 45,
-          "empty_lines": 11,
-          "avg_line_len": 39.91111111111111
-        },
-        "content_found": 10,
-        "content_total": 12,
-        "content_pct": 83.3,
-        "has_bbox": false,
-        "bbox_count": 0,
-        "has_tables": false,
-        "table_count": 0
+        "LiteParse": {
+          "stats": {
+            "avg_ms": 1851.93,
+            "std_ms": 311.13,
+            "min_ms": 1532.58,
+            "median_ms": 1869.07,
+            "p95_ms": 1869.07,
+            "runs": 3,
+            "warmup_runs": 1
+          },
+          "pages": 6,
+          "metrics": {
+            "chars": 48926,
+            "words": 6279,
+            "lines": 390,
+            "empty_lines": 24,
+            "avg_line_len": 124.5
+          },
+          "content_found": 13,
+          "content_total": 13,
+          "content_pct": 100.0,
+          "has_bbox": false,
+          "bbox_count": 0,
+          "has_tables": false,
+          "table_count": 0
+        }
       }
-    }
-  },
-  "complex_multicolumn.pdf": {
-    "label": "Multi-Column Paper",
-    "description": "Two-column academic paper layout",
-    "file_size": 9674,
-    "parsers": {
-      "PyMuPDF": {
-        "avg_time_ms": 11.296902977240583,
-        "min_time_ms": 10.535417008213699,
-        "pages": 1,
-        "metrics": {
-          "chars": 1755,
-          "words": 237,
-          "lines": 44,
-          "empty_lines": 0,
-          "avg_line_len": 38.88636363636363
+    },
+    "sample_report.pdf": {
+      "label": "Financial Report",
+      "description": "Narrative text + tabular quarterly data",
+      "file_size": 2707,
+      "parsers": {
+        "PyMuPDF": {
+          "stats": {
+            "avg_ms": 6.02,
+            "std_ms": 0.15,
+            "min_ms": 5.86,
+            "median_ms": 6.07,
+            "p95_ms": 6.07,
+            "runs": 3,
+            "warmup_runs": 1
+          },
+          "pages": 2,
+          "metrics": {
+            "chars": 1943,
+            "words": 214,
+            "lines": 35,
+            "empty_lines": 1,
+            "avg_line_len": 54.5
+          },
+          "content_found": 10,
+          "content_total": 12,
+          "content_pct": 83.3,
+          "has_bbox": true,
+          "bbox_count": 34,
+          "has_tables": false,
+          "table_count": 0
         },
-        "content_found": 10,
-        "content_total": 12,
-        "content_pct": 83.3,
-        "has_bbox": true,
-        "bbox_count": 44,
-        "has_tables": false,
-        "table_count": 0
-      },
-      "pdfplumber": {
-        "avg_time_ms": 53.273874994677804,
-        "min_time_ms": 50.39645894430578,
-        "pages": 1,
-        "metrics": {
-          "chars": 1748,
-          "words": 237,
-          "lines": 27,
-          "empty_lines": 0,
-          "avg_line_len": 63.77777777777778
+        "pdfplumber": {
+          "stats": {
+            "avg_ms": 42.33,
+            "std_ms": 0.89,
+            "min_ms": 41.78,
+            "median_ms": 41.86,
+            "p95_ms": 41.86,
+            "runs": 3,
+            "warmup_runs": 1
+          },
+          "pages": 2,
+          "metrics": {
+            "chars": 2074,
+            "words": 279,
+            "lines": 34,
+            "empty_lines": 0,
+            "avg_line_len": 60.0
+          },
+          "content_found": 12,
+          "content_total": 12,
+          "content_pct": 100.0,
+          "has_bbox": true,
+          "bbox_count": 279,
+          "has_tables": false,
+          "table_count": 0
         },
-        "content_found": 10,
-        "content_total": 12,
-        "content_pct": 83.3,
-        "has_bbox": true,
-        "bbox_count": 237,
-        "has_tables": false,
-        "table_count": 0
-      },
-      "pypdf": {
-        "avg_time_ms": 6.3741249808420735,
-        "min_time_ms": 6.110916961915791,
-        "pages": 1,
-        "metrics": {
-          "chars": 1754,
-          "words": 237,
-          "lines": 44,
-          "empty_lines": 0,
-          "avg_line_len": 38.88636363636363
+        "pypdf": {
+          "stats": {
+            "avg_ms": 3.03,
+            "std_ms": 0.06,
+            "min_ms": 2.98,
+            "median_ms": 3.01,
+            "p95_ms": 3.01,
+            "runs": 3,
+            "warmup_runs": 1
+          },
+          "pages": 2,
+          "metrics": {
+            "chars": 2408,
+            "words": 279,
+            "lines": 34,
+            "empty_lines": 0,
+            "avg_line_len": 69.9
+          },
+          "content_found": 12,
+          "content_total": 12,
+          "content_pct": 100.0,
+          "has_bbox": false,
+          "bbox_count": 0,
+          "has_tables": false,
+          "table_count": 0
         },
-        "content_found": 10,
-        "content_total": 12,
-        "content_pct": 83.3,
-        "has_bbox": false,
-        "bbox_count": 0,
-        "has_tables": false,
-        "table_count": 0
-      },
-      "LiteParse": {
-        "avg_time_ms": 2030.3239579079673,
-        "min_time_ms": 2030.3239579079673,
-        "pages": 1,
-        "metrics": {
-          "chars": 1792,
-          "words": 237,
-          "lines": 31,
-          "empty_lines": 4,
-          "avg_line_len": 56.70967741935484
-        },
-        "content_found": 10,
-        "content_total": 12,
-        "content_pct": 83.3,
-        "has_bbox": false,
-        "bbox_count": 0,
-        "has_tables": false,
-        "table_count": 0
+        "LiteParse": {
+          "stats": {
+            "avg_ms": 1818.78,
+            "std_ms": 93.69,
+            "min_ms": 1731.59,
+            "median_ms": 1806.91,
+            "p95_ms": 1806.91,
+            "runs": 3,
+            "warmup_runs": 1
+          },
+          "pages": 2,
+          "metrics": {
+            "chars": 1840,
+            "words": 214,
+            "lines": 45,
+            "empty_lines": 11,
+            "avg_line_len": 39.9
+          },
+          "content_found": 10,
+          "content_total": 12,
+          "content_pct": 83.3,
+          "has_bbox": false,
+          "bbox_count": 0,
+          "has_tables": false,
+          "table_count": 0
+        }
       }
-    }
-  },
-  "complex_tables.pdf": {
-    "label": "Employee Database",
-    "description": "Dense tabular data with pivot table",
-    "file_size": 10180,
-    "parsers": {
-      "PyMuPDF": {
-        "avg_time_ms": 16.190319632490475,
-        "min_time_ms": 15.391041990369558,
-        "pages": 2,
-        "metrics": {
-          "chars": 3749,
-          "words": 318,
-          "lines": 42,
-          "empty_lines": 1,
-          "avg_line_len": 88.26190476190476
+    },
+    "complex_multicolumn.pdf": {
+      "label": "Multi-Column Paper",
+      "description": "Two-column academic paper layout",
+      "file_size": 9674,
+      "parsers": {
+        "PyMuPDF": {
+          "stats": {
+            "avg_ms": 7.08,
+            "std_ms": 0.22,
+            "min_ms": 6.95,
+            "median_ms": 6.95,
+            "p95_ms": 6.95,
+            "runs": 3,
+            "warmup_runs": 1
+          },
+          "pages": 1,
+          "metrics": {
+            "chars": 1755,
+            "words": 237,
+            "lines": 44,
+            "empty_lines": 0,
+            "avg_line_len": 38.9
+          },
+          "content_found": 10,
+          "content_total": 12,
+          "content_pct": 83.3,
+          "has_bbox": true,
+          "bbox_count": 44,
+          "has_tables": false,
+          "table_count": 0
         },
-        "content_found": 12,
-        "content_total": 12,
-        "content_pct": 100.0,
-        "has_bbox": true,
-        "bbox_count": 41,
-        "has_tables": false,
-        "table_count": 0
-      },
-      "pdfplumber": {
-        "avg_time_ms": 141.14662531452873,
-        "min_time_ms": 96.45537508185953,
-        "pages": 2,
-        "metrics": {
-          "chars": 2661,
-          "words": 318,
-          "lines": 41,
-          "empty_lines": 0,
-          "avg_line_len": 63.926829268292686
+        "pdfplumber": {
+          "stats": {
+            "avg_ms": 91.56,
+            "std_ms": 75.52,
+            "min_ms": 42.02,
+            "median_ms": 54.18,
+            "p95_ms": 54.18,
+            "runs": 3,
+            "warmup_runs": 1
+          },
+          "pages": 1,
+          "metrics": {
+            "chars": 1748,
+            "words": 237,
+            "lines": 27,
+            "empty_lines": 0,
+            "avg_line_len": 63.8
+          },
+          "content_found": 10,
+          "content_total": 12,
+          "content_pct": 83.3,
+          "has_bbox": true,
+          "bbox_count": 237,
+          "has_tables": false,
+          "table_count": 0
         },
-        "content_found": 12,
-        "content_total": 12,
-        "content_pct": 100.0,
-        "has_bbox": true,
-        "bbox_count": 318,
-        "has_tables": false,
-        "table_count": 0
-      },
-      "pypdf": {
-        "avg_time_ms": 8.368152659386396,
-        "min_time_ms": 8.20595899131149,
-        "pages": 2,
-        "metrics": {
-          "chars": 3747,
-          "words": 318,
-          "lines": 41,
-          "empty_lines": 0,
-          "avg_line_len": 90.41463414634147
+        "pypdf": {
+          "stats": {
+            "avg_ms": 5.37,
+            "std_ms": 0.27,
+            "min_ms": 5.05,
+            "median_ms": 5.52,
+            "p95_ms": 5.52,
+            "runs": 3,
+            "warmup_runs": 1
+          },
+          "pages": 1,
+          "metrics": {
+            "chars": 1754,
+            "words": 237,
+            "lines": 44,
+            "empty_lines": 0,
+            "avg_line_len": 38.9
+          },
+          "content_found": 10,
+          "content_total": 12,
+          "content_pct": 83.3,
+          "has_bbox": false,
+          "bbox_count": 0,
+          "has_tables": false,
+          "table_count": 0
         },
-        "content_found": 12,
-        "content_total": 12,
-        "content_pct": 100.0,
-        "has_bbox": false,
-        "bbox_count": 0,
-        "has_tables": false,
-        "table_count": 0
-      },
-      "LiteParse": {
-        "avg_time_ms": 2452.8279160149395,
-        "min_time_ms": 2452.8279160149395,
-        "pages": 2,
-        "metrics": {
-          "chars": 3334,
-          "words": 314,
-          "lines": 49,
-          "empty_lines": 12,
-          "avg_line_len": 66.9795918367347
-        },
-        "content_found": 12,
-        "content_total": 12,
-        "content_pct": 100.0,
-        "has_bbox": false,
-        "bbox_count": 0,
-        "has_tables": false,
-        "table_count": 0
+        "LiteParse": {
+          "stats": {
+            "avg_ms": 1664.05,
+            "std_ms": 94.29,
+            "min_ms": 1557.0,
+            "median_ms": 1700.36,
+            "p95_ms": 1700.36,
+            "runs": 3,
+            "warmup_runs": 1
+          },
+          "pages": 1,
+          "metrics": {
+            "chars": 1792,
+            "words": 237,
+            "lines": 31,
+            "empty_lines": 4,
+            "avg_line_len": 56.7
+          },
+          "content_found": 10,
+          "content_total": 12,
+          "content_pct": 83.3,
+          "has_bbox": false,
+          "bbox_count": 0,
+          "has_tables": false,
+          "table_count": 0
+        }
       }
-    }
-  },
-  "complex_minutes.pdf": {
-    "label": "Board Minutes (4pg)",
-    "description": "Multi-page structured document with headers/footers",
-    "file_size": 26021,
-    "parsers": {
-      "PyMuPDF": {
-        "avg_time_ms": 38.321722337665655,
-        "min_time_ms": 37.31341706588864,
-        "pages": 4,
-        "metrics": {
-          "chars": 5550,
-          "words": 834,
-          "lines": 115,
-          "empty_lines": 3,
-          "avg_line_len": 47.26086956521739
+    },
+    "complex_tables.pdf": {
+      "label": "Employee Database",
+      "description": "Dense tabular data with pivot table",
+      "file_size": 10180,
+      "parsers": {
+        "PyMuPDF": {
+          "stats": {
+            "avg_ms": 12.01,
+            "std_ms": 0.19,
+            "min_ms": 11.83,
+            "median_ms": 11.98,
+            "p95_ms": 11.98,
+            "runs": 3,
+            "warmup_runs": 1
+          },
+          "pages": 2,
+          "metrics": {
+            "chars": 3749,
+            "words": 318,
+            "lines": 42,
+            "empty_lines": 1,
+            "avg_line_len": 88.3
+          },
+          "content_found": 12,
+          "content_total": 12,
+          "content_pct": 100.0,
+          "has_bbox": true,
+          "bbox_count": 41,
+          "has_tables": false,
+          "table_count": 0
         },
-        "content_found": 14,
-        "content_total": 14,
-        "content_pct": 100.0,
-        "has_bbox": true,
-        "bbox_count": 112,
-        "has_tables": false,
-        "table_count": 0
-      },
-      "pdfplumber": {
-        "avg_time_ms": 164.00663931077966,
-        "min_time_ms": 153.05416693445295,
-        "pages": 4,
-        "metrics": {
-          "chars": 5144,
-          "words": 834,
-          "lines": 108,
-          "empty_lines": 0,
-          "avg_line_len": 46.638888888888886
+        "pdfplumber": {
+          "stats": {
+            "avg_ms": 97.9,
+            "std_ms": 20.87,
+            "min_ms": 75.55,
+            "median_ms": 101.27,
+            "p95_ms": 101.27,
+            "runs": 3,
+            "warmup_runs": 1
+          },
+          "pages": 2,
+          "metrics": {
+            "chars": 2661,
+            "words": 318,
+            "lines": 41,
+            "empty_lines": 0,
+            "avg_line_len": 63.9
+          },
+          "content_found": 12,
+          "content_total": 12,
+          "content_pct": 100.0,
+          "has_bbox": true,
+          "bbox_count": 318,
+          "has_tables": false,
+          "table_count": 0
         },
-        "content_found": 14,
-        "content_total": 14,
-        "content_pct": 100.0,
-        "has_bbox": true,
-        "bbox_count": 834,
-        "has_tables": false,
-        "table_count": 0
-      },
-      "pypdf": {
-        "avg_time_ms": 17.949083354324102,
-        "min_time_ms": 17.531707999296486,
-        "pages": 4,
-        "metrics": {
-          "chars": 5546,
-          "words": 834,
-          "lines": 108,
-          "empty_lines": 0,
-          "avg_line_len": 50.361111111111114
+        "pypdf": {
+          "stats": {
+            "avg_ms": 7.88,
+            "std_ms": 2.12,
+            "min_ms": 6.42,
+            "median_ms": 6.9,
+            "p95_ms": 6.9,
+            "runs": 3,
+            "warmup_runs": 1
+          },
+          "pages": 2,
+          "metrics": {
+            "chars": 3747,
+            "words": 318,
+            "lines": 41,
+            "empty_lines": 0,
+            "avg_line_len": 90.4
+          },
+          "content_found": 12,
+          "content_total": 12,
+          "content_pct": 100.0,
+          "has_bbox": false,
+          "bbox_count": 0,
+          "has_tables": false,
+          "table_count": 0
         },
-        "content_found": 14,
-        "content_total": 14,
-        "content_pct": 100.0,
-        "has_bbox": false,
-        "bbox_count": 0,
-        "has_tables": false,
-        "table_count": 0
-      },
-      "LiteParse": {
-        "avg_time_ms": 2328.792040934786,
-        "min_time_ms": 2328.792040934786,
-        "pages": 4,
-        "metrics": {
-          "chars": 5357,
-          "words": 834,
-          "lines": 173,
-          "empty_lines": 65,
-          "avg_line_len": 29.971098265895954
-        },
-        "content_found": 14,
-        "content_total": 14,
-        "content_pct": 100.0,
-        "has_bbox": false,
-        "bbox_count": 0,
-        "has_tables": false,
-        "table_count": 0
+        "LiteParse": {
+          "stats": {
+            "avg_ms": 1511.98,
+            "std_ms": 43.42,
+            "min_ms": 1472.88,
+            "median_ms": 1504.36,
+            "p95_ms": 1504.36,
+            "runs": 3,
+            "warmup_runs": 1
+          },
+          "pages": 2,
+          "metrics": {
+            "chars": 3334,
+            "words": 314,
+            "lines": 49,
+            "empty_lines": 12,
+            "avg_line_len": 67.0
+          },
+          "content_found": 12,
+          "content_total": 12,
+          "content_pct": 100.0,
+          "has_bbox": false,
+          "bbox_count": 0,
+          "has_tables": false,
+          "table_count": 0
+        }
       }
-    }
-  },
-  "hard_watermark_financial.pdf": {
-    "label": "Watermarked Financial (HARD)",
-    "description": "Watermark text overlapping dense financial projections + sensitivity table",
-    "file_size": 8792,
-    "parsers": {
-      "PyMuPDF": {
-        "avg_time_ms": 15.623555324661234,
-        "min_time_ms": 14.112500008195639,
-        "pages": 1,
-        "metrics": {
-          "chars": 2613,
-          "words": 288,
-          "lines": 37,
-          "empty_lines": 0,
-          "avg_line_len": 69.62162162162163
+    },
+    "complex_minutes.pdf": {
+      "label": "Board Minutes (4pg)",
+      "description": "Multi-page structured document with headers/footers",
+      "file_size": 26021,
+      "parsers": {
+        "PyMuPDF": {
+          "stats": {
+            "avg_ms": 17.19,
+            "std_ms": 0.43,
+            "min_ms": 16.76,
+            "median_ms": 17.21,
+            "p95_ms": 17.21,
+            "runs": 3,
+            "warmup_runs": 1
+          },
+          "pages": 4,
+          "metrics": {
+            "chars": 5550,
+            "words": 834,
+            "lines": 115,
+            "empty_lines": 3,
+            "avg_line_len": 47.3
+          },
+          "content_found": 14,
+          "content_total": 14,
+          "content_pct": 100.0,
+          "has_bbox": true,
+          "bbox_count": 112,
+          "has_tables": false,
+          "table_count": 0
         },
-        "content_found": 20,
-        "content_total": 21,
-        "content_pct": 95.2,
-        "has_bbox": true,
-        "bbox_count": 37,
-        "has_tables": false,
-        "table_count": 0
-      },
-      "pdfplumber": {
-        "avg_time_ms": 71.8001666245982,
-        "min_time_ms": 67.65108299441636,
-        "pages": 1,
-        "metrics": {
-          "chars": 1904,
-          "words": 295,
-          "lines": 35,
-          "empty_lines": 0,
-          "avg_line_len": 53.42857142857143
+        "pdfplumber": {
+          "stats": {
+            "avg_ms": 137.73,
+            "std_ms": 38.39,
+            "min_ms": 114.1,
+            "median_ms": 117.05,
+            "p95_ms": 117.05,
+            "runs": 3,
+            "warmup_runs": 1
+          },
+          "pages": 4,
+          "metrics": {
+            "chars": 5144,
+            "words": 834,
+            "lines": 108,
+            "empty_lines": 0,
+            "avg_line_len": 46.6
+          },
+          "content_found": 14,
+          "content_total": 14,
+          "content_pct": 100.0,
+          "has_bbox": true,
+          "bbox_count": 834,
+          "has_tables": false,
+          "table_count": 0
         },
-        "content_found": 20,
-        "content_total": 21,
-        "content_pct": 95.2,
-        "has_bbox": true,
-        "bbox_count": 295,
-        "has_tables": false,
-        "table_count": 0
-      },
-      "pypdf": {
-        "avg_time_ms": 6.771652648846309,
-        "min_time_ms": 6.539999973028898,
-        "pages": 1,
-        "metrics": {
-          "chars": 2633,
-          "words": 288,
-          "lines": 37,
-          "empty_lines": 0,
-          "avg_line_len": 70.1891891891892
+        "pypdf": {
+          "stats": {
+            "avg_ms": 12.59,
+            "std_ms": 0.21,
+            "min_ms": 12.41,
+            "median_ms": 12.55,
+            "p95_ms": 12.55,
+            "runs": 3,
+            "warmup_runs": 1
+          },
+          "pages": 4,
+          "metrics": {
+            "chars": 5546,
+            "words": 834,
+            "lines": 108,
+            "empty_lines": 0,
+            "avg_line_len": 50.4
+          },
+          "content_found": 14,
+          "content_total": 14,
+          "content_pct": 100.0,
+          "has_bbox": false,
+          "bbox_count": 0,
+          "has_tables": false,
+          "table_count": 0
         },
-        "content_found": 21,
-        "content_total": 21,
-        "content_pct": 100.0,
-        "has_bbox": false,
-        "bbox_count": 0,
-        "has_tables": false,
-        "table_count": 0
-      },
-      "LiteParse": {
-        "avg_time_ms": 2451.3191250152886,
-        "min_time_ms": 2451.3191250152886,
-        "pages": 1,
-        "metrics": {
-          "chars": 2806,
-          "words": 287,
-          "lines": 49,
-          "empty_lines": 7,
-          "avg_line_len": 56.285714285714285
-        },
-        "content_found": 20,
-        "content_total": 21,
-        "content_pct": 95.2,
-        "has_bbox": false,
-        "bbox_count": 0,
-        "has_tables": false,
-        "table_count": 0
-      }
-    }
-  },
-  "hard_clinical_table.pdf": {
-    "label": "Clinical Trial Table (HARD)",
-    "description": "Dense bordered table with section headers, subgroups, statistical data",
-    "file_size": 46431,
-    "parsers": {
-      "PyMuPDF": {
-        "avg_time_ms": 53.4729309923326,
-        "min_time_ms": 33.54829200543463,
-        "pages": 1,
-        "metrics": {
-          "chars": 1594,
-          "words": 236,
-          "lines": 142,
-          "empty_lines": 0,
-          "avg_line_len": 10.225352112676056
-        },
-        "content_found": 29,
-        "content_total": 29,
-        "content_pct": 100.0,
-        "has_bbox": true,
-        "bbox_count": 142,
-        "has_tables": false,
-        "table_count": 0
-      },
-      "pdfplumber": {
-        "avg_time_ms": 212.11643031953523,
-        "min_time_ms": 159.93662492837757,
-        "pages": 1,
-        "metrics": {
-          "chars": 1553,
-          "words": 236,
-          "lines": 28,
-          "empty_lines": 0,
-          "avg_line_len": 54.5
-        },
-        "content_found": 29,
-        "content_total": 29,
-        "content_pct": 100.0,
-        "has_bbox": true,
-        "bbox_count": 236,
-        "has_tables": true,
-        "table_count": 1
-      },
-      "pypdf": {
-        "avg_time_ms": 23.297930990035336,
-        "min_time_ms": 22.8097919607535,
-        "pages": 1,
-        "metrics": {
-          "chars": 1593,
-          "words": 236,
-          "lines": 28,
-          "empty_lines": 0,
-          "avg_line_len": 55.92857142857143
-        },
-        "content_found": 29,
-        "content_total": 29,
-        "content_pct": 100.0,
-        "has_bbox": false,
-        "bbox_count": 0,
-        "has_tables": false,
-        "table_count": 0
-      },
-      "LiteParse": {
-        "avg_time_ms": 2517.5255419453606,
-        "min_time_ms": 2517.5255419453606,
-        "pages": 1,
-        "metrics": {
-          "chars": 2291,
-          "words": 236,
-          "lines": 49,
-          "empty_lines": 21,
-          "avg_line_len": 45.775510204081634
-        },
-        "content_found": 29,
-        "content_total": 29,
-        "content_pct": 100.0,
-        "has_bbox": false,
-        "bbox_count": 0,
-        "has_tables": false,
-        "table_count": 0
-      }
-    }
-  },
-  "hard_compliance.pdf": {
-    "label": "Tax Compliance (HARD)",
-    "description": "Dense structured data with formulas, special references, currency formats",
-    "file_size": 8842,
-    "parsers": {
-      "PyMuPDF": {
-        "avg_time_ms": 10.510416662630936,
-        "min_time_ms": 10.017291991971433,
-        "pages": 1,
-        "metrics": {
-          "chars": 2153,
-          "words": 272,
-          "lines": 37,
-          "empty_lines": 0,
-          "avg_line_len": 57.189189189189186
-        },
-        "content_found": 27,
-        "content_total": 27,
-        "content_pct": 100.0,
-        "has_bbox": true,
-        "bbox_count": 37,
-        "has_tables": false,
-        "table_count": 0
-      },
-      "pdfplumber": {
-        "avg_time_ms": 57.89761101671805,
-        "min_time_ms": 56.952959042973816,
-        "pages": 1,
-        "metrics": {
-          "chars": 1846,
-          "words": 272,
-          "lines": 37,
-          "empty_lines": 0,
-          "avg_line_len": 48.91891891891892
-        },
-        "content_found": 27,
-        "content_total": 27,
-        "content_pct": 100.0,
-        "has_bbox": true,
-        "bbox_count": 272,
-        "has_tables": false,
-        "table_count": 0
-      },
-      "pypdf": {
-        "avg_time_ms": 6.163180301276346,
-        "min_time_ms": 6.002957932651043,
-        "pages": 1,
-        "metrics": {
-          "chars": 2152,
-          "words": 272,
-          "lines": 37,
-          "empty_lines": 0,
-          "avg_line_len": 57.189189189189186
-        },
-        "content_found": 27,
-        "content_total": 27,
-        "content_pct": 100.0,
-        "has_bbox": false,
-        "bbox_count": 0,
-        "has_tables": false,
-        "table_count": 0
-      },
-      "LiteParse": {
-        "avg_time_ms": 2053.1190829351544,
-        "min_time_ms": 2053.1190829351544,
-        "pages": 1,
-        "metrics": {
-          "chars": 2163,
-          "words": 272,
-          "lines": 48,
-          "empty_lines": 11,
-          "avg_line_len": 44.0625
-        },
-        "content_found": 27,
-        "content_total": 27,
-        "content_pct": 100.0,
-        "has_bbox": false,
-        "bbox_count": 0,
-        "has_tables": false,
-        "table_count": 0
-      }
-    }
-  },
-  "hard_insurance.pdf": {
-    "label": "Insurance Policy 2-Col (HARD)",
-    "description": "Two-column dense legal text with defined terms, tiny footer",
-    "file_size": 18634,
-    "parsers": {
-      "PyMuPDF": {
-        "avg_time_ms": 15.88266664960732,
-        "min_time_ms": 14.909417019225657,
-        "pages": 1,
-        "metrics": {
-          "chars": 3055,
-          "words": 459,
-          "lines": 88,
-          "empty_lines": 0,
-          "avg_line_len": 33.71590909090909
-        },
-        "content_found": 22,
-        "content_total": 24,
-        "content_pct": 91.7,
-        "has_bbox": true,
-        "bbox_count": 88,
-        "has_tables": false,
-        "table_count": 0
-      },
-      "pdfplumber": {
-        "avg_time_ms": 105.19174998626113,
-        "min_time_ms": 102.45516698341817,
-        "pages": 1,
-        "metrics": {
-          "chars": 2848,
-          "words": 459,
-          "lines": 52,
-          "empty_lines": 0,
-          "avg_line_len": 53.78846153846154
-        },
-        "content_found": 22,
-        "content_total": 24,
-        "content_pct": 91.7,
-        "has_bbox": true,
-        "bbox_count": 459,
-        "has_tables": false,
-        "table_count": 0
-      },
-      "pypdf": {
-        "avg_time_ms": 17.03140263756116,
-        "min_time_ms": 15.876040910370648,
-        "pages": 1,
-        "metrics": {
-          "chars": 3054,
-          "words": 459,
-          "lines": 88,
-          "empty_lines": 0,
-          "avg_line_len": 33.71590909090909
-        },
-        "content_found": 22,
-        "content_total": 24,
-        "content_pct": 91.7,
-        "has_bbox": false,
-        "bbox_count": 0,
-        "has_tables": false,
-        "table_count": 0
-      },
-      "LiteParse": {
-        "avg_time_ms": 2522.333792061545,
-        "min_time_ms": 2522.333792061545,
-        "pages": 1,
-        "metrics": {
-          "chars": 3108,
-          "words": 459,
-          "lines": 64,
-          "empty_lines": 12,
-          "avg_line_len": 47.515625
-        },
-        "content_found": 22,
-        "content_total": 24,
-        "content_pct": 91.7,
-        "has_bbox": false,
-        "bbox_count": 0,
-        "has_tables": false,
-        "table_count": 0
+        "LiteParse": {
+          "stats": {
+            "avg_ms": 1470.66,
+            "std_ms": 17.02,
+            "min_ms": 1456.01,
+            "median_ms": 1466.64,
+            "p95_ms": 1466.64,
+            "runs": 3,
+            "warmup_runs": 1
+          },
+          "pages": 4,
+          "metrics": {
+            "chars": 5357,
+            "words": 834,
+            "lines": 173,
+            "empty_lines": 65,
+            "avg_line_len": 30.0
+          },
+          "content_found": 14,
+          "content_total": 14,
+          "content_pct": 100.0,
+          "has_bbox": false,
+          "bbox_count": 0,
+          "has_tables": false,
+          "table_count": 0
+        }
       }
     }
   }

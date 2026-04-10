@@ -391,6 +391,26 @@ def generate_hard_dashboard(all_results, env, *, output_path="dashboard_hard.htm
             </div>
         </div>''')
 
+    # Text preview sections
+    preview_sections = []
+    for suite in all_results:
+        previews = []
+        for pname in parsers_list:
+            pr = suite["parsers"].get(pname, {})
+            if "error" not in pr and pr.get("text_preview"):
+                escaped = html.escape(pr["text_preview"][:400])
+                previews.append(f"""
+                <div class="flex-1 min-w-[280px]">
+                    <h4 class="text-sm font-semibold mb-1" style="color:{COLORS.get(pname, '#888')}">{pname}</h4>
+                    <pre class="bg-gray-800 rounded p-2 text-xs overflow-auto max-h-48 whitespace-pre-wrap">{escaped}</pre>
+                </div>""")
+        if previews:
+            preview_sections.append(f"""
+        <div class="bg-gray-900 rounded-lg p-5 border border-gray-700">
+            <h3 class="text-lg font-semibold mb-3">{suite['label']} - Text Output Preview</h3>
+            <div class="flex flex-wrap gap-3">{''.join(previews)}</div>
+        </div>""")
+
     # Scorecard
     scorecard_rows = []
     for pname in parsers_list:
@@ -505,6 +525,11 @@ def generate_hard_dashboard(all_results, env, *, output_path="dashboard_hard.htm
   <p class="text-gray-400 text-sm mb-4">Hover over scores to see missing items. Colors: <span class="text-green-400">green</span> >=90%, <span class="text-yellow-400">yellow</span> >=70%, <span class="text-red-400">red</span> &lt;70%</p>
   <div class="space-y-4">
     {''.join(detail_html)}
+  </div>
+
+  <h2 class="text-xl font-semibold mt-8 mb-2">Text Output Comparison</h2>
+  <div class="space-y-4">
+    {''.join(preview_sections)}
   </div>
 
   <div class="mt-10 p-5 bg-gray-900 rounded-lg border border-gray-700">

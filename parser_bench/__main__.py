@@ -148,6 +148,7 @@ def run_hard_suite(parsers, docs_dir):
                 "chars": len(text),
                 "pages": len(pages),
                 "tests": {},
+                "text_preview": text[:600],
             }
 
             print(f"\n  {parser_name} ({elapsed * 1000:.0f}ms, {len(text.split()):,} words):")
